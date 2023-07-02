@@ -3,7 +3,6 @@ import { initializeApp, getApp, getApps } from "firebase/app";
 import { AuthCredential, getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-import * as admin from 'firebase-admin';
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,

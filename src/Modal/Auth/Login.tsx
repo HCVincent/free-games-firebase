@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
+import { getAuth } from "firebase/auth";
+import { userGroupState } from "@/atoms/checkUserGroupAtom";
+import { deleteCookie, setCookie } from "cookies-next";
 
 const Login: React.FC = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
@@ -11,13 +14,28 @@ const Login: React.FC = () => {
     email: "",
     password: "",
   });
-  const [createUserWithEmailAndPassword, userCred, loading, userError] =
+  const [signInWithEmailAndPassword, userCred, loading, userError] =
     useSignInWithEmailAndPassword(auth);
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log("onsubmit");
-    createUserWithEmailAndPassword(loginForm.email, loginForm.password);
+    await signInWithEmailAndPassword(loginForm.email, loginForm.password);
+    const currentUser = auth.currentUser;
+    currentUser
+      ?.getIdTokenResult()
+      .then((idTokenResult) => {
+        // Confirm the user is an Admin.
+        if (!!idTokenResult.claims.admin) {
+          // Show admin UI.
+          setCookie("isAdmin", "true");
+        } else {
+          deleteCookie("isAdmin");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +45,6 @@ const Login: React.FC = () => {
     }));
   };
 
-  async function signInWithEmail(email: string, password: string) {}
   return (
     <div className="flex flex-col w-full items-start justify-start">
       <form className="w-full" onSubmit={onSubmit}>
