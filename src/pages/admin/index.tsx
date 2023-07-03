@@ -1,8 +1,15 @@
-import React from "react";
+import { auth } from "@/firebase/clientApp";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { setTimeout } from "timers/promises";
 
-type indexProps = {};
+const AdminHome: React.FC = () => {
+  const [user] = useAuthState(auth);
+  console.log("AdminHome user", user);
+  const route = useRouter();
 
-const index: React.FC<indexProps> = () => {
   return <div>admin</div>;
 };
-export default index;
+
+export default AdminHome;

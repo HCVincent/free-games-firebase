@@ -3,39 +3,55 @@ import React, { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
-import { getAuth } from "firebase/auth";
 import { userGroupState } from "@/atoms/checkUserGroupAtom";
 import { deleteCookie, setCookie } from "cookies-next";
+import { FIREBASE_ERRORS } from "@/firebase/errors";
 
 const Login: React.FC = () => {
-  const [modalState, setModalState] = useRecoilState(authModalState);
   const setAuthModalState = useSetRecoilState(authModalState);
+  const [error, setError] = useState("");
   const [loginForm, setLoginForm] = useState({
     email: "",
     password: "",
   });
   const [signInWithEmailAndPassword, userCred, loading, userError] =
     useSignInWithEmailAndPassword(auth);
-
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("onsubmit");
-    await signInWithEmailAndPassword(loginForm.email, loginForm.password);
-    const currentUser = auth.currentUser;
-    currentUser
+    if (error) {
+      setError("");
+    }
+    try {
+      await signInWithEmailAndPassword(loginForm.email, loginForm.password);
+    } catch (error: any) {
+      setError(error);
+      console.log("signInWithEmailAndPassword Error", error);
+    }
+
+    const isAdmin = auth.currentUser
       ?.getIdTokenResult()
       .then((idTokenResult) => {
         // Confirm the user is an Admin.
         if (!!idTokenResult.claims.admin) {
           // Show admin UI.
           setCookie("isAdmin", "true");
+          console.log("login isAdmin", isAdmin);
         } else {
           deleteCookie("isAdmin");
+          console.log("login isAdmin", isAdmin);
         }
       })
       .catch((error) => {
         console.log(error);
       });
+    // console.log("login isAdmin", isAdmin);
+    // if (isAdmin) {
+    //   setCookie("isAdmin", "true");
+    //   console.log("login isAdmin", isAdmin);
+    // } else {
+    //   deleteCookie("isAdmin");
+    //   console.log("login isAdmin", isAdmin);
+    // }
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,9 +83,15 @@ const Login: React.FC = () => {
           />
         </div>
         <button className="btn btn-primary" type="submit">
-          Login
+          {loading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            "Login"
+          )}
         </button>
       </form>
+      {error ||
+        FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
       <div className="flex">
         <p>new here?</p>
         <p

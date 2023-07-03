@@ -87,7 +87,11 @@ const SignUp = () => {
           </p>
         )}
         <button className="btn btn-primary" type="submit">
-          Signup
+          {loading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            "Sign up"
+          )}
         </button>
         {/* <button className="btn btn-primary" onClick={onVerify}>
           Verify email
