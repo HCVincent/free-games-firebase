@@ -7,15 +7,13 @@ import { signOut } from "firebase/auth";
 import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
 import { userGroupState } from "@/atoms/checkUserGroupAtom";
 import { deleteCookie, setCookie } from "cookies-next";
+import CrudButtons from "@/components/CrudButtons/CrudButtons";
+import SignOut from "@/components/SignOut/SignOut";
 
 const Home: React.FC = () => {
   const [user] = useAuthState(auth);
-  const [signOut, loading, error] = useSignOut(auth);
   const [isLogin, setIsLogin] = useState(false);
-  const logout = async () => {
-    deleteCookie("isAdmin");
-    await signOut();
-  };
+
   useEffect(() => {
     if (user) setIsLogin(true);
     else {
@@ -27,18 +25,11 @@ const Home: React.FC = () => {
       <div className="flex w-full h-screen justify-center items-center bg-base-100">
         {isLogin ? (
           <>
-            <button className="btn btn-primary" onClick={logout}>
-              {loading ? (
-                <span className="loading loading-spinner"></span>
-              ) : (
-                "Sign out"
-              )}
-            </button>
+            <SignOut />
+            <CrudButtons />
           </>
         ) : (
-          <>
-            <AuthModal />
-          </>
+          <AuthModal />
         )}
       </div>
     </>

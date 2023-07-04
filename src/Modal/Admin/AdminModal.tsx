@@ -1,8 +1,8 @@
 import { adminModalState } from "@/atoms/adminModalAtom";
 import { useRecoilState } from "recoil";
-import AuthInputs from "./AuthInputs";
+import AdminInputs from "./AdminInputs";
 
-const AuthModal: React.FC = () => {
+const AdminModal: React.FC = () => {
   const [modalState, setModalState] = useRecoilState(adminModalState);
 
   const handleLogin = () => {
@@ -20,10 +20,10 @@ const AuthModal: React.FC = () => {
   return (
     <>
       <label htmlFor="my_modal_7" className="btn" onClick={handleLogin}>
-        Login
+        add
       </label>
       <label htmlFor="my_modal_7" className="btn" onClick={handleSignUp}>
-        Sign up
+        update
       </label>
       {/* Put this part before </body> tag */}
       <input type="checkbox" id="my_modal_7" className="modal-toggle" />
@@ -35,7 +35,7 @@ const AuthModal: React.FC = () => {
               {modalState.view === "update" && "update"}
             </label>
 
-            <AuthInputs />
+            <AdminInputs />
           </div>
         </div>
         <label className="modal-backdrop" htmlFor="my_modal_7">
@@ -45,4 +45,4 @@ const AuthModal: React.FC = () => {
     </>
   );
 };
-export default AuthModal;
+export default AdminModal;
