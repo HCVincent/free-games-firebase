@@ -26,7 +26,6 @@ const Home: React.FC = () => {
         {isLogin ? (
           <>
             <SignOut />
-            <CrudButtons />
           </>
         ) : (
           <AuthModal />

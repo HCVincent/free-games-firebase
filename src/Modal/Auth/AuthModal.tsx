@@ -1,20 +1,20 @@
-import { adminModalState } from "@/atoms/adminModalAtom";
 import { useRecoilState } from "recoil";
 import AuthInputs from "./AuthInputs";
+import { authModalState } from "@/atoms/authModalAtom";
 
 const AuthModal: React.FC = () => {
-  const [modalState, setModalState] = useRecoilState(adminModalState);
+  const [modalState, setModalState] = useRecoilState(authModalState);
 
   const handleLogin = () => {
     setModalState((prev) => ({
       ...prev,
-      view: "add",
+      view: "login",
     }));
   };
   const handleSignUp = () => {
     setModalState((prev) => ({
       ...prev,
-      view: "update",
+      view: "signup",
     }));
   };
   return (
@@ -31,8 +31,8 @@ const AuthModal: React.FC = () => {
         <div className="modal-box">
           <div className="flex flex-col w-full justify-start items-start bg-base-100">
             <label className="label">
-              {modalState.view === "add" && "add"}
-              {modalState.view === "update" && "update"}
+              {modalState.view === "login" && "login"}
+              {modalState.view === "signup" && "signup"}
             </label>
 
             <AuthInputs />
