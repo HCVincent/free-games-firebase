@@ -19,14 +19,14 @@ const AuthModal: React.FC = () => {
   };
   return (
     <>
-      <label htmlFor="my_modal_7" className="btn" onClick={handleLogin}>
+      <label htmlFor="my_modal_auth" className="btn" onClick={handleLogin}>
         Login
       </label>
-      <label htmlFor="my_modal_7" className="btn" onClick={handleSignUp}>
+      <label htmlFor="my_modal_auth" className="btn" onClick={handleSignUp}>
         Sign up
       </label>
       {/* Put this part before </body> tag */}
-      <input type="checkbox" id="my_modal_7" className="modal-toggle" />
+      <input type="checkbox" id="my_modal_auth" className="modal-toggle" />
       <div className="modal">
         <div className="modal-box">
           <div className="flex flex-col w-full justify-start items-start bg-base-100">
@@ -38,7 +38,7 @@ const AuthModal: React.FC = () => {
             <AuthInputs />
           </div>
         </div>
-        <label className="modal-backdrop" htmlFor="my_modal_7">
+        <label className="modal-backdrop" htmlFor="my_modal_auth">
           Close
         </label>
       </div>

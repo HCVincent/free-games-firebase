@@ -7,7 +7,7 @@ type AdminPageContentProps = {
 
 const AdminPageContent: React.FC<AdminPageContentProps> = ({ selectedTab }) => {
   return (
-    <div>
+    <div className="w-full h-screen">
       {selectedTab === "games" && <GamesCrud />}
       {selectedTab === "users" && <>users</>}
     </div>

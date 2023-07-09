@@ -18,16 +18,16 @@ const AdminModal: React.FC = () => {
     }));
   };
   return (
-    <>
-      <label htmlFor="my_modal_7" className="btn" onClick={handleLogin}>
+    <div className="flex w-full h-screen">
+      <label htmlFor="my_modal_admin" className="btn" onClick={handleLogin}>
         add
       </label>
-      <label htmlFor="my_modal_7" className="btn" onClick={handleSignUp}>
+      <label htmlFor="my_modal_admin" className="btn" onClick={handleSignUp}>
         update
       </label>
       {/* Put this part before </body> tag */}
-      <input type="checkbox" id="my_modal_7" className="modal-toggle" />
-      <div className="modal">
+      <input type="checkbox" id="my_modal_admin" className="modal-toggle" />
+      <div className="modal ">
         <div className="modal-box">
           <div className="flex flex-col w-full justify-start items-start bg-base-100">
             <label className="label">
@@ -38,11 +38,11 @@ const AdminModal: React.FC = () => {
             <AdminInputs />
           </div>
         </div>
-        <label className="modal-backdrop" htmlFor="my_modal_7">
+        <label className="modal-backdrop" htmlFor="my_modal_admin">
           Close
         </label>
       </div>
-    </>
+    </div>
   );
 };
 export default AdminModal;

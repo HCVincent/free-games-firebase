@@ -6,8 +6,10 @@ import { auth } from "@/firebase/clientApp";
 import { userGroupState } from "@/atoms/checkUserGroupAtom";
 import { deleteCookie, setCookie } from "cookies-next";
 import { FIREBASE_ERRORS } from "@/firebase/errors";
+import { useRouter } from "next/router";
 
 const Login: React.FC = () => {
+  const route = useRouter();
   const setAuthModalState = useSetRecoilState(authModalState);
   const [error, setError] = useState("");
   const [loginForm, setLoginForm] = useState({
@@ -28,30 +30,21 @@ const Login: React.FC = () => {
       console.log("signInWithEmailAndPassword Error", error);
     }
 
-    const isAdmin = auth.currentUser
+    await auth.currentUser
       ?.getIdTokenResult()
       .then((idTokenResult) => {
         // Confirm the user is an Admin.
         if (!!idTokenResult.claims.admin) {
           // Show admin UI.
           setCookie("isAdmin", "true");
-          console.log("login isAdmin", isAdmin);
+          route.push("/admin");
         } else {
           deleteCookie("isAdmin");
-          console.log("login isAdmin", isAdmin);
         }
       })
       .catch((error) => {
         console.log(error);
       });
-    // console.log("login isAdmin", isAdmin);
-    // if (isAdmin) {
-    //   setCookie("isAdmin", "true");
-    //   console.log("login isAdmin", isAdmin);
-    // } else {
-    //   deleteCookie("isAdmin");
-    //   console.log("login isAdmin", isAdmin);
-    // }
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,6 +59,7 @@ const Login: React.FC = () => {
       <form className="w-full" onSubmit={onSubmit}>
         <div className="form-control w-full mt-4">
           <input
+            required
             name="email"
             placeholder="email"
             type="email"
@@ -75,6 +69,7 @@ const Login: React.FC = () => {
         </div>
         <div className="form-control w-full mt-4">
           <input
+            required
             name="password"
             placeholder="password"
             type="password"
