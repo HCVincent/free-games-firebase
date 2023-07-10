@@ -7,7 +7,6 @@ const useSelectFile = () => {
   const [selectedVideo, setSelectedVideo] = useState<string>();
 
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
     const reader = new FileReader();
     if (event.target.files?.[0]) {
       reader.readAsDataURL(event.target.files[0]);
@@ -18,7 +17,6 @@ const useSelectFile = () => {
   };
 
   const onSelectImagesGroup = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
     const files = event.target.files;
 
     if (files && files.length > 0) {
@@ -39,7 +37,6 @@ const useSelectFile = () => {
             }
           };
         });
-        console.log("readerPromise", readerPromise);
         reader.readAsDataURL(file);
         readerPromises.push(readerPromise);
       }
@@ -52,7 +49,6 @@ const useSelectFile = () => {
   };
 
   const onSelectVideo = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
     const reader = new FileReader();
     if (event.target.files?.[0]) {
       reader.readAsDataURL(event.target.files[0]);

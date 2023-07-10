@@ -19,7 +19,7 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
   return (
     <div className="flex flex-col justify-start w-full">
       <div className="flex items-center mt-2 justify-between">
-        <span>cover image (optional) :</span>
+        <span>9 pictures at most(optional) :</span>
         {selectedImagesGroup && selectedImagesGroup.length > 0 ? (
           <div className="flex flex-wrap">
             {selectedImagesGroup.map((image, index) => (
