@@ -8,7 +8,8 @@ export type Game = {
     coverImage?: string;
     video?: string,
     imagesGroup?: string[];
-    createdAt: Timestamp;
+    createdAt?: Timestamp;
+    updatedAt: Timestamp;
 }
 
 interface GameState {
@@ -21,7 +22,7 @@ const defaultGameState: GameState = {
     games: [],
 }
 
-export const postState = atom<GameState>({
+export const gameState = atom<GameState>({
     key: "gameState",
     default: defaultGameState
 })

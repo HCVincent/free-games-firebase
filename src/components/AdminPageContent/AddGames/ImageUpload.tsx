@@ -46,7 +46,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           <>
             <button
               className="btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 selectedFileRef.current?.click();
               }}
             >

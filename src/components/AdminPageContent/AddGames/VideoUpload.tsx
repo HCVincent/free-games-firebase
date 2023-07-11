@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
+import { TiDelete } from "react-icons/ti";
 
 type VideoUploadProps = {
   selectedVideo?: string;
@@ -14,6 +15,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
 }) => {
   const selectedVideoRef = useRef<HTMLInputElement>(null);
   const [play, setPlay] = useState(false);
+  const [isHover, setIsHover] = useState(false);
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       setPlay(false);
@@ -25,7 +27,11 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
         <span>video (optional) :</span>
         {selectedVideo ? (
           <>
-            <div className="bg-white max-w-[200px] max-h-[150px]">
+            <div
+              className="relative max-w-[200px] max-h-[150px]"
+              onMouseEnter={() => setIsHover(true)}
+              onMouseLeave={() => setIsHover(false)}
+            >
               <ReactPlayer
                 url={selectedVideo}
                 controls={true}
@@ -33,21 +39,22 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
                 width="100%"
                 height="100%"
               />
+              {isHover && (
+                <TiDelete
+                  className="absolute top-0 right-0 z-10 hover:bg-slate-300"
+                  onClick={() => {
+                    setSelectedVideo("");
+                  }}
+                />
+              )}
             </div>
-            <button
-              className="btn"
-              onClick={() => {
-                setSelectedVideo("");
-              }}
-            >
-              remove
-            </button>
           </>
         ) : (
           <>
             <button
               className="btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 selectedVideoRef.current?.click();
               }}
             >

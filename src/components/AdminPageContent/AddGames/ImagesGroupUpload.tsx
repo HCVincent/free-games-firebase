@@ -56,11 +56,12 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
           <>
             <button
               className="btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.preventDefault();
                 selectedFileRef.current?.click();
               }}
             >
-              Upload cover
+              Upload images
             </button>
             <input
               type="file"

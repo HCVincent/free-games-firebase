@@ -18,8 +18,12 @@ const AdminModal: React.FC = () => {
     }));
   };
   return (
-    <div className="flex w-full h-screen">
-      <label htmlFor="my_modal_admin" className="btn" onClick={handleLogin}>
+    <div className="flex w-full">
+      <label
+        htmlFor="my_modal_admin"
+        className="btn btn-primary"
+        onClick={handleLogin}
+      >
         add
       </label>
       <label htmlFor="my_modal_admin" className="btn" onClick={handleSignUp}>
