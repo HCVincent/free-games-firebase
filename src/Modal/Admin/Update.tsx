@@ -19,12 +19,14 @@ import {
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
-type AddProps = {};
+type GameItemProps = {
+  game: Game;
+};
 
-const Add: React.FC<AddProps> = () => {
+const Update: React.FC<GameItemProps> = ({ game }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [addComplete, setAddComplete] = useState(false);
@@ -40,9 +42,16 @@ const Add: React.FC<AddProps> = () => {
     selectedImagesGroup,
     setSelectedImagesGroup,
   } = useSelectFile();
+
+  useEffect(() => {
+    if (game.coverImage) setSelectedImage(game.coverImage);
+    if (game.video) setSelectedVideo(game.video);
+    if (game.imagesGroup) setSelectedImagesGroup(game.imagesGroup);
+  }, [game]);
+
   const [textInputs, setTextInputs] = useState({
-    title: "",
-    description: "",
+    title: game.title,
+    description: game.body,
   });
   const handleShowComplete = () => {
     setAddComplete(true);
@@ -55,13 +64,11 @@ const Add: React.FC<AddProps> = () => {
     if (error) {
       setError("");
     }
-
     setLoading(true);
     try {
       const newGame: Game = {
         title: textInputs.title,
         body: textInputs.description,
-        createdAt: serverTimestamp() as Timestamp,
         updatedAt: serverTimestamp() as Timestamp,
       };
       const gameDocRef = await addDoc(collection(firestore, "games"), newGame);
@@ -189,7 +196,7 @@ const Add: React.FC<AddProps> = () => {
               d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <span>Add Successfully</span>
+          <span>Update Successfully</span>
         </div>
       )}
       <div className="flex w-full justify-end">
@@ -200,11 +207,15 @@ const Add: React.FC<AddProps> = () => {
             onSubmit();
           }}
         >
-          {loading ? <span className="loading loading-spinner"></span> : "Add"}
+          {loading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            "UPDATE"
+          )}
         </button>
       </div>
       {error}
     </div>
   );
 };
-export default Add;
+export default Update;
