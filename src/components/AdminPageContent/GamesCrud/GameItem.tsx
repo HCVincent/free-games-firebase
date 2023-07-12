@@ -1,13 +1,12 @@
+import Update from "@/Modal/Admin/Update";
+import { adminModalState } from "@/atoms/adminModalAtom";
 import { Game } from "@/atoms/gamesAtom";
-import React, { useState } from "react";
+import useGames from "@/hooks/useGames";
 import { Image } from "@chakra-ui/react";
 import moment from "moment";
-import default_cover from "../../../../public/default_cover.png";
-import useGames from "@/hooks/useGames";
-import { adminModalState } from "@/atoms/adminModalAtom";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
-import AdminInputs from "@/Modal/Admin/AdminInputs";
-import Update from "@/Modal/Admin/Update";
+import default_cover from "../../../../public/default_cover.png";
 
 type GameItemProps = {
   game: Game;

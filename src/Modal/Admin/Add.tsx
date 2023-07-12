@@ -1,9 +1,8 @@
-import { Game, gameState } from "@/atoms/gamesAtom";
+import { Game } from "@/atoms/gamesAtom";
 import ImageUpload from "@/components/AdminPageContent/AddGames/ImageUpload";
 import ImagesGroupUpload from "@/components/AdminPageContent/AddGames/ImagesGroupUpload";
 import VideoUpload from "@/components/AdminPageContent/AddGames/VideoUpload";
 import { firestore, storage } from "@/firebase/clientApp";
-import { FIREBASE_ERRORS } from "@/firebase/errors";
 import useGames from "@/hooks/useGames";
 import useSelectFile from "@/hooks/useSelectFile";
 import { arrayUnion } from "@firebase/firestore";
@@ -11,16 +10,11 @@ import {
   Timestamp,
   addDoc,
   collection,
-  doc,
-  runTransaction,
   serverTimestamp,
-  updateDoc,
   writeBatch,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
 
 type AddProps = {};
 

@@ -1,7 +1,7 @@
 import { Game } from "@/atoms/gamesAtom";
 import { firestore } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
-import { query, collection, orderBy, limit, getDocs } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
 import React, { useEffect, useState } from "react";
 import GameItem from "./GameItem";

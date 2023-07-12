@@ -1,10 +1,8 @@
 import { Game, gameState } from "@/atoms/gamesAtom";
-import { firestore, storage, app } from "@/firebase/clientApp";
-import { error } from "console";
+import { firestore, storage } from "@/firebase/clientApp";
 import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, listAll, ref } from "firebase/storage";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { Storage } from "firebase-admin/lib/storage/storage";
 
 const useGames = () => {
   const gameStateValue = useRecoilValue(gameState);

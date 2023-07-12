@@ -1,12 +1,11 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import React, { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
-import { userGroupState } from "@/atoms/checkUserGroupAtom";
-import { deleteCookie, setCookie } from "cookies-next";
 import { FIREBASE_ERRORS } from "@/firebase/errors";
+import { deleteCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSetRecoilState } from "recoil";
 
 const Login: React.FC = () => {
   const route = useRouter();

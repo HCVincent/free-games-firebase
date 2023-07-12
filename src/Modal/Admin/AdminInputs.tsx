@@ -2,7 +2,6 @@ import { adminModalState } from "@/atoms/adminModalAtom";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import Add from "./Add";
-import Update from "./Update";
 
 const AdminInputs: React.FC = () => {
   const modalState = useRecoilValue(adminModalState);

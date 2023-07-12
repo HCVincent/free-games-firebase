@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import ReactPlayer from "react-player";
+import React, { useRef, useState } from "react";
 import { TiDelete } from "react-icons/ti";
+import ReactPlayer from "react-player";
 
 type VideoUploadProps = {
   selectedVideo?: string;

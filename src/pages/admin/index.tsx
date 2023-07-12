@@ -1,11 +1,9 @@
 import AdminPageContent from "@/components/AdminPageContent/AdminPageContent";
-import CrudButtons from "@/components/CrudButtons/CrudButtons";
 import AdminPage from "@/components/Layout/AdminPage";
 import Sidebar from "@/components/Sidebar/Sidebar";
-import SignOut from "@/components/SignOut/SignOut";
 import { auth } from "@/firebase/clientApp";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const formTabs = [{ title: "games" }, { title: "users" }];
