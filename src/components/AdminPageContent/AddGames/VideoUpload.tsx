@@ -6,12 +6,14 @@ type VideoUploadProps = {
   selectedVideo?: string;
   onSelectVideo: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedVideo: (value: string) => void;
+  setUploaded: (value: boolean) => void;
 };
 
 const VideoUpload: React.FC<VideoUploadProps> = ({
   selectedVideo,
   onSelectVideo,
   setSelectedVideo,
+  setUploaded,
 }) => {
   const selectedVideoRef = useRef<HTMLInputElement>(null);
   const [play, setPlay] = useState(false);
@@ -43,6 +45,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
                 <TiDelete
                   className="absolute top-0 right-0 z-10 hover:bg-slate-300"
                   onClick={() => {
+                    setUploaded(true);
                     setSelectedVideo("");
                   }}
                 />
@@ -65,7 +68,10 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
               accept="video/mp4"
               ref={selectedVideoRef}
               hidden
-              onChange={onSelectVideo}
+              onChange={(e) => {
+                setUploaded(true);
+                onSelectVideo(e);
+              }}
             />
           </>
         )}

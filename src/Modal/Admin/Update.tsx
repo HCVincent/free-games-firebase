@@ -10,10 +10,17 @@ import {
   Timestamp,
   addDoc,
   collection,
+  doc,
   serverTimestamp,
   writeBatch,
 } from "firebase/firestore";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import {
+  deleteObject,
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadString,
+} from "firebase/storage";
 import React, { useEffect, useState } from "react";
 
 type GameItemProps = {
@@ -21,6 +28,8 @@ type GameItemProps = {
 };
 
 const Update: React.FC<GameItemProps> = ({ game }) => {
+  const [uploaded, setUploaded] = useState(false);
+  const [uploadImages, setUploadImages] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [addComplete, setAddComplete] = useState(false);
@@ -38,6 +47,11 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
   } = useSelectFile();
 
   useEffect(() => {
+    setUploaded(false);
+    setTextInputs({
+      title: game.title,
+      description: game.body,
+    });
     if (game.coverImage) setSelectedImage(game.coverImage);
     if (game.video) setSelectedVideo(game.video);
     if (game.imagesGroup) setSelectedImagesGroup(game.imagesGroup);
@@ -61,62 +75,90 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
     setLoading(true);
     try {
       const newGame: Game = {
+        id: game.id,
         title: textInputs.title,
         body: textInputs.description,
         updatedAt: serverTimestamp() as Timestamp,
       };
-      const gameDocRef = await addDoc(collection(firestore, "games"), newGame);
+      const gameDocRef = doc(firestore, "games", game?.id!);
       const batch = writeBatch(firestore);
-      newGame.id = gameDocRef.id;
       batch.update(gameDocRef, {
-        id: gameDocRef.id,
+        title: newGame.title,
+        body: newGame.body,
       });
 
-      if (selectedImage) {
-        const coverImageRef = ref(
-          storage,
-          `games/${newGame.id}/coverImage/coverImage`
-        );
-        await uploadString(coverImageRef, selectedImage as string, "data_url");
-        const downloadURL = await getDownloadURL(coverImageRef);
-        batch.update(gameDocRef, {
-          coverImage: downloadURL,
-        });
-        newGame.coverImage = downloadURL;
-      }
-
-      if (selectedImagesGroup && selectedImagesGroup.length > 0) {
-        newGame.imagesGroup = [];
-        for (let index = 0; index < selectedImagesGroup.length; index++) {
-          const image = selectedImagesGroup[index];
-          const imagesGroupRef = ref(
+      if (uploadImages) {
+        if (selectedImage !== game.coverImage) {
+          const coverImageRef = ref(storage, `games/${game.id}/coverImage`);
+          listAll(coverImageRef)
+            .then(async (listResults) => {
+              const promises = listResults.items.map((item) => {
+                return deleteObject(item);
+              });
+              await Promise.all(promises);
+            })
+            .catch((error) => {
+              console.log("deleteStorageError", error);
+            });
+        }
+        if (selectedImage !== "") {
+          const coverImageRef = ref(
             storage,
-            `games/${newGame.id}/imagesGroup/${index}`
+            `games/${newGame.id}/coverImage/coverImage`
           );
-          await uploadString(imagesGroupRef, image as string, "data_url");
-          const downloadURL = await getDownloadURL(imagesGroupRef);
-          newGame.imagesGroup.unshift(downloadURL);
+          await uploadString(
+            coverImageRef,
+            selectedImage as string,
+            "data_url"
+          );
+          const downloadURL = await getDownloadURL(coverImageRef);
           batch.update(gameDocRef, {
-            selectedImagesGroup: arrayUnion(downloadURL),
+            coverImage: downloadURL,
           });
+          newGame.coverImage = downloadURL;
+        } else {
+          batch.update(gameDocRef, {
+            coverImage: "",
+          });
+          newGame.coverImage = "";
         }
       }
 
-      if (selectedVideo) {
-        newGame.video = selectedVideo;
-        const videoRef = ref(storage, `games/${newGame.id}/video/video`);
-        await uploadString(videoRef, selectedVideo as string, "data_url");
-        const downloadURL = await getDownloadURL(videoRef);
-        batch.update(gameDocRef, {
-          video: downloadURL,
-        });
-        newGame.video = downloadURL;
-      }
+      // if (selectedImagesGroup && selectedImagesGroup.length > 0) {
+      //   newGame.imagesGroup = [];
+      //   for (let index = 0; index < selectedImagesGroup.length; index++) {
+      //     const image = selectedImagesGroup[index];
+      //     const imagesGroupRef = ref(
+      //       storage,
+      //       `games/${newGame.id}/imagesGroup/${index}`
+      //     );
+      //     await uploadString(imagesGroupRef, image as string, "data_url");
+      //     const downloadURL = await getDownloadURL(imagesGroupRef);
+      //     newGame.imagesGroup.unshift(downloadURL);
+      //     batch.update(gameDocRef, {
+      //       selectedImagesGroup: arrayUnion(downloadURL),
+      //     });
+      //   }
+      // }
+
+      // if (selectedVideo) {
+      //   newGame.video = selectedVideo;
+      //   const videoRef = ref(storage, `games/${newGame.id}/video/video`);
+      //   await uploadString(videoRef, selectedVideo as string, "data_url");
+      //   const downloadURL = await getDownloadURL(videoRef);
+      //   batch.update(gameDocRef, {
+      //     video: downloadURL,
+      //   });
+      //   newGame.video = downloadURL;
+      // }
 
       await batch.commit();
       setGameStateValue((prev) => ({
         ...prev,
-        games: [newGame, ...prev.games],
+        games: [
+          newGame,
+          ...prev.games.filter((item) => item.id !== newGame.id),
+        ],
       }));
       handleShowComplete();
     } catch (error: any) {
@@ -137,6 +179,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
       ...prev,
       [name]: value,
     }));
+    setUploaded(true);
   };
 
   return (
@@ -159,21 +202,39 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
           value={textInputs.description}
         />
       </div>
-      <ImageUpload
-        selectedImage={selectedImage}
-        onSelectImage={onSelectImage}
-        setSelectedImage={setSelectedImage}
-      />
-      <VideoUpload
-        selectedVideo={selectedVideo}
-        onSelectVideo={onSelectVideo}
-        setSelectedVideo={setSelectedVideo}
-      />
-      <ImagesGroupUpload
-        selectedImagesGroup={selectedImagesGroup}
-        onSelectImagesGroup={onSelectImagesGroup}
-        setSelectedImagesGroup={setSelectedImagesGroup}
-      />
+      <div className="form-control">
+        <label className="label cursor-pointer">
+          <span className="label-text">Upload images or videos?</span>
+          <input
+            onChange={() => setUploadImages(!uploadImages)}
+            type="checkbox"
+            checked={uploadImages}
+            className="checkbox checkbox-primary"
+          />
+        </label>
+      </div>
+      {uploadImages && (
+        <div className="flex flex-col w-full">
+          <ImageUpload
+            setUploaded={setUploaded}
+            selectedImage={selectedImage}
+            onSelectImage={onSelectImage}
+            setSelectedImage={setSelectedImage}
+          />
+          <VideoUpload
+            setUploaded={setUploaded}
+            selectedVideo={selectedVideo}
+            onSelectVideo={onSelectVideo}
+            setSelectedVideo={setSelectedVideo}
+          />
+          <ImagesGroupUpload
+            setUploaded={setUploaded}
+            selectedImagesGroup={selectedImagesGroup}
+            onSelectImagesGroup={onSelectImagesGroup}
+            setSelectedImagesGroup={setSelectedImagesGroup}
+          />
+        </div>
+      )}
 
       {addComplete && (
         <div className="alert alert-success">
@@ -195,6 +256,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
       )}
       <div className="flex w-full justify-end">
         <button
+          disabled={!uploaded}
           className="btn btn-primary mt-4"
           onClick={(e) => {
             e.preventDefault;

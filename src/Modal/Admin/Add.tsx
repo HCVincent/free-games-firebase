@@ -90,7 +90,7 @@ const Add: React.FC<AddProps> = () => {
           const downloadURL = await getDownloadURL(imagesGroupRef);
           newGame.imagesGroup.unshift(downloadURL);
           batch.update(gameDocRef, {
-            selectedImagesGroup: arrayUnion(downloadURL),
+            imagesGroup: arrayUnion(downloadURL),
           });
         }
       }

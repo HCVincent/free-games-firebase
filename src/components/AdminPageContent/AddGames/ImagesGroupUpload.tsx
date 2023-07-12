@@ -6,12 +6,14 @@ type ImagesGroupUploadProps = {
   selectedImagesGroup?: Array<string>;
   onSelectImagesGroup: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedImagesGroup: (value: Array<string>) => void;
+  setUploaded: (value: boolean) => void;
 };
 
 const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
   selectedImagesGroup,
   onSelectImagesGroup,
   setSelectedImagesGroup,
+  setUploaded,
 }) => {
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -43,6 +45,7 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
                   <TiDelete
                     className="absolute top-0 right-0 z-10 hover:bg-slate-300"
                     onClick={() => {
+                      setUploaded(true);
                       const updatedImages = [...selectedImagesGroup];
                       updatedImages.splice(index, 1);
                       setSelectedImagesGroup(updatedImages);
@@ -68,7 +71,10 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
               multiple
               ref={selectedFileRef}
               hidden
-              onChange={onSelectImagesGroup}
+              onChange={(e) => {
+                setUploaded(true);
+                onSelectImagesGroup(e);
+              }}
             />
           </>
         )}

@@ -6,12 +6,14 @@ type ImageUploadProps = {
   selectedImage?: string;
   onSelectImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedImage: (value: string) => void;
+  setUploaded: (value: boolean) => void;
 };
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
   selectedImage,
   onSelectImage,
   setSelectedImage,
+  setUploaded,
 }) => {
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const [isHover, setIsHover] = useState(false);
@@ -37,6 +39,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               <TiDelete
                 className="absolute top-0 right-0 z-10 hover:bg-slate-300"
                 onClick={() => {
+                  setUploaded(true);
                   setSelectedImage("");
                 }}
               />
@@ -57,7 +60,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               type="file"
               ref={selectedFileRef}
               hidden
-              onChange={onSelectImage}
+              onChange={(e) => {
+                setUploaded(true);
+                onSelectImage(e);
+              }}
             />
           </>
         )}

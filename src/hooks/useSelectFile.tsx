@@ -5,7 +5,6 @@ const useSelectFile = () => {
   const [selectedImagesGroup, setSelectedImagesGroup] =
     useState<Array<string>>();
   const [selectedVideo, setSelectedVideo] = useState<string>();
-
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     if (event.target.files?.[0]) {
