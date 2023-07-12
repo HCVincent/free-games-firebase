@@ -9,14 +9,34 @@ import { userGroupState } from "@/atoms/checkUserGroupAtom";
 import { deleteCookie, setCookie } from "cookies-next";
 import CrudButtons from "@/components/CrudButtons/CrudButtons";
 import SignOut from "@/components/SignOut/SignOut";
+import { useRouter } from "next/router";
 
 const Home: React.FC = () => {
   const [user] = useAuthState(auth);
   const [isLogin, setIsLogin] = useState(false);
-
+  const route = useRouter();
   useEffect(() => {
-    if (user) setIsLogin(true);
-    else {
+    if (user) {
+      setIsLogin(true);
+      const setDefaultLoginCookie = async () => {
+        await auth.currentUser
+          ?.getIdTokenResult()
+          .then((idTokenResult) => {
+            // Confirm the user is an Admin.
+            if (!!idTokenResult.claims.admin) {
+              // Show admin UI.
+              setCookie("isAdmin", "true");
+              route.push("/admin");
+            } else {
+              deleteCookie("isAdmin");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+      setDefaultLoginCookie();
+    } else {
       setIsLogin(false);
     }
   }, [user]);

@@ -1,9 +1,10 @@
-import { Game } from "@/atoms/gamesAtom";
+import { Game, gameState } from "@/atoms/gamesAtom";
 import ImageUpload from "@/components/AdminPageContent/AddGames/ImageUpload";
 import ImagesGroupUpload from "@/components/AdminPageContent/AddGames/ImagesGroupUpload";
 import VideoUpload from "@/components/AdminPageContent/AddGames/VideoUpload";
 import { firestore, storage } from "@/firebase/clientApp";
 import { FIREBASE_ERRORS } from "@/firebase/errors";
+import useGames from "@/hooks/useGames";
 import useSelectFile from "@/hooks/useSelectFile";
 import { arrayUnion } from "@firebase/firestore";
 import {
@@ -19,13 +20,15 @@ import {
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 type AddProps = {};
 
 const Add: React.FC<AddProps> = () => {
-  const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [addComplete, setAddComplete] = useState(false);
+  const { gameStateValue, setGameStateValue } = useGames();
   const {
     selectedImage,
     setSelectedImage,
@@ -41,6 +44,12 @@ const Add: React.FC<AddProps> = () => {
     title: "",
     description: "",
   });
+  const handleShowComplete = () => {
+    setAddComplete(true);
+    setTimeout(() => {
+      setAddComplete(false);
+    }, 2000);
+  };
 
   const onSubmit = async () => {
     if (error) {
@@ -49,9 +58,7 @@ const Add: React.FC<AddProps> = () => {
 
     setLoading(true);
     try {
-      const gameNewDocRef = doc(collection(firestore, "games"));
       const newGame: Game = {
-        id: gameNewDocRef.id,
         title: textInputs.title,
         body: textInputs.description,
         createdAt: serverTimestamp() as Timestamp,
@@ -59,30 +66,35 @@ const Add: React.FC<AddProps> = () => {
       };
       const gameDocRef = await addDoc(collection(firestore, "games"), newGame);
       const batch = writeBatch(firestore);
+      newGame.id = gameDocRef.id;
+      batch.update(gameDocRef, {
+        id: gameDocRef.id,
+      });
 
       if (selectedImage) {
         const coverImageRef = ref(
           storage,
-          `games/${gameDocRef.id}/coverImage/coverImage`
+          `games/${newGame.id}/coverImage/coverImage`
         );
-        console.log("selectedImage gameDocRef.id:", gameDocRef.id);
         await uploadString(coverImageRef, selectedImage as string, "data_url");
         const downloadURL = await getDownloadURL(coverImageRef);
         batch.update(gameDocRef, {
           coverImage: downloadURL,
         });
+        newGame.coverImage = downloadURL;
       }
 
       if (selectedImagesGroup && selectedImagesGroup.length > 0) {
+        newGame.imagesGroup = [];
         for (let index = 0; index < selectedImagesGroup.length; index++) {
           const image = selectedImagesGroup[index];
           const imagesGroupRef = ref(
             storage,
-            `games/${gameDocRef.id}/imagesgroup/${index}`
+            `games/${newGame.id}/imagesGroup/${index}`
           );
-          console.log("selectedImagesGroup gameDocRef.id:", gameDocRef.id);
           await uploadString(imagesGroupRef, image as string, "data_url");
           const downloadURL = await getDownloadURL(imagesGroupRef);
+          newGame.imagesGroup.unshift(downloadURL);
           batch.update(gameDocRef, {
             selectedImagesGroup: arrayUnion(downloadURL),
           });
@@ -90,17 +102,22 @@ const Add: React.FC<AddProps> = () => {
       }
 
       if (selectedVideo) {
-        const videoRef = ref(storage, `games/${gameDocRef.id}/video/video`);
-        console.log("selectedVideo gameDocRef.id:", gameDocRef.id);
+        newGame.video = selectedVideo;
+        const videoRef = ref(storage, `games/${newGame.id}/video/video`);
         await uploadString(videoRef, selectedVideo as string, "data_url");
         const downloadURL = await getDownloadURL(videoRef);
         batch.update(gameDocRef, {
           video: downloadURL,
         });
+        newGame.video = downloadURL;
       }
 
       await batch.commit();
-      router.reload();
+      setGameStateValue((prev) => ({
+        ...prev,
+        games: [newGame, ...prev.games],
+      }));
+      handleShowComplete();
     } catch (error: any) {
       console.log("handleUploadGame error", error.message);
       setError(error);
@@ -156,6 +173,25 @@ const Add: React.FC<AddProps> = () => {
         onSelectImagesGroup={onSelectImagesGroup}
         setSelectedImagesGroup={setSelectedImagesGroup}
       />
+
+      {addComplete && (
+        <div className="alert alert-success">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="stroke-current shrink-0 h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>Your purchase has been confirmed!</span>
+        </div>
+      )}
       <div className="flex w-full justify-end">
         <button
           className="btn btn-primary mt-4"

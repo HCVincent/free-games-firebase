@@ -3,6 +3,7 @@ import { atom } from "recoil";
 
 export type Game = {
     id?: string;
+    gameDocRefId?: string;
     title: string;
     body: string;
     coverImage?: string;

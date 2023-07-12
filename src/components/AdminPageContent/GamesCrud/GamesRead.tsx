@@ -32,6 +32,7 @@ const GamesRead: React.FC<GamesReadProps> = () => {
   useEffect(() => {
     readGames();
   }, []);
+
   return (
     <div className="flex flex-col  py-2 h-2/3">
       {loading ? (
