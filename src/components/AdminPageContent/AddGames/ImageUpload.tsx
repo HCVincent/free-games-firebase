@@ -6,7 +6,7 @@ type ImageUploadProps = {
   selectedImage?: string;
   onSelectImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedImage: (value: string) => void;
-  setUploaded: (value: boolean) => void;
+  setUploaded?: (value: boolean) => void;
 };
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -39,7 +39,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               <TiDelete
                 className="absolute top-0 right-0 z-10 hover:bg-slate-300"
                 onClick={() => {
-                  setUploaded(true);
+                  {
+                    setUploaded && setUploaded(true);
+                  }
                   setSelectedImage("");
                 }}
               />
@@ -54,14 +56,16 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 selectedFileRef.current?.click();
               }}
             >
-              Upload cover
+              Update cover
             </button>
             <input
               type="file"
               ref={selectedFileRef}
               hidden
               onChange={(e) => {
-                setUploaded(true);
+                {
+                  setUploaded && setUploaded(true);
+                }
                 onSelectImage(e);
               }}
             />

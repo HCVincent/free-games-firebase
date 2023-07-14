@@ -6,7 +6,7 @@ type ImagesGroupUploadProps = {
   selectedImagesGroup?: Array<string>;
   onSelectImagesGroup: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedImagesGroup: (value: Array<string>) => void;
-  setUploaded: (value: boolean) => void;
+  setUploaded?: (value: boolean) => void;
 };
 
 const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
@@ -40,44 +40,36 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
                     hoveredIndex === index ? "hover:border-slate-300" : ""
                   }`}
                 />
-
-                {hoveredIndex === index && (
-                  <TiDelete
-                    className="absolute top-0 right-0 z-10 hover:bg-slate-300"
-                    onClick={() => {
-                      setUploaded(true);
-                      const updatedImages = [...selectedImagesGroup];
-                      updatedImages.splice(index, 1);
-                      setSelectedImagesGroup(updatedImages);
-                    }}
-                  />
-                )}
               </div>
             ))}
           </div>
         ) : (
-          <>
-            <button
-              className="btn"
-              onClick={(e) => {
-                e.preventDefault();
-                selectedFileRef.current?.click();
-              }}
-            >
-              Upload images
-            </button>
-            <input
-              type="file"
-              multiple
-              ref={selectedFileRef}
-              hidden
-              onChange={(e) => {
-                setUploaded(true);
-                onSelectImagesGroup(e);
-              }}
-            />
-          </>
+          <></>
         )}
+        <button
+          className="btn"
+          onClick={(e) => {
+            e.preventDefault();
+            console.log("selectedImagesGroup", selectedImagesGroup?.length);
+            setSelectedImagesGroup([]);
+            console.log("selectedImagesGroup", selectedImagesGroup?.length);
+            selectedFileRef.current?.click();
+          }}
+        >
+          Update All
+        </button>
+        <input
+          type="file"
+          multiple
+          ref={selectedFileRef}
+          hidden
+          onChange={(e) => {
+            {
+              setUploaded && setUploaded(true);
+            }
+            onSelectImagesGroup(e);
+          }}
+        />
       </div>
     </div>
   );

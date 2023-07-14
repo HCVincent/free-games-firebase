@@ -6,12 +6,15 @@ type AdminPageProps = {
 
 const AdminPage: React.FC<AdminPageProps> = ({ children }) => {
   return (
-    <div className="flex w-full h-screen">
-      <div className="flex w-1/5 h-full sticky top-0">
-        {children && children[0 as keyof typeof children]}
-      </div>
-      <div className="flex flex-1 h-full">
-        {children && children[1 as keyof typeof children]}
+    <div className="flex flex-col h-screen">
+      <div className="flex flex-1 overflow-hidden">
+        <div className="flex w-1/5 ">
+          {children && children[0 as keyof typeof children]}
+        </div>
+
+        <div className="flex flex-1 overflow-y-auto paragraph">
+          {children && children[1 as keyof typeof children]}
+        </div>
       </div>
     </div>
   );

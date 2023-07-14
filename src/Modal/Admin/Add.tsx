@@ -112,6 +112,10 @@ const Add: React.FC<AddProps> = () => {
         games: [newGame, ...prev.games],
       }));
       handleShowComplete();
+      setTextInputs({ title: "", description: "" });
+      setSelectedImage("");
+      setSelectedVideo("");
+      setSelectedImagesGroup([]);
     } catch (error: any) {
       console.log("handleUploadGame error", error.message);
       setError(error);

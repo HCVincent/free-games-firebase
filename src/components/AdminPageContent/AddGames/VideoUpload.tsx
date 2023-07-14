@@ -6,7 +6,7 @@ type VideoUploadProps = {
   selectedVideo?: string;
   onSelectVideo: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedVideo: (value: string) => void;
-  setUploaded: (value: boolean) => void;
+  setUploaded?: (value: boolean) => void;
 };
 
 const VideoUpload: React.FC<VideoUploadProps> = ({
@@ -45,7 +45,9 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
                 <TiDelete
                   className="absolute top-0 right-0 z-10 hover:bg-slate-300"
                   onClick={() => {
-                    setUploaded(true);
+                    {
+                      setUploaded && setUploaded(true);
+                    }
                     setSelectedVideo("");
                   }}
                 />
@@ -61,7 +63,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
                 selectedVideoRef.current?.click();
               }}
             >
-              Upload video
+              Update video
             </button>
             <input
               type="file"
@@ -69,7 +71,9 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
               ref={selectedVideoRef}
               hidden
               onChange={(e) => {
-                setUploaded(true);
+                {
+                  setUploaded && setUploaded(true);
+                }
                 onSelectVideo(e);
               }}
             />

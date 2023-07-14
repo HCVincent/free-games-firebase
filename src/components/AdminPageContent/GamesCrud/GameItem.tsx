@@ -33,7 +33,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
     <div className="flex ">
       <div className="card w-56 bg-base-100 shadow-xl">
         <figure className="h-full">
-          <div className="flex w-full h-32 items-start justify-start">
+          <div className="flex w-full h-24 items-start justify-start">
             {imageLoading && (
               <div className="flex w-full h-full items-center justify-center">
                 <span className="loading loading-spinner loading-lg"></span>
@@ -55,10 +55,10 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
               {moment(new Date(game.createdAt?.seconds * 1000)).fromNow()}
             </span>
           )}
-          <div className="card-actions w-full justify-between">
+          <div className="card-actions w-full justify-between ">
             <label
               htmlFor="my_modal_admin_update"
-              className="btn"
+              className="btn w-18 p-2"
               onClick={handleUpdate}
             >
               update
@@ -68,7 +68,10 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
                 <span className="loading loading-spinner loading-lg"></span>
               </div>
             ) : (
-              <button className="btn btn-ghost" onClick={() => handleDelete()}>
+              <button
+                className="btn btn-ghost flex-1 text-sm p-0"
+                onClick={() => handleDelete()}
+              >
                 delete
               </button>
             )}

@@ -1,50 +1,124 @@
 import { Game } from "@/atoms/gamesAtom";
 import { firestore } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  DocumentData,
+  Query,
+  QueryDocumentSnapshot,
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+  startAfter,
+} from "firebase/firestore";
 
 import React, { useEffect, useState } from "react";
 import GameItem from "./GameItem";
 
-type GamesReadProps = {};
+type GamesReadProps = {
+  searchInput: string;
+};
 
-const GamesRead: React.FC<GamesReadProps> = () => {
+const GamesRead: React.FC<GamesReadProps> = ({ searchInput }) => {
+  let next: Query<DocumentData>;
+  const { lastVisible, setLastVisible, readGames } = useGames();
+  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
+
   const [loading, setLoading] = useState(false);
+  const [noMoreLoad, setNoMoreLoad] = useState(false);
   const { onSelectGame, gameStateValue, setGameStateValue } = useGames();
-  const readGames = async () => {
+
+  const handleOnReadGames = async () => {
     setLoading(true);
     try {
-      const gameQuery = query(
-        collection(firestore, "games"),
-        orderBy("createdAt", "desc")
-      );
-      const gameDocs = await getDocs(gameQuery);
-      const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setGameStateValue((prev) => ({
-        ...prev,
-        games: games as Game[],
-      }));
+      await readGames();
     } catch (error) {
-      console.log("readGames error", error);
+      console.log("handleOnReadGames error", error);
     }
     setLoading(false);
   };
+
+  const loadMore = async () => {
+    setLoadMoreLoading(true);
+    // Construct a new query starting at this document,
+    // get the next 25 cities.
+    console.log("last", lastVisible);
+    next = query(
+      collection(firestore, "games"),
+      orderBy("createdAt", "desc"),
+      startAfter(lastVisible),
+      limit(8)
+    );
+    const newGameDocs = await getDocs(next);
+    if (newGameDocs.docs.length < 8) {
+      setNoMoreLoad(true);
+    }
+    const games = newGameDocs.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setLastVisible(newGameDocs.docs[newGameDocs.docs.length - 1]);
+    //@ts-ignore
+    setGameStateValue((prev) => ({
+      ...prev,
+      games: [...prev.games, ...games], // Update the line to spread the games array
+    }));
+    setLoadMoreLoading(false);
+  };
+
   useEffect(() => {
-    readGames();
+    handleOnReadGames();
   }, []);
 
   return (
-    <div className="flex flex-col  py-2 h-2/3">
+    <div className="flex flex-col flex-1 py-2 ">
       {loading ? (
         <div className="flex h-full justify-center align-middle items-center ">
           <span className="loading loading-infinity loading-lg"></span>
         </div>
       ) : (
-        <div className="flex flex-col items-center lg:grid lg:grid-cols-4 lg:gap-4 ">
-          {gameStateValue.games.map((game) => (
-            <GameItem game={game} key={game.id} />
-          ))}
-        </div>
+        <>
+          <div className="flex flex-col items-center h-full justify-between lg:grid lg:grid-cols-4 lg:gap-4 lg:mt-4">
+            {gameStateValue.games.map((game) => (
+              <GameItem game={game} key={game.id} />
+            ))}
+          </div>
+
+          {noMoreLoad ? (
+            <div className="alert alert-info">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                className="stroke-current shrink-0 w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              <span>this is a bottom line</span>
+            </div>
+          ) : (
+            <>
+              {loadMoreLoading ? (
+                <div className="flex w-full h-full items-center justify-center">
+                  <span className="loading loading-spinner loading-lg"></span>
+                </div>
+              ) : (
+                <button
+                  className="btn btn-ghost w-full mt-4"
+                  onClick={loadMore}
+                >
+                  load more
+                </button>
+              )}
+            </>
+          )}
+        </>
       )}
     </div>
   );

@@ -16,6 +16,7 @@ const useSelectFile = () => {
   };
 
   const onSelectImagesGroup = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedImagesGroup([]);
     const files = event.target.files;
 
     if (files && files.length > 0) {

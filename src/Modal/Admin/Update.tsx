@@ -5,6 +5,7 @@ import VideoUpload from "@/components/AdminPageContent/AddGames/VideoUpload";
 import { firestore, storage } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
 import useSelectFile from "@/hooks/useSelectFile";
+import arrayCompare from "@/utils/arrayCompare";
 import { arrayUnion } from "@firebase/firestore";
 import {
   Timestamp,
@@ -33,7 +34,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [addComplete, setAddComplete] = useState(false);
-  const { gameStateValue, setGameStateValue } = useGames();
+  const { gameStateValue, setGameStateValue, onUpdateGame } = useGames();
   const {
     selectedImage,
     setSelectedImage,
@@ -72,101 +73,29 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
     if (error) {
       setError("");
     }
+    const newGame: Game = {
+      id: game.id,
+      title: textInputs.title,
+      body: textInputs.description,
+      updatedAt: serverTimestamp() as Timestamp,
+      coverImage: selectedImage,
+      video: selectedVideo,
+      imagesGroup: selectedImagesGroup,
+    };
+
     setLoading(true);
     try {
-      const newGame: Game = {
-        id: game.id,
-        title: textInputs.title,
-        body: textInputs.description,
-        updatedAt: serverTimestamp() as Timestamp,
-      };
-      const gameDocRef = doc(firestore, "games", game?.id!);
-      const batch = writeBatch(firestore);
-      batch.update(gameDocRef, {
-        title: newGame.title,
-        body: newGame.body,
-      });
-
-      if (uploadImages) {
-        if (selectedImage !== game.coverImage) {
-          const coverImageRef = ref(storage, `games/${game.id}/coverImage`);
-          listAll(coverImageRef)
-            .then(async (listResults) => {
-              const promises = listResults.items.map((item) => {
-                return deleteObject(item);
-              });
-              await Promise.all(promises);
-            })
-            .catch((error) => {
-              console.log("deleteStorageError", error);
-            });
-        }
-        if (selectedImage !== "") {
-          const coverImageRef = ref(
-            storage,
-            `games/${newGame.id}/coverImage/coverImage`
-          );
-          await uploadString(
-            coverImageRef,
-            selectedImage as string,
-            "data_url"
-          );
-          const downloadURL = await getDownloadURL(coverImageRef);
-          batch.update(gameDocRef, {
-            coverImage: downloadURL,
-          });
-          newGame.coverImage = downloadURL;
-        } else {
-          batch.update(gameDocRef, {
-            coverImage: "",
-          });
-          newGame.coverImage = "";
-        }
+      const success = await onUpdateGame(game, newGame, uploadImages);
+      if (!success) {
+        throw new Error("Failed to update game");
+      } else {
+        handleShowComplete();
+        setLoading(false);
       }
-
-      // if (selectedImagesGroup && selectedImagesGroup.length > 0) {
-      //   newGame.imagesGroup = [];
-      //   for (let index = 0; index < selectedImagesGroup.length; index++) {
-      //     const image = selectedImagesGroup[index];
-      //     const imagesGroupRef = ref(
-      //       storage,
-      //       `games/${newGame.id}/imagesGroup/${index}`
-      //     );
-      //     await uploadString(imagesGroupRef, image as string, "data_url");
-      //     const downloadURL = await getDownloadURL(imagesGroupRef);
-      //     newGame.imagesGroup.unshift(downloadURL);
-      //     batch.update(gameDocRef, {
-      //       selectedImagesGroup: arrayUnion(downloadURL),
-      //     });
-      //   }
-      // }
-
-      // if (selectedVideo) {
-      //   newGame.video = selectedVideo;
-      //   const videoRef = ref(storage, `games/${newGame.id}/video/video`);
-      //   await uploadString(videoRef, selectedVideo as string, "data_url");
-      //   const downloadURL = await getDownloadURL(videoRef);
-      //   batch.update(gameDocRef, {
-      //     video: downloadURL,
-      //   });
-      //   newGame.video = downloadURL;
-      // }
-
-      await batch.commit();
-      setGameStateValue((prev) => ({
-        ...prev,
-        games: [
-          newGame,
-          ...prev.games.filter((item) => item.id !== newGame.id),
-        ],
-      }));
-      handleShowComplete();
     } catch (error: any) {
-      console.log("handleUploadGame error", error.message);
-      setError(error);
+      setError(error.message);
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const onChange = (

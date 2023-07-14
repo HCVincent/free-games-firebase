@@ -1,3 +1,4 @@
+import AuthModal from "@/Modal/Auth/AuthModal";
 import AdminPageContent from "@/components/AdminPageContent/AdminPageContent";
 import AdminPage from "@/components/Layout/AdminPage";
 import Sidebar from "@/components/Sidebar/Sidebar";
