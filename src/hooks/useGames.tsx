@@ -4,6 +4,7 @@ import arrayCompare from "@/utils/arrayCompare";
 import {
   DocumentData,
   QueryDocumentSnapshot,
+  Timestamp,
   arrayUnion,
   collection,
   deleteDoc,
@@ -12,6 +13,9 @@ import {
   limit,
   orderBy,
   query,
+  startAt,
+  endAt,
+  where,
   writeBatch,
 } from "firebase/firestore";
 import {
@@ -25,6 +29,8 @@ import { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const useGames = () => {
+  const numOfGamesPerPage = 8;
+
   const [lastVisible, setLastVisible] =
     useState<QueryDocumentSnapshot<DocumentData>>();
   const gameStateValue = useRecoilValue(gameState);
@@ -37,6 +43,7 @@ const useGames = () => {
   };
 
   const readGames = async (parameter?: string) => {
+    console.log("readgames");
     try {
       // const gameQuery = query(
       //   collection(firestore, "games"),
@@ -44,17 +51,26 @@ const useGames = () => {
       // );
 
       // Query the first page of docs
-      const gameQuery = query(
-        collection(firestore, "games"),
-        orderBy("createdAt", "desc"),
-        limit(8)
-      );
+      console.log("parameter", parameter);
+      const gameQuery = parameter
+        ? query(
+            collection(firestore, "games"),
+            orderBy("title", "asc"),
+            where("title", ">=", parameter),
+            where("title", "<=", parameter + "\uf8ff"),
+            limit(numOfGamesPerPage)
+          )
+        : query(
+            collection(firestore, "games"),
+            orderBy("updatedAt", "desc"),
+            limit(numOfGamesPerPage)
+          );
       const gameDocs = await getDocs(gameQuery);
+
       // Get the last visible document
       setLastVisible(gameDocs.docs[gameDocs.docs.length - 1]);
 
       const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-
       setGameStateValue((prev) => ({
         ...prev,
         games: games as Game[],
@@ -75,6 +91,7 @@ const useGames = () => {
       batch.update(gameDocRef, {
         title: newGame.title,
         body: newGame.body,
+        updatedAt: newGame.updatedAt,
       });
 
       if (uploadImages) {
@@ -263,6 +280,7 @@ const useGames = () => {
     lastVisible,
     setLastVisible,
     readGames,
+    numOfGamesPerPage,
   };
 };
 export default useGames;

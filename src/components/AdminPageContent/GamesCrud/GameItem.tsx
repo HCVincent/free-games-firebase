@@ -21,14 +21,6 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
     onDeleteGame(game);
     setDeleteLoading(false);
   };
-  const [modalState, setModalState] = useRecoilState(adminModalState);
-  const handleUpdate = () => {
-    onSelectGame(game);
-    setModalState((prev) => ({
-      ...prev,
-      view: "update",
-    }));
-  };
   return (
     <div className="flex ">
       <div className="card w-56 bg-base-100 shadow-xl">
@@ -56,13 +48,21 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
             </span>
           )}
           <div className="card-actions w-full justify-between ">
-            <label
-              htmlFor="my_modal_admin_update"
-              className="btn w-18 p-2"
-              onClick={handleUpdate}
+            <button
+              className="btn"
+              //@ts-ignore
+              onClick={() => {
+                if (document) {
+                  onSelectGame(game);
+                  (
+                    document.getElementById("my_modal_2") as HTMLFormElement
+                  ).showModal();
+                }
+              }}
             >
-              update
-            </label>
+              UPDATE
+            </button>
+
             {deleteLoading ? (
               <div className="flex w-full h-full items-center justify-center">
                 <span className="loading loading-spinner loading-lg"></span>
@@ -75,30 +75,20 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
                 delete
               </button>
             )}
-            <input
-              type="checkbox"
-              id="my_modal_admin_update"
-              className="modal-toggle"
-            />
-            <div className="modal ">
-              <div className="modal-box">
-                <div className="flex flex-col w-full justify-start items-start bg-base-100">
-                  <label className="label">
-                    {modalState.view === "add" && "add"}
-                    {modalState.view === "update" && "update"}
-                  </label>
 
+            <dialog id="my_modal_2" className="modal">
+              <form method="dialog" className="modal-box">
+                <h3 className="font-bold text-lg">update</h3>
+                {gameStateValue.selectedGame && (
                   <div className="flex flex-col w-full">
-                    {modalState.view === "update" && (
-                      <Update game={gameStateValue.selectedGame!} />
-                    )}
+                    <Update game={gameStateValue.selectedGame} />
                   </div>
-                </div>
-              </div>
-              <label className="modal-backdrop" htmlFor="my_modal_admin_update">
-                Close
-              </label>
-            </div>
+                )}
+              </form>
+              <form method="dialog" className="modal-backdrop">
+                <button>close</button>
+              </form>
+            </dialog>
           </div>
         </div>
       </div>

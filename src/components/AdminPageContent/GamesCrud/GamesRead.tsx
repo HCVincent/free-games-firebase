@@ -16,17 +16,15 @@ import {
 import React, { useEffect, useState } from "react";
 import GameItem from "./GameItem";
 
-type GamesReadProps = {
-  searchInput: string;
-};
+type GamesReadProps = {};
 
-const GamesRead: React.FC<GamesReadProps> = ({ searchInput }) => {
+const GamesRead: React.FC<GamesReadProps> = () => {
   let next: Query<DocumentData>;
-  const { lastVisible, setLastVisible, readGames } = useGames();
-  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
-
-  const [loading, setLoading] = useState(false);
   const [noMoreLoad, setNoMoreLoad] = useState(false);
+  const { lastVisible, setLastVisible, readGames, numOfGamesPerPage } =
+    useGames();
+  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { onSelectGame, gameStateValue, setGameStateValue } = useGames();
 
   const handleOnReadGames = async () => {
@@ -43,15 +41,14 @@ const GamesRead: React.FC<GamesReadProps> = ({ searchInput }) => {
     setLoadMoreLoading(true);
     // Construct a new query starting at this document,
     // get the next 25 cities.
-    console.log("last", lastVisible);
     next = query(
       collection(firestore, "games"),
-      orderBy("createdAt", "desc"),
+      orderBy("updatedAt", "desc"),
       startAfter(lastVisible),
-      limit(8)
+      limit(numOfGamesPerPage)
     );
     const newGameDocs = await getDocs(next);
-    if (newGameDocs.docs.length < 8) {
+    if (newGameDocs.docs.length < numOfGamesPerPage) {
       setNoMoreLoad(true);
     }
     const games = newGameDocs.docs.map((doc) => ({
@@ -71,6 +68,17 @@ const GamesRead: React.FC<GamesReadProps> = ({ searchInput }) => {
     handleOnReadGames();
   }, []);
 
+  useEffect(() => {
+    const checkIfLoadMore = () => {
+      if (gameStateValue.games.length === numOfGamesPerPage) {
+        setNoMoreLoad(false);
+      } else {
+        setNoMoreLoad(true);
+      }
+    };
+    checkIfLoadMore();
+  }, [gameStateValue.games]);
+
   return (
     <div className="flex flex-col flex-1 py-2 ">
       {loading ? (
@@ -80,7 +88,7 @@ const GamesRead: React.FC<GamesReadProps> = ({ searchInput }) => {
       ) : (
         <>
           <div className="flex flex-col items-center h-full justify-between lg:grid lg:grid-cols-4 lg:gap-4 lg:mt-4">
-            {gameStateValue.games.map((game) => (
+            {gameStateValue.games.map((game, index) => (
               <GameItem game={game} key={game.id} />
             ))}
           </div>

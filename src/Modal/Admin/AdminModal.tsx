@@ -24,7 +24,8 @@ const AdminModal: React.FC<AdminModalProps> = ({
   };
 
   const onSubmit = async () => {
-    readGames(searchInput);
+    await readGames(searchInput);
+    setSearchInput("");
   };
 
   return (
@@ -55,10 +56,10 @@ const AdminModal: React.FC<AdminModalProps> = ({
         </label>
       </div>
 
-      <form onSubmit={onSubmit}>
+      <form>
         <label
           htmlFor="default-search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          className="mb-2 text-sm font-medium text-gray-900 sr-only"
         >
           Search
         </label>
@@ -83,14 +84,19 @@ const AdminModal: React.FC<AdminModalProps> = ({
           <input
             type="search"
             id="default-search"
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none hover:border-gray-800"
             placeholder="Search Mockups, Logos..."
             onChange={(e) => setSearchInput(e.currentTarget.value)}
+            value={searchInput}
             required
           />
           <button
             type="submit"
-            className="btn btn-primary text-white absolute right-2 bottom-1 hover:bg-purple-900  focus:outline-none focus:bg-primary font-medium rounded-lg text-sm"
+            className="btn btn-primary text-white absolute right-2 bottom-1  font-medium rounded-lg text-sm"
+            onClick={(e) => {
+              e.preventDefault();
+              onSubmit();
+            }}
           >
             Search
           </button>
