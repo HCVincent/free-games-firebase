@@ -1,4 +1,5 @@
 import AuthModal from "@/Modal/Auth/AuthModal";
+import Layout from "@/components/Layout/Layout";
 import SignOut from "@/components/SignOut/SignOut";
 import { auth } from "@/firebase/clientApp";
 import { deleteCookie, setCookie } from "cookies-next";
@@ -21,7 +22,6 @@ const Home: React.FC = () => {
             if (!!idTokenResult.claims.admin) {
               // Show admin UI.
               setCookie("isAdmin", "true");
-              route.push("/admin");
             } else {
               deleteCookie("isAdmin");
             }
@@ -37,11 +37,11 @@ const Home: React.FC = () => {
   }, [user]);
   return (
     <>
-      <div className="flex w-full h-screen justify-center items-center bg-base-100">
+      <div className="flex w-full  items-center bg-base-100">
         {isLogin ? (
-          <>
+          <Layout>
             <SignOut />
-          </>
+          </Layout>
         ) : (
           <AuthModal />
         )}

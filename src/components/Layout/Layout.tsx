@@ -5,10 +5,10 @@ interface LayoutProps {
 }
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <>
-      <p className="bg-slate-500">navbar </p>
+    <div className="flex flex-col w-full">
+      <p className="bg-slate-500 w-full top-0">navbar </p>
       <main>{children}</main>
-    </>
+    </div>
   );
 };
 export default Layout;
