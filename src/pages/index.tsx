@@ -10,51 +10,53 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const Home: React.FC = () => {
   return (
-    <div className="flex w-full  items-center bg-base-100 ">
+    <div className="flex w-full items-center">
       <Layout>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
-        <div>a</div>
+        <div className="flex flex-col w-full lg:w-5/6 border-lime-300 border-2">
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+          <div>a</div>
+        </div>
       </Layout>
     </div>
   );

@@ -61,8 +61,8 @@ const Login: React.FC = () => {
             required
             name="email"
             placeholder="email"
-            type="email"
-            className="input input-bordered"
+            type="password"
+            className="input input-bordered bg-base-300 focus:outline-none"
             onChange={onChange}
           />
         </div>
@@ -72,11 +72,11 @@ const Login: React.FC = () => {
             name="password"
             placeholder="password"
             type="password"
-            className="input input-bordered"
+            className="input input-bordered bg-base-300 focus:outline-none"
             onChange={onChange}
           />
         </div>
-        <button className="btn btn-primary" type="submit">
+        <button className="btn btn-primary mt-8" type="submit">
           {loading ? (
             <span className="loading loading-spinner"></span>
           ) : (
