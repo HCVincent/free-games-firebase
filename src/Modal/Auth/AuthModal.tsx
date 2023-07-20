@@ -19,10 +19,18 @@ const AuthModal: React.FC = () => {
   };
   return (
     <>
-      <label htmlFor="my_modal_auth" className="btn" onClick={handleLogin}>
+      <label
+        htmlFor="my_modal_auth"
+        className="btn justify-start items-center hidden lg:flex"
+        onClick={handleLogin}
+      >
         Login
       </label>
-      <label htmlFor="my_modal_auth" className="btn" onClick={handleSignUp}>
+      <label
+        htmlFor="my_modal_auth"
+        className="btn justify-start items-center hidden lg:flex"
+        onClick={handleSignUp}
+      >
         Sign up
       </label>
       {/* Put this part before </body> tag */}

@@ -8,6 +8,8 @@ import AuthModal from "@/Modal/Auth/AuthModal";
 import Link from "next/link";
 import RightContent from "./RightContent/RightContent";
 import ThemeButton from "./ThemeButton/ThemeButton";
+import { authModalState } from "@/atoms/authModalAtom";
+import { useRecoilState } from "recoil";
 
 type NavbarProps = {};
 
@@ -18,6 +20,20 @@ const Navbar: React.FC<NavbarProps> = () => {
   const [theme, setTheme] = React.useState("dark");
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "default" : "dark");
+  };
+  const [modalState, setModalState] = useRecoilState(authModalState);
+
+  const handleLogin = () => {
+    setModalState((prev) => ({
+      ...prev,
+      view: "login",
+    }));
+  };
+  const handleSignUp = () => {
+    setModalState((prev) => ({
+      ...prev,
+      view: "signup",
+    }));
   };
   useEffect(() => {
     //@ts-ignore
@@ -48,7 +64,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     }
   }, [user]);
   return (
-    <div className="navbar bg-base-200 justify-center p-0">
+    <div className="navbar bg-base-200 justify-center p-0 ">
       <div className="flex w-full align-middle items-center lg:w-5/6 lg:justify-between  border-2 border-red-700">
         <div className="">
           <div className="drawer lg:hidden">
@@ -84,8 +100,28 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <a>Sidebar Item 2</a>
                   </li>
                 </ul>
-                <div className="">
+                <div className="flex flex-col">
                   <ThemeButton toggleTheme={toggleTheme} theme={theme} />
+                  {isLogin ? (
+                    <SignOut />
+                  ) : (
+                    <>
+                      <label
+                        htmlFor="my_modal_auth"
+                        className="btn justify-start items-center"
+                        onClick={handleLogin}
+                      >
+                        Login
+                      </label>
+                      <label
+                        htmlFor="my_modal_auth"
+                        className="btn justify-start items-center"
+                        onClick={handleSignUp}
+                      >
+                        Sign up
+                      </label>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

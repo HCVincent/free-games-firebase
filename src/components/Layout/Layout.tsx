@@ -7,7 +7,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col w-full">
-      <div className="w-full top-0 sticky">
+      <div className="w-full top-0 sticky z-50 ">
         <Navbar />
       </div>
       <main className="flex justify-center">{children}</main>

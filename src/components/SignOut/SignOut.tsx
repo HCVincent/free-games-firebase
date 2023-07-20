@@ -12,7 +12,7 @@ const SignOut: React.FC<SignOutProps> = () => {
     await signOut();
   };
   return (
-    <button className="btn" onClick={logout}>
+    <button className="btn hidden lg:flex" onClick={logout}>
       {loading ? <span className="loading loading-spinner"></span> : "Sign out"}
     </button>
   );
