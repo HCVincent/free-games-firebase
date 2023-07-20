@@ -15,8 +15,10 @@ const RightContent: React.FC<RightContentProps> = ({
   theme,
 }) => {
   return (
-    <div className="hidden lg:flex lg:items-center">
-      <ThemeButton toggleTheme={toggleTheme} theme={theme} />
+    <div className="lg:flex lg:items-center">
+      <div className="hidden lg:flex  ">
+        <ThemeButton toggleTheme={toggleTheme} theme={theme} />
+      </div>
       {isLogin ? <SignOut /> : <AuthModal />}
     </div>
   );
