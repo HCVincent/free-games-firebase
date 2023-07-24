@@ -7,6 +7,7 @@ type VideoUploadProps = {
   onSelectVideo: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedVideo: (value: string) => void;
   setUploaded?: (value: boolean) => void;
+  text: "add" | "update";
 };
 
 const VideoUpload: React.FC<VideoUploadProps> = ({
@@ -14,6 +15,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
   onSelectVideo,
   setSelectedVideo,
   setUploaded,
+  text,
 }) => {
   const selectedVideoRef = useRef<HTMLInputElement>(null);
   const [play, setPlay] = useState(false);
@@ -63,7 +65,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({
                 selectedVideoRef.current?.click();
               }}
             >
-              Update video
+              {text} video
             </button>
             <input
               type="file"

@@ -113,7 +113,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
 
   return (
     <div className="flex flex-col w-full items-start justify-start">
-      <div className="form-control w-full mt-4">
+      <div className="form-control w-full mt-4 text-white">
         <input
           required
           name="title"
@@ -143,20 +143,23 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
         </label>
       </div>
       {uploadImages && (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full text-white">
           <ImageUpload
+            text="update"
             setUploaded={setUploaded}
             selectedImage={selectedImage}
             onSelectImage={onSelectImage}
             setSelectedImage={setSelectedImage}
           />
           <VideoUpload
+            text="update"
             setUploaded={setUploaded}
             selectedVideo={selectedVideo}
             onSelectVideo={onSelectVideo}
             setSelectedVideo={setSelectedVideo}
           />
           <ImagesGroupUpload
+            text="update"
             setUploaded={setUploaded}
             selectedImagesGroup={selectedImagesGroup}
             onSelectImagesGroup={onSelectImagesGroup}

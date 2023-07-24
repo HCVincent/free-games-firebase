@@ -7,6 +7,8 @@ type ImageUploadProps = {
   onSelectImage: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedImage: (value: string) => void;
   setUploaded?: (value: boolean) => void;
+  required?: boolean;
+  text: "add" | "update";
 };
 
 const ImageUpload: React.FC<ImageUploadProps> = ({
@@ -14,13 +16,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
   onSelectImage,
   setSelectedImage,
   setUploaded,
+  required,
+  text,
 }) => {
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const [isHover, setIsHover] = useState(false);
   return (
     <div className="flex flex-col justify-start w-full">
       <div className="flex items-center mt-2 justify-between">
-        <span>cover image (optional) :</span>
+        <span>cover image {required ? "" : "(optional) :"}</span>
         {selectedImage ? (
           <div
             className="relative"
@@ -56,9 +60,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 selectedFileRef.current?.click();
               }}
             >
-              Update cover
+              {text} cover
             </button>
             <input
+              required={required}
               type="file"
               ref={selectedFileRef}
               hidden

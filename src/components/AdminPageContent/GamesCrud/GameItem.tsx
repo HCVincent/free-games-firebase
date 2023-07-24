@@ -78,7 +78,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
 
             <dialog id="my_modal_2" className="modal">
               <form method="dialog" className="modal-box">
-                <h3 className="font-bold text-lg">update</h3>
+                <h3 className="font-bold text-lg text-white">update</h3>
                 {gameStateValue.selectedGame && (
                   <div className="flex flex-col w-full">
                     <Update game={gameStateValue.selectedGame} />

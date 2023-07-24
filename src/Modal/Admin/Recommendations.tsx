@@ -58,17 +58,22 @@ const Add: React.FC<AddProps> = () => {
         createdAt: serverTimestamp() as Timestamp,
         updatedAt: serverTimestamp() as Timestamp,
       };
-      const gameDocRef = await addDoc(collection(firestore, "games"), newGame);
+      console.log("newGame");
+      const gameDocRef = await addDoc(
+        collection(firestore, "recommendations"),
+        newGame
+      );
+      console.log("await addDoc");
       const batch = writeBatch(firestore);
       newGame.id = gameDocRef.id;
       batch.update(gameDocRef, {
         id: gameDocRef.id,
       });
-
-      if (selectedImage) {
+      console.log("batch.update");
+      try {
         const coverImageRef = ref(
           storage,
-          `games/${newGame.id}/coverImage/coverImage`
+          `recommendations/${newGame.id}/coverImage/coverImage`
         );
         await uploadString(coverImageRef, selectedImage as string, "data_url");
         const downloadURL = await getDownloadURL(coverImageRef);
@@ -76,28 +81,31 @@ const Add: React.FC<AddProps> = () => {
           coverImage: downloadURL,
         });
         newGame.coverImage = downloadURL;
+      } catch (error) {
+        console.log("coverImageRef error", error);
       }
 
-      if (selectedImagesGroup && selectedImagesGroup.length > 0) {
-        newGame.imagesGroup = [];
-        for (let index = 0; index < selectedImagesGroup.length; index++) {
-          const image = selectedImagesGroup[index];
-          const imagesGroupRef = ref(
-            storage,
-            `games/${newGame.id}/imagesGroup/${index}`
-          );
-          await uploadString(imagesGroupRef, image as string, "data_url");
-          const downloadURL = await getDownloadURL(imagesGroupRef);
-          newGame.imagesGroup.unshift(downloadURL);
-          batch.update(gameDocRef, {
-            imagesGroup: arrayUnion(downloadURL),
-          });
-        }
+      newGame.imagesGroup = [];
+      for (let index = 0; index < selectedImagesGroup!.length; index++) {
+        const image = selectedImagesGroup![index];
+        const imagesGroupRef = ref(
+          storage,
+          `recommendations/${newGame.id}/imagesGroup/${index}`
+        );
+        await uploadString(imagesGroupRef, image as string, "data_url");
+        const downloadURL = await getDownloadURL(imagesGroupRef);
+        newGame.imagesGroup.unshift(downloadURL);
+        batch.update(gameDocRef, {
+          imagesGroup: arrayUnion(downloadURL),
+        });
       }
 
       if (selectedVideo) {
         newGame.video = selectedVideo;
-        const videoRef = ref(storage, `games/${newGame.id}/video/video`);
+        const videoRef = ref(
+          storage,
+          `recommendations/${newGame.id}/video/video`
+        );
         await uploadString(videoRef, selectedVideo as string, "data_url");
         const downloadURL = await getDownloadURL(videoRef);
         batch.update(gameDocRef, {
@@ -157,10 +165,11 @@ const Add: React.FC<AddProps> = () => {
         />
       </div>
       <ImageUpload
-        text="add"
         selectedImage={selectedImage}
         onSelectImage={onSelectImage}
         setSelectedImage={setSelectedImage}
+        text="add"
+        required={true}
       />
       <VideoUpload
         text="add"

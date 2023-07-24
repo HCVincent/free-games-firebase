@@ -61,7 +61,7 @@ const Login: React.FC = () => {
             required
             name="email"
             placeholder="email"
-            type="password"
+            type="email"
             className="input input-bordered bg-base-300 focus:outline-none"
             onChange={onChange}
           />

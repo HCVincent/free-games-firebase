@@ -7,6 +7,7 @@ type ImagesGroupUploadProps = {
   onSelectImagesGroup: (event: React.ChangeEvent<HTMLInputElement>) => void;
   setSelectedImagesGroup: (value: Array<string>) => void;
   setUploaded?: (value: boolean) => void;
+  text: "add" | "update";
 };
 
 const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
@@ -14,6 +15,7 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
   onSelectImagesGroup,
   setSelectedImagesGroup,
   setUploaded,
+  text,
 }) => {
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -56,7 +58,7 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
             selectedFileRef.current?.click();
           }}
         >
-          Update All
+          {text}
         </button>
         <input
           type="file"

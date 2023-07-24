@@ -4,6 +4,7 @@ import Add from "./Add";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Flex, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
 import useGames from "@/hooks/useGames";
+import Recommendations from "./Recommendations";
 
 type AdminModalProps = {
   setSearchInput: (value: string) => void;
@@ -22,6 +23,12 @@ const AdminModal: React.FC<AdminModalProps> = ({
       view: "add",
     }));
   };
+  const handleRecommendations = () => {
+    setModalState((prev) => ({
+      ...prev,
+      view: "recommendations",
+    }));
+  };
 
   const onSubmit = async () => {
     await readGames(searchInput);
@@ -37,6 +44,13 @@ const AdminModal: React.FC<AdminModalProps> = ({
       >
         add
       </label>
+      <label
+        htmlFor="my_modal_admin_add"
+        className="btn btn-primary"
+        onClick={handleRecommendations}
+      >
+        add recommendations
+      </label>
 
       <input type="checkbox" id="my_modal_admin_add" className="modal-toggle" />
       <div className="modal ">
@@ -44,10 +58,12 @@ const AdminModal: React.FC<AdminModalProps> = ({
           <div className="flex flex-col w-full justify-start items-start bg-base-100">
             <label className="label">
               {modalState.view === "add" && "add"}
+              {modalState.view === "recommendations" && "recommendations"}
             </label>
 
             <div className="flex flex-col w-full">
               {modalState.view === "add" && <Add />}
+              {modalState.view === "recommendations" && <Recommendations />}
             </div>
           </div>
         </div>
