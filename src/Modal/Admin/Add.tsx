@@ -55,6 +55,7 @@ const Add: React.FC<AddProps> = () => {
       const newGame: Game = {
         title: textInputs.title,
         body: textInputs.description,
+        recommend: false,
         createdAt: serverTimestamp() as Timestamp,
         updatedAt: serverTimestamp() as Timestamp,
       };

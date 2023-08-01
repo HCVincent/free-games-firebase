@@ -17,6 +17,8 @@ import {
   endAt,
   where,
   writeBatch,
+  setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import {
   deleteObject,
@@ -42,8 +44,7 @@ const useGames = () => {
     }));
   };
 
-  const readGames = async (parameter?: string) => {
-    console.log("readgames");
+  const readGames = async (firebaseCollection: string, parameter?: string) => {
     try {
       // const gameQuery = query(
       //   collection(firestore, "games"),
@@ -51,17 +52,16 @@ const useGames = () => {
       // );
 
       // Query the first page of docs
-      console.log("parameter", parameter);
       const gameQuery = parameter
         ? query(
-            collection(firestore, "games"),
+            collection(firestore, firebaseCollection),
             orderBy("title", "asc"),
             where("title", ">=", parameter),
             where("title", "<=", parameter + "\uf8ff"),
             limit(numOfGamesPerPage)
           )
         : query(
-            collection(firestore, "games"),
+            collection(firestore, firebaseCollection),
             orderBy("updatedAt", "desc"),
             limit(numOfGamesPerPage)
           );
@@ -80,13 +80,32 @@ const useGames = () => {
     }
   };
 
+  const onUpdateGameRec = async (
+    firebaseCollection: string,
+    gameId: string,
+    recommend: boolean
+  ): Promise<boolean> => {
+    try {
+      const docRef = doc(firestore, firebaseCollection, gameId);
+      await updateDoc(docRef, {
+        recommend: recommend,
+      });
+
+      return true;
+    } catch (error: any) {
+      console.log("onUpdateGameRec error", error.message);
+      return false;
+    }
+  };
+
   const onUpdateGame = async (
+    firebaseCollection: string,
     oldGame: Game,
     newGame: Game,
     uploadImages: boolean
   ): Promise<boolean> => {
     try {
-      const gameDocRef = doc(firestore, "games", oldGame?.id!);
+      const gameDocRef = doc(firestore, firebaseCollection, oldGame?.id!);
       const batch = writeBatch(firestore);
       batch.update(gameDocRef, {
         title: newGame.title,
@@ -213,7 +232,10 @@ const useGames = () => {
     }
   };
 
-  const onDeleteGame = async (game: Game): Promise<boolean> => {
+  const onDeleteGame = async (
+    firebaseCollection: string,
+    game: Game
+  ): Promise<boolean> => {
     try {
       if (game.coverImage) {
         const coverImageRef = ref(storage, `games/${game.id}/coverImage`);
@@ -258,12 +280,14 @@ const useGames = () => {
             console.log("deleteStorageError", error);
           });
       }
-      const gameDocRef = doc(firestore, "games", game.id!);
+      const gameDocRef = doc(firestore, firebaseCollection, game.id!);
       await deleteDoc(gameDocRef);
-      setGameStateValue((prev) => ({
-        ...prev,
-        games: prev.games.filter((item) => item.id !== game.id),
-      }));
+      if (firebaseCollection === "games") {
+        setGameStateValue((prev) => ({
+          ...prev,
+          games: prev.games.filter((item) => item.id !== game.id),
+        }));
+      }
       return true;
     } catch (error) {
       console.log("deleteGame error", error);
@@ -272,6 +296,7 @@ const useGames = () => {
   };
 
   return {
+    onUpdateGameRec,
     setGameStateValue,
     onSelectGame,
     gameStateValue,

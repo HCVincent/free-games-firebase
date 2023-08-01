@@ -7,7 +7,11 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-const formTabs = [{ title: "games" }, { title: "users" }];
+const formTabs = [
+  { title: "games" },
+  { title: "recommendations" },
+  { title: "users" },
+];
 
 const AdminHome: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);

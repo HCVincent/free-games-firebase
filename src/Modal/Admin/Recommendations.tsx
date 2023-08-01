@@ -55,21 +55,19 @@ const Add: React.FC<AddProps> = () => {
       const newGame: Game = {
         title: textInputs.title,
         body: textInputs.description,
+        recommend: true,
         createdAt: serverTimestamp() as Timestamp,
         updatedAt: serverTimestamp() as Timestamp,
       };
-      console.log("newGame");
       const gameDocRef = await addDoc(
         collection(firestore, "recommendations"),
         newGame
       );
-      console.log("await addDoc");
       const batch = writeBatch(firestore);
       newGame.id = gameDocRef.id;
       batch.update(gameDocRef, {
         id: gameDocRef.id,
       });
-      console.log("batch.update");
       try {
         const coverImageRef = ref(
           storage,

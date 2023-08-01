@@ -30,7 +30,7 @@ const GamesRead: React.FC<GamesReadProps> = () => {
   const handleOnReadGames = async () => {
     setLoading(true);
     try {
-      await readGames();
+      await readGames("games");
     } catch (error) {
       console.log("handleOnReadGames error", error);
     }

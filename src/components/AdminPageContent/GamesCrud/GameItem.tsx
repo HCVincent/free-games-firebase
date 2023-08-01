@@ -7,19 +7,72 @@ import moment from "moment";
 import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 import default_cover from "../../../../public/default_cover.png";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+  Timestamp,
+  writeBatch,
+} from "firebase/firestore";
+import { firestore } from "@/firebase/clientApp";
 
 type GameItemProps = {
   game: Game;
 };
 
 const GameItem: React.FC<GameItemProps> = ({ game }) => {
+  const { onUpdateGameRec } = useGames();
+  const [recommend, setRecommend] = useState(game.recommend);
+  const [loading, setLoading] = useState(false);
   const { onDeleteGame, onSelectGame, gameStateValue } = useGames();
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [error, setError] = useState("");
   const [imageLoading, setImageLoading] = useState(true);
   const handleDelete = () => {
     setDeleteLoading(true);
-    onDeleteGame(game);
+    onDeleteGame("games", game);
     setDeleteLoading(false);
+  };
+  const handleRecommend = async () => {
+    if (error) {
+      setError("");
+    }
+    setLoading(true);
+    try {
+      const successUpdate = await onUpdateGameRec(
+        "games",
+        game.id!,
+        !recommend
+      );
+      if (recommend) {
+        onDeleteGame("recommendations", game);
+      } else {
+        const newGame: Game = {
+          id: game.id,
+          title: game.title,
+          body: game.body,
+          coverImage: game.coverImage ? game.coverImage : "",
+          video: game.video ? game.video : "",
+          imagesGroup: game.imagesGroup ? game.imagesGroup : [],
+          recommend: true,
+          createdAt: serverTimestamp() as Timestamp,
+          updatedAt: serverTimestamp() as Timestamp,
+        };
+        const docRef = doc(firestore, "recommendations", game.id!);
+        await setDoc(docRef, newGame);
+      }
+      if (!successUpdate) {
+        throw new Error("Failed to update game");
+      } else {
+        setRecommend(!recommend);
+        setLoading(false);
+      }
+    } catch (error: any) {
+      setError(error.message);
+      setLoading(false);
+    }
   };
   return (
     <div className="flex ">
@@ -47,6 +100,15 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
               {moment(new Date(game.createdAt?.seconds * 1000)).fromNow()}
             </span>
           )}
+          <button className="btn text-xs" onClick={() => handleRecommend()}>
+            {loading ? (
+              <span className="loading loading-spinner"></span>
+            ) : recommend ? (
+              "remove from love lists"
+            ) : (
+              "add on rcm games"
+            )}
+          </button>
           <div className="card-actions w-full justify-between ">
             <button
               className="btn"

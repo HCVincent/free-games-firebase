@@ -12,7 +12,7 @@ const ThemeButton: React.FC<ThemeButtonProps> = ({ toggleTheme, theme }) => {
         <input
           type="checkbox"
           checked={theme !== "dark"}
-          onClick={toggleTheme}
+          onChange={toggleTheme}
         />
 
         {/* sun icon */}
@@ -36,7 +36,7 @@ const ThemeButton: React.FC<ThemeButtonProps> = ({ toggleTheme, theme }) => {
       <input
         type="checkbox"
         className="toggle"
-        onClick={toggleTheme}
+        onChange={toggleTheme}
         checked={theme === "dark"}
       />
     </div>

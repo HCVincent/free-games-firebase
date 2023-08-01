@@ -2,26 +2,9 @@ import { Game } from "@/atoms/gamesAtom";
 import ImageUpload from "@/components/AdminPageContent/AddGames/ImageUpload";
 import ImagesGroupUpload from "@/components/AdminPageContent/AddGames/ImagesGroupUpload";
 import VideoUpload from "@/components/AdminPageContent/AddGames/VideoUpload";
-import { firestore, storage } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
 import useSelectFile from "@/hooks/useSelectFile";
-import arrayCompare from "@/utils/arrayCompare";
-import { arrayUnion } from "@firebase/firestore";
-import {
-  Timestamp,
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  writeBatch,
-} from "firebase/firestore";
-import {
-  deleteObject,
-  getDownloadURL,
-  listAll,
-  ref,
-  uploadString,
-} from "firebase/storage";
+import { Timestamp, serverTimestamp } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 
 type GameItemProps = {
@@ -34,7 +17,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [addComplete, setAddComplete] = useState(false);
-  const { gameStateValue, setGameStateValue, onUpdateGame } = useGames();
+  const { onUpdateGame } = useGames();
   const {
     selectedImage,
     setSelectedImage,
@@ -77,6 +60,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
       id: game.id,
       title: textInputs.title,
       body: textInputs.description,
+      recommend: false,
       updatedAt: serverTimestamp() as Timestamp,
       coverImage: selectedImage,
       video: selectedVideo,
@@ -85,7 +69,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
 
     setLoading(true);
     try {
-      const success = await onUpdateGame(game, newGame, uploadImages);
+      const success = await onUpdateGame("games", game, newGame, uploadImages);
       if (!success) {
         throw new Error("Failed to update game");
       } else {

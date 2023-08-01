@@ -13,7 +13,7 @@ const Home: React.FC = () => {
   return (
     <div className="flex w-full items-center">
       <Layout>
-        <div className="flex flex-col w-full lg:w-5/6 border-lime-300 border-2">
+        <div className="flex flex-col w-full lg:w-5/6">
           <GamesRead />
         </div>
       </Layout>
