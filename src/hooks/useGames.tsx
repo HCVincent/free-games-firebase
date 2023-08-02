@@ -27,21 +27,26 @@ import {
   ref,
   uploadString,
 } from "firebase/storage";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const useGames = () => {
+  const router = useRouter();
   const numOfGamesPerPage = 8;
 
   const [lastVisible, setLastVisible] =
     useState<QueryDocumentSnapshot<DocumentData>>();
   const gameStateValue = useRecoilValue(gameState);
   const setGameStateValue = useSetRecoilState(gameState);
-  const onSelectGame = (game: Game) => {
+  const onSelectGame = (game: Game, parameter?: string) => {
     setGameStateValue((prev) => ({
       ...prev,
       selectedGame: game,
     }));
+    if (parameter !== "admin") {
+      router.push(`/games/${game.id}`);
+    }
   };
 
   const readGames = async (firebaseCollection: string, parameter?: string) => {
@@ -237,49 +242,52 @@ const useGames = () => {
     game: Game
   ): Promise<boolean> => {
     try {
-      if (game.coverImage) {
-        const coverImageRef = ref(storage, `games/${game.id}/coverImage`);
+      if (firebaseCollection === "games") {
+        if (game.coverImage) {
+          const coverImageRef = ref(storage, `games/${game.id}/coverImage`);
 
-        listAll(coverImageRef)
-          .then(async (listResults) => {
-            const promises = listResults.items.map((item) => {
-              return deleteObject(item);
+          listAll(coverImageRef)
+            .then(async (listResults) => {
+              const promises = listResults.items.map((item) => {
+                return deleteObject(item);
+              });
+              await Promise.all(promises);
+            })
+            .catch((error) => {
+              console.log("deleteStorageError", error);
             });
-            await Promise.all(promises);
-          })
-          .catch((error) => {
-            console.log("deleteStorageError", error);
-          });
+        }
+
+        if (game.imagesGroup && game.imagesGroup.length > 0) {
+          const imageGroupRef = ref(storage, `games/${game.id}/imagesGroup`);
+
+          listAll(imageGroupRef)
+            .then(async (listResults) => {
+              const promises = listResults.items.map((item) => {
+                return deleteObject(item);
+              });
+              await Promise.all(promises);
+            })
+            .catch((error) => {
+              console.log("deleteStorageError", error);
+            });
+        }
+
+        if (game.video) {
+          const videoRef = ref(storage, `games/${game.id}/video`);
+          listAll(videoRef)
+            .then(async (listResults) => {
+              const promises = listResults.items.map((item) => {
+                return deleteObject(item);
+              });
+              await Promise.all(promises);
+            })
+            .catch((error) => {
+              console.log("deleteStorageError", error);
+            });
+        }
       }
 
-      if (game.imagesGroup && game.imagesGroup.length > 0) {
-        const imageGroupRef = ref(storage, `games/${game.id}/imagesGroup`);
-
-        listAll(imageGroupRef)
-          .then(async (listResults) => {
-            const promises = listResults.items.map((item) => {
-              return deleteObject(item);
-            });
-            await Promise.all(promises);
-          })
-          .catch((error) => {
-            console.log("deleteStorageError", error);
-          });
-      }
-
-      if (game.video) {
-        const videoRef = ref(storage, `games/${game.id}/video`);
-        listAll(videoRef)
-          .then(async (listResults) => {
-            const promises = listResults.items.map((item) => {
-              return deleteObject(item);
-            });
-            await Promise.all(promises);
-          })
-          .catch((error) => {
-            console.log("deleteStorageError", error);
-          });
-      }
       const gameDocRef = doc(firestore, firebaseCollection, game.id!);
       await deleteDoc(gameDocRef);
       if (firebaseCollection === "games") {

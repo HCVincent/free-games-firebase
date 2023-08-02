@@ -1,5 +1,6 @@
 import AuthModal from "@/Modal/Auth/AuthModal";
 import GamesRead from "@/components/AdminPageContent/GamesCrud/GamesRead";
+import RecommendationLists from "@/components/IndexPageContent/Recommendation/RecommendationLists";
 import Layout from "@/components/Layout/Layout";
 import SignOut from "@/components/SignOut/SignOut";
 import { auth } from "@/firebase/clientApp";
@@ -14,7 +15,7 @@ const Home: React.FC = () => {
     <div className="flex w-full items-center">
       <Layout>
         <div className="flex flex-col w-full lg:w-5/6">
-          <GamesRead />
+          <RecommendationLists />
         </div>
       </Layout>
     </div>

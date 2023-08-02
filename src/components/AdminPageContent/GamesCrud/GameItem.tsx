@@ -76,7 +76,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
   };
   return (
     <div className="flex ">
-      <div className="card w-56 bg-base-100 shadow-xl">
+      <div className="card w-56 bg-base-100 shadow-xl ">
         <figure className="h-full">
           <div className="flex w-full h-24 items-start justify-start">
             {imageLoading && (
@@ -93,8 +93,8 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
             />
           </div>
         </figure>
-        <div className="card-body w-full p-2">
-          <h2>{game.title}</h2>
+        <div className="card-body w-full p-2 min-h-[180px] justify-end">
+          <h2 className="text-xs">{game.title}</h2>
           {game.createdAt && (
             <span className="text-xs text-slate-700">
               {moment(new Date(game.createdAt?.seconds * 1000)).fromNow()}
@@ -103,10 +103,14 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
           <button className="btn text-xs" onClick={() => handleRecommend()}>
             {loading ? (
               <span className="loading loading-spinner"></span>
-            ) : recommend ? (
-              "remove from love lists"
             ) : (
-              "add on rcm games"
+              <span
+                className={`text-xs ${
+                  recommend ? "text-red-400 " : "text-green-400"
+                }`}
+              >
+                {`${recommend ? "remove from ll" : "add on rcm games "}`}
+              </span>
             )}
           </button>
           <div className="card-actions w-full justify-between ">
@@ -115,7 +119,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
               //@ts-ignore
               onClick={() => {
                 if (document) {
-                  onSelectGame(game);
+                  onSelectGame(game, "admin");
                   (
                     document.getElementById("my_modal_2") as HTMLFormElement
                   ).showModal();

@@ -6,7 +6,9 @@ export type Game = {
     recommend: boolean;
     gameDocRefId?: string;
     title: string;
+    chineseTitle?: string;
     body: string;
+    chineseBody?: string;
     coverImage?: string;
     video?: string,
     imagesGroup?: string[];

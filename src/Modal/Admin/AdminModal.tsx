@@ -31,7 +31,7 @@ const AdminModal: React.FC<AdminModalProps> = ({
   };
 
   const onSubmit = async () => {
-    await readGames(searchInput);
+    await readGames("games", searchInput);
     setSearchInput("");
   };
 
@@ -101,7 +101,7 @@ const AdminModal: React.FC<AdminModalProps> = ({
             type="search"
             id="default-search"
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none hover:border-gray-800"
-            placeholder="Search Mockups, Logos..."
+            placeholder="Search"
             onChange={(e) => setSearchInput(e.currentTarget.value)}
             value={searchInput}
             required
