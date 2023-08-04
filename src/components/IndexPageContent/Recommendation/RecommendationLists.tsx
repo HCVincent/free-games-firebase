@@ -10,7 +10,8 @@ const RecommendationLists: React.FC<RecommendationListsProps> = () => {
   let next: Query<DocumentData>;
   const { readGames } = useGames();
   const [loading, setLoading] = useState(false);
-  const { onSelectGame, gameStateValue, setGameStateValue } = useGames();
+  const { onSelectGame, gameStateValue, setGameStateValue, onVote } =
+    useGames();
 
   const handleOnReadGames = async () => {
     setLoading(true);
@@ -48,6 +49,11 @@ const RecommendationLists: React.FC<RecommendationListsProps> = () => {
           handleNextSlide={handleNextSlide}
           currentSlide={currentSlide}
           onSelectGame={onSelectGame}
+          onVote={onVote}
+          userVoteValue={
+            gameStateValue.gameVotes.find((vote) => vote.gameId === game.id)
+              ?.voteValue
+          }
         />
       ))}
     </div>

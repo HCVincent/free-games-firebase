@@ -4,6 +4,7 @@ import { atom } from "recoil";
 export type Game = {
     id?: string;
     recommend: boolean;
+    voteStatus: number;
     gameDocRefId?: string;
     title: string;
     chineseTitle?: string;
@@ -16,14 +17,23 @@ export type Game = {
     updatedAt: Timestamp;
 }
 
+
+export type GameVote = {
+    id: string;
+    gameId: string;
+    voteValue: number;
+}
+
 interface GameState {
     selectedGame: Game | null;
     games: Game[];
+    gameVotes: GameVote[];
 }
 
 const defaultGameState: GameState = {
     selectedGame: null,
     games: [],
+    gameVotes: [],
 }
 
 export const gameState = atom<GameState>({

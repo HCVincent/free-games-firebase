@@ -56,6 +56,7 @@ const Add: React.FC<AddProps> = () => {
         title: textInputs.title,
         body: textInputs.description,
         recommend: true,
+        voteStatus: 0,
         createdAt: serverTimestamp() as Timestamp,
         updatedAt: serverTimestamp() as Timestamp,
       };

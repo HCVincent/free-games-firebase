@@ -1,14 +1,6 @@
-import AuthModal from "@/Modal/Auth/AuthModal";
-import GamesRead from "@/components/AdminPageContent/GamesCrud/GamesRead";
 import RecommendationLists from "@/components/IndexPageContent/Recommendation/RecommendationLists";
 import Layout from "@/components/Layout/Layout";
-import SignOut from "@/components/SignOut/SignOut";
-import { auth } from "@/firebase/clientApp";
-import { deleteCookie, setCookie } from "cookies-next";
-import { GetServerSidePropsContext } from "next";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React from "react";
 
 const Home: React.FC = () => {
   return (

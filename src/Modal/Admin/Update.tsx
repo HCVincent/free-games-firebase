@@ -60,6 +60,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
       id: game.id,
       title: textInputs.title,
       body: textInputs.description,
+      voteStatus: game.voteStatus,
       recommend: false,
       updatedAt: serverTimestamp() as Timestamp,
       coverImage: selectedImage,

@@ -1,5 +1,6 @@
-import { Game, gameState } from "@/atoms/gamesAtom";
-import { firestore, storage } from "@/firebase/clientApp";
+import { authModalState } from "@/atoms/authModalAtom";
+import { Game, GameVote, gameState } from "@/atoms/gamesAtom";
+import { auth, firestore, storage } from "@/firebase/clientApp";
 import arrayCompare from "@/utils/arrayCompare";
 import {
   DocumentData,
@@ -28,13 +29,15 @@ import {
   uploadString,
 } from "firebase/storage";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const useGames = () => {
   const router = useRouter();
   const numOfGamesPerPage = 8;
-
+  const [user] = useAuthState(auth);
+  const setAuthModalState = useSetRecoilState(authModalState);
   const [lastVisible, setLastVisible] =
     useState<QueryDocumentSnapshot<DocumentData>>();
   const gameStateValue = useRecoilValue(gameState);
@@ -303,6 +306,127 @@ const useGames = () => {
     }
   };
 
+  const onVote = async (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    game: Game,
+    vote: number
+  ): Promise<boolean> => {
+    event.stopPropagation();
+    if (!user?.uid) {
+      setAuthModalState({ open: true, view: "login" });
+      return false;
+    }
+    try {
+      let { voteStatus } = game;
+      voteStatus = voteStatus ? voteStatus : 0;
+      const existingVote = gameStateValue.gameVotes.find(
+        (vote) => vote.gameId === game.id
+      );
+      const batch = writeBatch(firestore);
+      const updatedGame = { ...game };
+      const updatedGames = [...gameStateValue.games];
+      let updatedGamesVotes = [...gameStateValue.gameVotes];
+      let voteChange = vote;
+      if (!existingVote) {
+        const gameVoteRef = doc(
+          collection(firestore, "users", `${user?.uid}/gameVotes`)
+        );
+        const newVote: GameVote = {
+          id: gameVoteRef.id,
+          gameId: game.id!,
+          voteValue: vote,
+        };
+        batch.set(gameVoteRef, newVote);
+        updatedGame.voteStatus = voteStatus + vote;
+        updatedGamesVotes = [...updatedGamesVotes, newVote];
+      } else {
+        const gameVoteRef = doc(
+          firestore,
+          "users",
+          `${user?.uid}/gameVotes/${existingVote.id}`
+        );
+        if (existingVote.voteValue === vote) {
+          updatedGame.voteStatus = voteStatus - vote;
+          updatedGamesVotes = updatedGamesVotes.filter(
+            (vote) => vote.id !== existingVote.id
+          );
+
+          batch.delete(gameVoteRef);
+          voteChange *= -1;
+        } else {
+          updatedGame.voteStatus = voteStatus + 2 * vote;
+          const voteIdx = gameStateValue.gameVotes.findIndex(
+            (vote) => vote.id === existingVote.id
+          );
+          updatedGamesVotes[voteIdx] = {
+            ...existingVote,
+            voteValue: vote,
+          };
+
+          batch.update(gameVoteRef, {
+            voteValue: vote,
+          });
+
+          voteChange = 2 * vote;
+        }
+      }
+      const gameIdx = gameStateValue.games.findIndex(
+        (item) => item.id === game.id
+      );
+      updatedGames[gameIdx] = updatedGame;
+      setGameStateValue((prev) => ({
+        ...prev,
+        games: updatedGames,
+        gameVotes: updatedGamesVotes,
+      }));
+      if (gameStateValue.selectedGame) {
+        setGameStateValue((prev) => ({
+          ...prev,
+          selectedGame: updatedGame,
+        }));
+      }
+      const gameRef = doc(firestore, "games", game.id!);
+      batch.update(gameRef, {
+        voteStatus: voteStatus + voteChange,
+      });
+      await batch.commit();
+      return true;
+    } catch (error) {
+      console.log("onVote error", error);
+      return false;
+    }
+  };
+
+  const getGameVotes = async () => {
+    const gameVotesQuery = query(
+      collection(firestore, "users", `${user?.uid}/gameVotes`)
+    );
+
+    const gameVoteDocs = await getDocs(gameVotesQuery);
+    const gameVotes = gameVoteDocs.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setGameStateValue((prev) => ({
+      ...prev,
+      gameVotes: gameVotes as GameVote[],
+    }));
+  };
+
+  useEffect(() => {
+    if (!user) return;
+    getGameVotes();
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) {
+      setGameStateValue((prev) => ({
+        ...prev,
+        gameVotes: [],
+      }));
+    }
+  }, [user]);
+
   return {
     onUpdateGameRec,
     setGameStateValue,
@@ -314,6 +438,7 @@ const useGames = () => {
     setLastVisible,
     readGames,
     numOfGamesPerPage,
+    onVote,
   };
 };
 export default useGames;
