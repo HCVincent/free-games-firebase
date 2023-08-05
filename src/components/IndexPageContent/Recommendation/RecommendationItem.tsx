@@ -2,7 +2,7 @@ import { Game } from "@/atoms/gamesAtom";
 import React, { useState } from "react";
 import Image from "next/image";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-
+import moment from "moment";
 type RecommendationItemProps = {
   game: Game;
   index: number;
@@ -84,9 +84,15 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
         </a>
       </div>
       <div className="flex flex-1 h-full items-center justify-between">
-        <span className="text-2xl p-2 text-white max-w-2xl line-clamp-1 lg:text-4xl">
-          {game.title}
-        </span>
+        <div className="flex items-end p-2">
+          <span className="text-2xl  text-white max-w-2xl line-clamp-1 lg:text-4xl">
+            {game.title}
+          </span>
+          <span className="ml-2">
+            {game.createdAt &&
+              moment(new Date(game.createdAt.seconds * 1000)).fromNow()}
+          </span>
+        </div>
         <div className="flex w-[240px] h-full justify-between align-middle p-5 text-xl">
           <div className="flex flex-1 justify-between px-2 items-center">
             {loadingUpVote ? (
