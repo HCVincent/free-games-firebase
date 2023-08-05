@@ -1,6 +1,7 @@
 import { Game } from "@/atoms/gamesAtom";
 import React, { useState } from "react";
 import Image from "next/image";
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 
 type RecommendationItemProps = {
   game: Game;
@@ -27,6 +28,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
   onVote,
   userVoteValue,
 }) => {
+  const [like, setLike] = useState(false);
   const [loadingUpVote, setLoadingUpVote] = useState(false);
   const [loadingDownVote, setLoadingDownVote] = useState(false);
   const [error, setError] = useState(false);
@@ -81,12 +83,12 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
           ❯
         </a>
       </div>
-      <div className="flex flex-1 items-center justify-between">
+      <div className="flex flex-1 h-full items-center justify-between">
         <span className="text-2xl p-2 text-white max-w-2xl line-clamp-1 lg:text-4xl">
           {game.title}
         </span>
-        <div className="flex w-[300px] justify-between align-middle p-5">
-          <div className="flex flex-1 justify-between px-2">
+        <div className="flex w-[240px] h-full justify-between align-middle p-5 text-xl">
+          <div className="flex flex-1 justify-between px-2 items-center">
             {loadingUpVote ? (
               <span className="flex loading loading-spinner"></span>
             ) : (
@@ -134,7 +136,12 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
               </svg>
             )}
           </div>
-          <div className="flex-1">2</div>
+          <button
+            className="flex flex-1 text-red-600 justify-center items-center"
+            onClick={() => setLike(!like)}
+          >
+            {like ? <FaHeart /> : <FaRegHeart />}
+          </button>
           <div className="flex-none w-5 h-5">3</div>
         </div>
       </div>
