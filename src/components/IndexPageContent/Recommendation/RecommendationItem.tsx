@@ -2,6 +2,7 @@ import { Game } from "@/atoms/gamesAtom";
 import React, { useState } from "react";
 import Image from "next/image";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
+import { AiOutlineDownload } from "react-icons/ai";
 import moment from "moment";
 type RecommendationItemProps = {
   game: Game;
@@ -143,12 +144,14 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
             )}
           </div>
           <button
-            className="flex flex-1 text-red-600 justify-center items-center"
+            className="flex flex-1 text-white justify-center items-center"
             onClick={() => setLike(!like)}
           >
             {like ? <FaHeart /> : <FaRegHeart />}
           </button>
-          <div className="flex-none w-5 h-5">3</div>
+          <div className="flex flex-none w-5 align-middle items-center text-white">
+            <AiOutlineDownload />
+          </div>
         </div>
       </div>
     </div>
