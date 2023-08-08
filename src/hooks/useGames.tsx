@@ -118,6 +118,7 @@ const useGames = () => {
       batch.update(gameDocRef, {
         title: newGame.title,
         body: newGame.body,
+        address: newGame.address,
         updatedAt: newGame.updatedAt,
       });
 

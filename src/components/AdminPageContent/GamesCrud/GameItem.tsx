@@ -52,6 +52,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
         const newGame: Game = {
           id: game.id,
           title: game.title,
+          address: game.address ? game.address : "",
           body: game.body,
           voteStatus: game.voteStatus ? game.voteStatus : 0,
           coverImage: game.coverImage ? game.coverImage : "",
