@@ -386,7 +386,11 @@ const useGames = () => {
         }));
       }
       const gameRef = doc(firestore, "games", game.id!);
+      const recRef = doc(firestore, "recommendations", game.id!);
       batch.update(gameRef, {
+        voteStatus: voteStatus + voteChange,
+      });
+      batch.update(recRef, {
         voteStatus: voteStatus + voteChange,
       });
       await batch.commit();

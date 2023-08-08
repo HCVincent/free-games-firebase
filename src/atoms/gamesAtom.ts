@@ -10,6 +10,7 @@ export type Game = {
     chineseTitle?: string;
     body: string;
     chineseBody?: string;
+    address?: string;
     coverImage?: string;
     video?: string,
     imagesGroup?: string[];

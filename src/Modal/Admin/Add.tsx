@@ -37,6 +37,7 @@ const Add: React.FC<AddProps> = () => {
   const [textInputs, setTextInputs] = useState({
     title: "",
     description: "",
+    address: "",
   });
   const handleShowComplete = () => {
     setAddComplete(true);
@@ -55,6 +56,7 @@ const Add: React.FC<AddProps> = () => {
       const newGame: Game = {
         title: textInputs.title,
         body: textInputs.description,
+        address: textInputs.address,
         recommend: false,
         voteStatus: 0,
         createdAt: serverTimestamp() as Timestamp,
@@ -114,7 +116,7 @@ const Add: React.FC<AddProps> = () => {
         games: [newGame, ...prev.games],
       }));
       handleShowComplete();
-      setTextInputs({ title: "", description: "" });
+      setTextInputs({ title: "", description: "", address: "" });
       setSelectedImage("");
       setSelectedVideo("");
       setSelectedImagesGroup([]);
@@ -156,6 +158,13 @@ const Add: React.FC<AddProps> = () => {
           className="input input-bordered h-60 mt-4"
           onChange={onChange}
           value={textInputs.description}
+        />{" "}
+        <textarea
+          name="address"
+          placeholder="address"
+          className="input input-bordered h-60 mt-4"
+          onChange={onChange}
+          value={textInputs.address}
         />
       </div>
       <ImageUpload

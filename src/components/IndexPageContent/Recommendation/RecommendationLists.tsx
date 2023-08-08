@@ -16,7 +16,7 @@ const RecommendationLists: React.FC<RecommendationListsProps> = () => {
   const handleOnReadGames = async () => {
     setLoading(true);
     try {
-      await readGames("games");
+      await readGames("recommendations");
     } catch (error) {
       console.log("handleOnReadGames error", error);
     }

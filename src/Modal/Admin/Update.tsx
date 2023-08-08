@@ -35,6 +35,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
     setTextInputs({
       title: game.title,
       description: game.body,
+      address: game.address,
     });
     if (game.coverImage) setSelectedImage(game.coverImage);
     if (game.video) setSelectedVideo(game.video);
@@ -44,6 +45,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
   const [textInputs, setTextInputs] = useState({
     title: game.title,
     description: game.body,
+    address: game.address,
   });
   const handleShowComplete = () => {
     setAddComplete(true);
@@ -60,6 +62,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
       id: game.id,
       title: textInputs.title,
       body: textInputs.description,
+      address: textInputs.address,
       voteStatus: game.voteStatus,
       recommend: false,
       updatedAt: serverTimestamp() as Timestamp,
@@ -114,6 +117,14 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
           className="input input-bordered h-60 mt-4"
           onChange={onChange}
           value={textInputs.description}
+        />{" "}
+        <textarea
+          required
+          name="address"
+          placeholder="address"
+          className="input input-bordered h-60 mt-4"
+          onChange={onChange}
+          value={textInputs.address}
         />
       </div>
       <div className="form-control">
