@@ -159,10 +159,10 @@ const Add: React.FC<AddProps> = () => {
           onChange={onChange}
           value={textInputs.description}
         />{" "}
-        <textarea
+        <input
           name="address"
           placeholder="address"
-          className="input input-bordered h-60 mt-4"
+          className="input input-bordered"
           onChange={onChange}
           value={textInputs.address}
         />

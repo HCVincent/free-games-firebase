@@ -94,7 +94,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
               moment(new Date(game.createdAt.seconds * 1000)).fromNow()}
           </span>
         </div>
-        <div className="flex w-[240px] h-full justify-between align-middle p-5 text-xl">
+        <div className="flex w-[240px] h-full justify-between align-middle p-2 text-xl">
           <div className="flex flex-1 justify-between px-2 items-center">
             {loadingUpVote ? (
               <span className="flex loading loading-spinner"></span>
@@ -144,13 +144,17 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
             )}
           </div>
           <button
-            className="flex flex-1 text-white justify-center items-center"
+            className="flex flex-1 text-white justify-center items-center hover:bg-slate-800 hover:rounded"
             onClick={() => setLike(!like)}
           >
             {like ? <FaHeart /> : <FaRegHeart />}
           </button>
-          <div className="flex flex-none w-5 align-middle items-center text-white">
-            <AiOutlineDownload />
+          <div className="flex flex-1 w-5 align-middle items-center justify-center text-white cursor-pointer hover:bg-slate-800 hover:rounded">
+            {game.address && (
+              <a href={game.address}>
+                <AiOutlineDownload />
+              </a>
+            )}
           </div>
         </div>
       </div>

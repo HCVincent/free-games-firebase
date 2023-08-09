@@ -118,11 +118,11 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
           onChange={onChange}
           value={textInputs.description}
         />{" "}
-        <textarea
+        <input
           required
           name="address"
           placeholder="address"
-          className="input input-bordered h-60 mt-4"
+          className="input input-bordered"
           onChange={onChange}
           value={textInputs.address}
         />

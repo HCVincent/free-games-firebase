@@ -1,6 +1,7 @@
 import { useRecoilState } from "recoil";
 import AuthInputs from "./AuthInputs";
 import { authModalState } from "@/atoms/authModalAtom";
+import OAuthButtons from "./OAuthButtons";
 
 const AuthModal: React.FC = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
@@ -44,6 +45,7 @@ const AuthModal: React.FC = () => {
             </label>
 
             <AuthInputs />
+            <OAuthButtons />
           </div>
         </div>
         <label className="modal-backdrop" htmlFor="my_modal_auth">
