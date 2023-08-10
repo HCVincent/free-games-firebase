@@ -82,7 +82,7 @@ const SignUp = () => {
           </p>
         )}
         <div className="flex justify-end mt-4">
-          <button className="btn " type="submit">
+          <button className="btn btn-primary" type="submit">
             {loading ? (
               <span className="loading loading-spinner"></span>
             ) : (

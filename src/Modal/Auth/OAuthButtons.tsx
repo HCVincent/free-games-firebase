@@ -14,10 +14,7 @@ const OAuthButtons: React.FC = () => {
       {googleLoading ? (
         <span className="loading loading-spinner"></span>
       ) : (
-        <button
-          className="btn btn-primary mt-2 "
-          onClick={() => signInWithGoogle()}
-        >
+        <button className="btn mt-2 " onClick={() => signInWithGoogle()}>
           <img
             src="/googlelogo.png"
             alt="OAuthGoogle"

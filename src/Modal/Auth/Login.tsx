@@ -36,7 +36,6 @@ const Login: React.FC = () => {
         if (!!idTokenResult.claims.admin) {
           // Show admin UI.
           setCookie("isAdmin", "true");
-          route.push("/admin");
         } else {
           deleteCookie("isAdmin");
         }
@@ -77,7 +76,7 @@ const Login: React.FC = () => {
           />
         </div>
         <div className="flex justify-end">
-          <button className="btn  mt-8" type="submit">
+          <button className="btn btn-primary mt-8" type="submit">
             {loading ? (
               <span className="loading loading-spinner"></span>
             ) : (

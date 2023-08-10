@@ -9,12 +9,14 @@ const AuthModal: React.FC = () => {
   const handleLogin = () => {
     setModalState((prev) => ({
       ...prev,
+      open: true,
       view: "login",
     }));
   };
   const handleSignUp = () => {
     setModalState((prev) => ({
       ...prev,
+      open: true,
       view: "signup",
     }));
   };
@@ -35,7 +37,12 @@ const AuthModal: React.FC = () => {
         Sign up
       </label>
       {/* Put this part before </body> tag */}
-      <input type="checkbox" id="my_modal_auth" className="modal-toggle" />
+      <input
+        type="checkbox"
+        id="my_modal_auth"
+        className="modal-toggle"
+        checked={modalState.open}
+      />
       <div className="modal">
         <div className="modal-box">
           <div className="flex flex-col w-full justify-start items-start bg-base-100">
@@ -48,7 +55,16 @@ const AuthModal: React.FC = () => {
             <OAuthButtons />
           </div>
         </div>
-        <label className="modal-backdrop" htmlFor="my_modal_auth">
+        <label
+          className="modal-backdrop"
+          htmlFor="my_modal_auth"
+          onClick={() =>
+            setModalState((prev) => ({
+              ...prev,
+              open: false,
+            }))
+          }
+        >
           Close
         </label>
       </div>
