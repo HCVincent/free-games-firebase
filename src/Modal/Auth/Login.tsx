@@ -76,17 +76,19 @@ const Login: React.FC = () => {
             onChange={onChange}
           />
         </div>
-        <button className="btn btn-primary mt-8" type="submit">
-          {loading ? (
-            <span className="loading loading-spinner"></span>
-          ) : (
-            "Login"
-          )}
-        </button>
+        <div className="flex justify-end">
+          <button className="btn  mt-8" type="submit">
+            {loading ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              "Login"
+            )}
+          </button>
+        </div>
       </form>
       {error ||
         FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
-      <div className="flex">
+      <div className="flex justify-end w-full">
         <p>new here?</p>
         <p
           className="text-red-500"

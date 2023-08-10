@@ -317,6 +317,9 @@ const useGames = () => {
       setAuthModalState({ open: true, view: "login" });
       return false;
     }
+    // if(!user?.emailVerified) {
+
+    // }
     try {
       let { voteStatus } = game;
       voteStatus = voteStatus ? voteStatus : 0;

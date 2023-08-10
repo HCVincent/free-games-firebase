@@ -1,12 +1,18 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
 import { FIREBASE_ERRORS } from "@/firebase/errors";
+import { sendEmailVerification } from "firebase/auth";
 import React, { useState } from "react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import {
+  useAuthState,
+  useCreateUserWithEmailAndPassword,
+  useSendEmailVerification,
+} from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
 
 const SignUp = () => {
   const [error, setError] = useState("");
+  const [user] = useAuthState(auth);
   const setAuthModalState = useSetRecoilState(authModalState);
   const [signUpForm, setSignUpForm] = useState({
     email: "",
@@ -14,15 +20,13 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
+  const options = {
+    sendEmailVerification: true,
+  };
   const [createUserWithEmailAndPassword, userCred, loading, userError] =
-    useCreateUserWithEmailAndPassword(auth);
+    useCreateUserWithEmailAndPassword(auth, options);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log(
-      "auth.currentUser?.getIdTokenResult()",
-      auth.currentUser?.getIdTokenResult()
-    );
-
     event.preventDefault();
     if (error) setError("");
     if (signUpForm.password != signUpForm.confirmPassword) {
@@ -31,15 +35,6 @@ const SignUp = () => {
     }
     createUserWithEmailAndPassword(signUpForm.email, signUpForm.password);
   };
-
-  // const onVerify = async (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault();
-  //   const success = await sendEmailVerification();
-  //   if (success) {
-  //     alert("Sent email");
-  //     setVerify(true);
-  //   }
-  // };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSignUpForm((prev) => ({
@@ -86,22 +81,18 @@ const SignUp = () => {
               ]}
           </p>
         )}
-        <button className="btn btn-primary" type="submit">
-          {loading ? (
-            <span className="loading loading-spinner"></span>
-          ) : (
-            "Sign up"
-          )}
-        </button>
-        {/* <button className="btn btn-primary" onClick={onVerify}>
-          Verify email
-        </button>
-        {verifyEmailError && (
-          <p className="text-red-600 text-sm">verifyEmailError</p>
-        )} */}
+        <div className="flex justify-end mt-4">
+          <button className="btn " type="submit">
+            {loading ? (
+              <span className="loading loading-spinner"></span>
+            ) : (
+              "Sign up"
+            )}
+          </button>
+        </div>
       </form>
 
-      <div className="flex">
+      <div className="flex justify-end w-full">
         <p>new here?</p>
         <p
           className="text-red-500"
