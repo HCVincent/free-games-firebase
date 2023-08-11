@@ -68,28 +68,14 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
           onSelectGame(game);
         }}
       />
-      <div className="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-        <a
-          onClick={handlePrevSlide}
-          href={`#slide${currentSlide}`}
-          className="btn btn-circle"
-        >
-          ❮
-        </a>
-        <a
-          onClick={handleNextSlide}
-          href={`#slide${currentSlide}`}
-          className="btn btn-circle"
-        >
-          ❯
-        </a>
-      </div>
-      <div className="flex flex-1 h-full items-center justify-between">
+
+      <div className="flex flex-1 h-full items-center justify-between p-2">
         <div className="flex items-end p-2">
           <span className="text-2xl  text-white max-w-2xl line-clamp-1 lg:text-4xl">
             {game.title}
           </span>
           <span className="ml-2">
+            updated at{" "}
             {game.createdAt &&
               moment(new Date(game.createdAt.seconds * 1000)).fromNow()}
           </span>
@@ -105,7 +91,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className={`flex w-6 h-6 ${
+                className={`flex w-12 h-12 ${
                   userVoteValue === 1 ? "text-blue-500" : "text-gray-500"
                 } cursor-pointer`}
                 onClick={(event) => handleVote(event, 1)}
@@ -118,7 +104,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
               </svg>
             )}
 
-            <span className="flex">
+            <span className="flex text-4xl p-4">
               {game.voteStatus ? game.voteStatus : 0}
             </span>
             {loadingDownVote ? (
@@ -130,7 +116,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className={`flex w-6 h-6 ${
+                className={`flex w-12 h-12 ${
                   userVoteValue === -1 ? "text-red-500" : "text-gray-500"
                 } cursor-pointer`}
                 onClick={(event) => handleVote(event, -1)}
@@ -147,12 +133,16 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
             className="flex flex-1 text-white justify-center items-center hover:bg-slate-800 hover:rounded"
             onClick={() => setLike(!like)}
           >
-            {like ? <FaHeart /> : <FaRegHeart />}
+            {like ? (
+              <FaHeart className="w-12 h-12" />
+            ) : (
+              <FaRegHeart className="w-12 h-12" />
+            )}
           </button>
-          <div className="flex flex-1 w-5 align-middle items-center justify-center text-white cursor-pointer hover:bg-slate-800 hover:rounded">
+          <div className="flex flex-1  align-middle items-center justify-center text-white cursor-pointer hover:bg-slate-800 hover:rounded">
             {game.address && (
               <a href={game.address}>
-                <AiOutlineDownload />
+                <AiOutlineDownload className="w-12 h-12" />
               </a>
             )}
           </div>
