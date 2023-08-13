@@ -12,8 +12,7 @@ type PropType = {
 
 const EmblaCarousel: React.FC<PropType> = (props) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const { onSelectGame, gameStateValue, setGameStateValue, onVote } =
-    useGames();
+  const { onSelectGame, gameStateValue, onVote, onCollect } = useGames();
   const handlePrevSlide = () => {};
 
   const handleNextSlide = () => {};
@@ -34,6 +33,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
               currentSlide={currentSlide}
               onSelectGame={onSelectGame}
               onVote={onVote}
+              onCollect={onCollect}
               userVoteValue={
                 gameStateValue.gameVotes.find((vote) => vote.gameId === game.id)
                   ?.voteValue

@@ -1,5 +1,5 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import { Game, GameVote, gameState } from "@/atoms/gamesAtom";
+import { Game, GameCollection, GameVote, gameState } from "@/atoms/gamesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import arrayCompare from "@/utils/arrayCompare";
 import {
@@ -405,6 +405,63 @@ const useGames = () => {
     }
   };
 
+  const onCollect = async (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    game: Game
+  ): Promise<boolean> => {
+    event.stopPropagation();
+    if (!user?.uid) {
+      setAuthModalState({ open: true, view: "login" });
+      return false;
+    }
+    // if(!user?.emailVerified) {
+
+    // }
+    try {
+      const existingCollect = gameStateValue.gameCollections.find(
+        (collect) => collect.gameId === game.id
+      );
+      const batch = writeBatch(firestore);
+      const updatedGames = [...gameStateValue.games];
+      let updatedGamesCollections = [...gameStateValue.gameCollections];
+      if (!existingCollect) {
+        const gameCollectionRef = doc(
+          collection(firestore, "users", `${user?.uid}/gameCollections`)
+        );
+        const newCollection: GameCollection = {
+          id: gameCollectionRef.id,
+          gameId: game.id!,
+        };
+        batch.set(gameCollectionRef, newCollection);
+        updatedGamesCollections = [...updatedGamesCollections, newCollection];
+      } else {
+        const gameCollectionRef = doc(
+          firestore,
+          "users",
+          `${user?.uid}/gameCollections/${existingCollect.id}`
+        );
+        updatedGamesCollections = updatedGamesCollections.filter(
+          (collect) => collect.id !== existingCollect.id
+        );
+        batch.delete(gameCollectionRef);
+      }
+      const gameIdx = gameStateValue.games.findIndex(
+        (item) => item.id === game.id
+      );
+      setGameStateValue((prev) => ({
+        ...prev,
+        games: updatedGames,
+        gameCollections: updatedGamesCollections,
+      }));
+
+      await batch.commit();
+      return true;
+    } catch (error) {
+      console.log("onVote error", error);
+      return false;
+    }
+  };
+
   const getGameVotes = async () => {
     const gameVotesQuery = query(
       collection(firestore, "users", `${user?.uid}/gameVotes`)
@@ -447,6 +504,7 @@ const useGames = () => {
     readGames,
     numOfGamesPerPage,
     onVote,
+    onCollect,
   };
 };
 export default useGames;

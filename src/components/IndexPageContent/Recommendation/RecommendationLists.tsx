@@ -12,8 +12,7 @@ const RecommendationLists: React.FC<RecommendationListsProps> = () => {
 
   let next: Query<DocumentData>;
   const [loading, setLoading] = useState(false);
-  const { onSelectGame, gameStateValue, setGameStateValue, onVote } =
-    useGames();
+  const { gameStateValue } = useGames();
 
   const handleOnReadGames = async () => {
     setLoading(true);

@@ -25,16 +25,23 @@ export type GameVote = {
     voteValue: number;
 }
 
+export type GameCollection = {
+    id: string;
+    gameId: string;
+}
+
 interface GameState {
     selectedGame: Game | null;
     games: Game[];
     gameVotes: GameVote[];
+    gameCollections: GameCollection[];
 }
 
 const defaultGameState: GameState = {
     selectedGame: null,
     games: [],
     gameVotes: [],
+    gameCollections: [],
 }
 
 export const gameState = atom<GameState>({

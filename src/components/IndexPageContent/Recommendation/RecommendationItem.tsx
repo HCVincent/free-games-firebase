@@ -16,6 +16,10 @@ type RecommendationItemProps = {
     post: Game,
     vote: number
   ) => Promise<boolean>;
+  onCollect: (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    post: Game
+  ) => Promise<boolean>;
   userVoteValue?: number;
 };
 
@@ -27,6 +31,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
   currentSlide,
   onSelectGame,
   onVote,
+  onCollect,
   userVoteValue,
 }) => {
   const [like, setLike] = useState(false);
@@ -69,9 +74,9 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
         }}
       />
 
-      <div className="flex flex-1 h-full items-center justify-between p-2">
+      <div className="flex flex-1 h-full items-center justify-between px-8">
         <div className="flex items-end p-2">
-          <span className="text-2xl  text-white max-w-2xl line-clamp-1 lg:text-4xl">
+          <span className="text-xl  text-white max-w-2xl line-clamp-1 lg:text-4xl">
             {game.title}
           </span>
           <span className="ml-2">
@@ -134,7 +139,10 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
             onClick={() => setLike(!like)}
           >
             {like ? (
-              <FaHeart className="w-12 h-12" />
+              <FaHeart
+                className="w-12 h-12"
+                onClick={(e) => onCollect(e, game)}
+              />
             ) : (
               <FaRegHeart className="w-12 h-12" />
             )}
