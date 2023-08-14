@@ -21,6 +21,7 @@ type RecommendationItemProps = {
     post: Game
   ) => Promise<boolean>;
   userVoteValue?: number;
+  userCollectionValue?: string;
 };
 
 const RecommendationItem: React.FC<RecommendationItemProps> = ({
@@ -33,6 +34,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
   onVote,
   onCollect,
   userVoteValue,
+  userCollectionValue,
 }) => {
   const [like, setLike] = useState(false);
   const [loadingUpVote, setLoadingUpVote] = useState(false);
@@ -55,6 +57,8 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
     setLoadingUpVote(false);
     setLoadingDownVote(false);
   };
+  console.log("userCollectionValue", userCollectionValue);
+  console.log("game.id", game.id);
   return (
     <div
       id={`slide${index}`}
@@ -138,13 +142,16 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
             className="flex flex-1 text-white justify-center items-center hover:bg-slate-800 hover:rounded"
             onClick={() => setLike(!like)}
           >
-            {like ? (
+            {userCollectionValue === game.id ? (
               <FaHeart
                 className="w-12 h-12"
                 onClick={(e) => onCollect(e, game)}
               />
             ) : (
-              <FaRegHeart className="w-12 h-12" />
+              <FaRegHeart
+                className="w-12 h-12"
+                onClick={(e) => onCollect(e, game)}
+              />
             )}
           </button>
           <div className="flex flex-1  align-middle items-center justify-center text-white cursor-pointer hover:bg-slate-800 hover:rounded">

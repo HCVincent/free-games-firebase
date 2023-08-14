@@ -18,7 +18,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
   const handleNextSlide = () => {};
   const { slides, options } = props;
   const [emblaRef] = useEmblaCarousel(options, [Autoplay()]);
-
+  console.log("gameStateValue.gameCollections", gameStateValue.gameCollections);
   return (
     <div className="embla">
       <div className="embla__viewport" ref={emblaRef}>
@@ -37,6 +37,11 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
               userVoteValue={
                 gameStateValue.gameVotes.find((vote) => vote.gameId === game.id)
                   ?.voteValue
+              }
+              userCollectionValue={
+                gameStateValue.gameCollections.find(
+                  (collection) => collection.gameId === game.id
+                )?.gameId
               }
             />
           ))}

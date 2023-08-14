@@ -478,9 +478,26 @@ const useGames = () => {
     }));
   };
 
+  const getGameCollections = async () => {
+    const gameCollectionsQuery = query(
+      collection(firestore, "users", `${user?.uid}/gameCollections`)
+    );
+
+    const gameCollectionDocs = await getDocs(gameCollectionsQuery);
+    const gameCollections = gameCollectionDocs.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setGameStateValue((prev) => ({
+      ...prev,
+      gameCollections: gameCollections as GameCollection[],
+    }));
+  };
+
   useEffect(() => {
     if (!user) return;
     getGameVotes();
+    getGameCollections();
   }, [user]);
 
   useEffect(() => {
@@ -488,6 +505,7 @@ const useGames = () => {
       setGameStateValue((prev) => ({
         ...prev,
         gameVotes: [],
+        gameCollections: [],
       }));
     }
   }, [user]);
