@@ -42,6 +42,7 @@ const AuthModal: React.FC = () => {
         id="my_modal_auth"
         className="modal-toggle"
         checked={modalState.open}
+        onChange={() => {}}
       />
       <div className="modal">
         <div className="modal-box">

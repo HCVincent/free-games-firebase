@@ -77,7 +77,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
     }
   };
   return (
-    <div className="flex ">
+    <div className="flex justify-center">
       <div className="card w-56 bg-base-100 shadow-xl ">
         <figure className="h-full">
           <div className="flex w-full h-24 items-start justify-start">
@@ -95,7 +95,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
             />
           </div>
         </figure>
-        <div className="card-body w-full p-2 min-h-[180px] justify-end">
+        <div className="card-body w-full p-2   ">
           <h2 className="text-xs">{game.title}</h2>
           {game.createdAt && (
             <span className="text-xs text-slate-700">

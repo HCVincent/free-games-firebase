@@ -57,8 +57,6 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
     setLoadingUpVote(false);
     setLoadingDownVote(false);
   };
-  console.log("userCollectionValue", userCollectionValue);
-  console.log("game.id", game.id);
   return (
     <div
       id={`slide${index}`}

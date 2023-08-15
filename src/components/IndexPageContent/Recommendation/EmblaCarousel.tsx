@@ -17,8 +17,9 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
 
   const handleNextSlide = () => {};
   const { slides, options } = props;
-  const [emblaRef] = useEmblaCarousel(options, [Autoplay()]);
-  console.log("gameStateValue.gameCollections", gameStateValue.gameCollections);
+  const [emblaRef] = useEmblaCarousel(options, [
+    Autoplay({ stopOnInteraction: false }),
+  ]);
   return (
     <div className="embla">
       <div className="embla__viewport" ref={emblaRef}>

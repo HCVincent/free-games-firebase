@@ -7,7 +7,7 @@ type ThemeButtonProps = {
 
 const ThemeButton: React.FC<ThemeButtonProps> = ({ toggleTheme, theme }) => {
   return (
-    <div className="lg:flex lg:items-center px-4">
+    <div className="lg:flex lg:items-center">
       <label className="swap swap-rotate">
         <input
           type="checkbox"
