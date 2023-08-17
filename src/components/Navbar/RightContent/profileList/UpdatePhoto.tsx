@@ -13,22 +13,24 @@ const UpdatePhoto: React.FC<UpdatePhotoProps> = ({ user, setUserPhoto }) => {
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const { onSelectImage, selectedImage } = useSelectFile();
   const handleUpdatePhoto = async () => {
-    if (selectedImage) {
-      console.log("selectedImage", selectedImage);
-      const photoURLRef = ref(storage, `users/${user.uid}/photoURL`);
-      await uploadString(photoURLRef, selectedImage as string, "data_url");
-      const downloadURL = await getDownloadURL(photoURLRef);
-
-      updateProfile(user, {
-        photoURL: downloadURL,
-      })
-        .then(() => {
-          setUserPhoto(downloadURL);
+    try {
+      if (selectedImage) {
+        const photoURLRef = ref(storage, `users/${user.uid}/photoURL`);
+        await uploadString(photoURLRef, selectedImage as string, "data_url");
+        const downloadURL = await getDownloadURL(photoURLRef);
+        updateProfile(user, {
+          photoURL: downloadURL,
         })
-        .catch((error) => {
-          // An error occurred
-          // ...
-        });
+          .then(() => {
+            setUserPhoto(downloadURL);
+          })
+          .catch((error) => {
+            // An error occurred
+            // ...
+          });
+      }
+    } catch (error) {
+      console.log("handleUpdatePhoto error", error);
     }
   };
   return (
