@@ -87,7 +87,7 @@ const GamesRead: React.FC<GamesReadProps> = () => {
         </div>
       ) : (
         <>
-          <div className="flex flex-col items-center h-full justify-between lg:grid lg:grid-cols-4 lg:gap-4 lg:mt-4">
+          <div className="flex flex-col items-center h-full justify-between lg:grid lg:grid-cols-5 lg:gap-4 lg:mt-4">
             {gameStateValue.games.map((game, index) => (
               <GameItem game={game} key={game.id} />
             ))}

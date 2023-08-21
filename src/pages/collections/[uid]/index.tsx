@@ -12,18 +12,23 @@ import { auth, firestore } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useGames from "@/hooks/useGames";
 import { Game } from "@/atoms/gamesAtom";
+import { useRouter } from "next/router";
+import GamesVerticalList from "@/components/GamesLists/GamesVerticalList/GamesVerticalList";
+import PageContent from "@/components/Layout/PageContent";
+import Layout from "@/components/Layout/Layout";
 
 type CollectionsProps = {
   uid: string;
 };
 
 const CollectionPage: React.FC<CollectionsProps> = ({ uid }) => {
+  const router = useRouter();
   const [collections, setCollections] = useState<Game[]>([]);
+  const [userMatch, setUserMatch] = useState(false);
   const [user] = useAuthState(auth);
   const { gameStateValue } = useGames();
   const gamesRef = collection(firestore, "games");
   let array: string[] = [];
-  console.log("gameStateValue.gameCollections", gameStateValue.gameCollections);
   gameStateValue.gameCollections.map((item, i) => {
     array[i] = item.gameId;
   });
@@ -31,7 +36,10 @@ const CollectionPage: React.FC<CollectionsProps> = ({ uid }) => {
   // modify here, it is supposed to query each id in array
 
   useEffect(() => {
-    const getSth = async () => {
+    const getCollections = async () => {
+      if (user && uid === user.uid) {
+        setUserMatch(true);
+      }
       if (array.length > 0) {
         const q = query(gamesRef, where("id", "in", array));
         const result = await getDocs(q);
@@ -40,17 +48,29 @@ const CollectionPage: React.FC<CollectionsProps> = ({ uid }) => {
           ...doc.data(),
         })) as Game[];
         setCollections(games);
-        console.log("games", games);
       }
     };
-    getSth();
-  }, [gameStateValue.gameCollections]);
+    getCollections();
+  }, [gameStateValue.gameCollections, user]);
   return (
     <>
-      {collections && collections.length > 0 ? (
-        collections.map((item) => <>{item.title}</>)
+      {userMatch ? (
+        <div className="flex w-full">
+          <PageContent>
+            <div className="justify-start w-full">
+              {collections && collections.length > 0 ? (
+                <div className="w-full">
+                  <GamesVerticalList games={collections} router={router} />
+                </div>
+              ) : (
+                <>loading</>
+              )}
+            </div>
+            <>advertisement</>
+          </PageContent>
+        </div>
       ) : (
-        <>loading</>
+        <>you are not authenticated for viewing this</>
       )}
     </>
   );

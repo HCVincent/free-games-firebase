@@ -4,12 +4,10 @@ import React from "react";
 
 const Home: React.FC = () => {
   return (
-    <div className="flex w-full items-center">
-      <Layout>
-        <div className="flex flex-col w-full lg:w-5/6">
-          <RecommendationLists />
-        </div>
-      </Layout>
+    <div className="flex w-full justify-center">
+      <div className="flex flex-col w-full lg:w-5/6">
+        <RecommendationLists />
+      </div>
     </div>
   );
 };

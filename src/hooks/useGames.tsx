@@ -431,6 +431,7 @@ const useGames = () => {
         const newCollection: GameCollection = {
           id: gameCollectionRef.id,
           gameId: game.id!,
+          title: game.title,
         };
         batch.set(gameCollectionRef, newCollection);
         updatedGamesCollections = [...updatedGamesCollections, newCollection];

@@ -28,6 +28,7 @@ export type GameVote = {
 export type GameCollection = {
     id: string;
     gameId: string;
+    title: string;
 }
 
 interface GameState {

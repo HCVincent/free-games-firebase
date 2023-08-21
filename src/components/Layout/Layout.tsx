@@ -10,7 +10,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="w-full top-0 sticky z-50 ">
         <Navbar />
       </div>
-      <main className="flex justify-center">{children}</main>
+      <main className="flex justify-center w-full">{children}</main>
     </div>
   );
 };

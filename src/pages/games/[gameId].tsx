@@ -24,11 +24,15 @@ const GamePage: React.FC = () => {
   };
 
   useEffect(() => {
+    setGameStateValue((prev) => ({
+      ...prev,
+      selectedGame: null,
+    }));
     const { gameId } = router.query;
-    if (gameId && !gameStateValue.selectedGame) {
+    if (gameId) {
       fetchGame(gameId as string);
     }
-  }, [router.query, gameStateValue.selectedGame]);
+  }, [router.query]);
   return <div>{gameStateValue.selectedGame && <>{game.title}</>}</div>;
 };
 export default GamePage;

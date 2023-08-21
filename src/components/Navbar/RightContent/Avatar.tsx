@@ -4,7 +4,6 @@ import { AiOutlineDown } from "react-icons/ai";
 import SignOut from "@/components/SignOut/SignOut";
 import { User } from "firebase/auth";
 import UpdatePhoto from "./profileList/UpdatePhoto";
-import Collections from "./profileList/Collections";
 import { useRouter } from "next/router";
 
 type AvatarProps = {
@@ -37,11 +36,12 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
           <UpdatePhoto user={user} setUserPhoto={setUserPhoto} />
         </li>
         <li
+          className="w-full flex"
           onClick={() => {
-            router.push(`collections/${user.uid}`);
+            router.push(`/collections/${user.uid}`);
           }}
         >
-          Collections
+          <div className="w-full flex justify-center">Collections</div>
         </li>
         <li className="w-full">
           <SignOut />

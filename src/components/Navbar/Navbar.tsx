@@ -16,10 +16,11 @@ import OAuthButtons from "@/Modal/Auth/OAuthButtons";
 type NavbarProps = {};
 
 const Navbar: React.FC<NavbarProps> = () => {
+  const router = useRouter();
   const [user] = useAuthState(auth);
   const [isLogin, setIsLogin] = useState(false);
-  const route = useRouter();
-  const [theme, setTheme] = React.useState("dark");
+  const [theme, setTheme] = useState("dark");
+  console.log("theme", theme);
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "default" : "dark");
   };
@@ -53,9 +54,9 @@ const Navbar: React.FC<NavbarProps> = () => {
             // Confirm the user is an Admin.
             if (!!idTokenResult.claims.admin) {
               // Show admin UI.
-              setCookie("isAdmin", "true");
+              setCookie(process.env.NEXT_PUBLIC_AUTH_ADMIN!, "true");
             } else {
-              deleteCookie("isAdmin");
+              deleteCookie(process.env.NEXT_PUBLIC_AUTH_ADMIN!);
             }
           })
           .catch((error) => {
@@ -163,6 +164,12 @@ const Navbar: React.FC<NavbarProps> = () => {
               </div>
             </div>
           </div>
+          <button
+            className="hidden lg:flex lg:text-4xl lg:h-full btn btn-ghost"
+            onClick={() => router.push("/")}
+          >
+            Home
+          </button>
         </div>
 
         <div className="">

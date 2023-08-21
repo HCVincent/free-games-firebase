@@ -29,25 +29,6 @@ const RecommendationLists: React.FC<RecommendationListsProps> = () => {
   }, []);
 
   return (
-    // <div className="carousel w-full mt-4 shadow-lg shadow-black rounded-lg">
-    //   {gameStateValue.games.map((game, index) => (
-    //     <RecommendationItem
-    //       key={game.id}
-    //       game={game}
-    //       index={index}
-    //       handlePrevSlide={handlePrevSlide}
-    //       handleNextSlide={handleNextSlide}
-    //       currentSlide={currentSlide}
-    //       onSelectGame={onSelectGame}
-    //       onVote={onVote}
-    //       userVoteValue={
-    //         gameStateValue.gameVotes.find((vote) => vote.gameId === game.id)
-    //           ?.voteValue
-    //       }
-    //     />
-    //   ))}
-    // </div><section className="sandbox__carousel">
-
     <section className="sandbox__carousel">
       <EmblaCarousel slides={gameStateValue.games} options={OPTIONS} />
     </section>
