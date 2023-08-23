@@ -20,7 +20,6 @@ const Navbar: React.FC<NavbarProps> = () => {
   const [user] = useAuthState(auth);
   const [isLogin, setIsLogin] = useState(false);
   const [theme, setTheme] = useState("dark");
-  console.log("theme", theme);
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "default" : "dark");
   };
