@@ -3,6 +3,7 @@ import React from "react";
 import GameCover from "./GameCover";
 import moment from "moment";
 import { User } from "firebase/auth";
+import Comments from "./Comments/Comments";
 
 type GameDetailItemProps = { game: Game; user: User };
 
@@ -17,7 +18,7 @@ const GameDetailItem: React.FC<GameDetailItemProps> = ({ game, user }) => {
         </span>
       )}
       <span className="mt-10">{game.body}</span>
-      {/* {user && game && <EditPostForm game={game} />} */}
+      <Comments gameId={game.id!} user={user} />
     </div>
   );
 };
