@@ -16,6 +16,7 @@ export type Game = {
     imagesGroup?: string[];
     createdAt?: Timestamp;
     updatedAt: Timestamp;
+    numberOfComments?: number;
 }
 
 

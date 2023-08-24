@@ -1,6 +1,6 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import { User } from "firebase/auth";
-import React from "react";
+import React, { useState } from "react";
 import { useRecoilState } from "recoil";
 
 type CommentInputProps = {
@@ -18,6 +18,12 @@ const CommentInput: React.FC<CommentInputProps> = ({
   createLoading,
   onCreateComment,
 }) => {
+  const [charsRemaining, setCharsRemaining] = useState(1000);
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (event.target.value.length > 1000) return;
+    setCommentText(event.target.value);
+    setCharsRemaining(1000 - event.target.value.length);
+  };
   const [modalState, setModalState] = useRecoilState(authModalState);
   const handleLogin = () => {
     setModalState((prev) => ({
@@ -38,14 +44,20 @@ const CommentInput: React.FC<CommentInputProps> = ({
           </div>
           <textarea
             value={commentText}
-            onChange={(event) => setCommentText(event.target.value)}
+            // onChange={(event) => setCommentText(event.target.value)}
+            onChange={handleChange}
             placeholder="What are your thoughts?"
-            className="textarea textarea-bordered textarea-lg w-full h-40"
+            className="textarea textarea-bordered textarea-lg w-full h-40 overflow:hidden"
           />
-          <div className="absolute end-2 bottom-6 justify-end rounded-sm h-10 ">
+          <div className="absolute end-6 bottom-6 justify-end rounded-sm h-10">
+            <span
+              className={`mr-4 ${charsRemaining === 0 ? "text-red-600" : ""}`}
+            >
+              {charsRemaining} Characters remaining
+            </span>
             <button
-              className="btn btn-primary"
-              disabled={!commentText.length}
+              className="btn btn-primary h-full"
+              disabled={!commentText.length || commentText.length > 1000}
               onClick={() => onCreateComment(commentText)}
             >
               Comment

@@ -11,14 +11,14 @@ const GameDetailItem: React.FC<GameDetailItemProps> = ({ game, user }) => {
   return (
     <div className="flex flex-col">
       <GameCover coverImage={game.coverImage} imagesGroup={game.imagesGroup} />
-      <span className="mt-10 text-4xl">{game.title}</span>
+      <span className="mt-10 text-6xl font-bold">{game.title}</span>
       {game.createdAt && (
         <span className="text-xs">
           {moment(new Date(game.createdAt?.seconds * 1000)).fromNow()}
         </span>
       )}
       <span className="mt-10">{game.body}</span>
-      <Comments gameId={game.id!} user={user} />
+      <Comments game={game} user={user} />
     </div>
   );
 };
