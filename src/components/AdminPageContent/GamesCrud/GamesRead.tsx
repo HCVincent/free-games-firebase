@@ -25,7 +25,8 @@ const GamesRead: React.FC<GamesReadProps> = () => {
     useGames();
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { onSelectGame, gameStateValue, setGameStateValue } = useGames();
+  const { onSelectGame, gameGridStateValue, setGameGridStateValue } =
+    useGames();
 
   const handleOnReadGames = async () => {
     setLoading(true);
@@ -57,7 +58,7 @@ const GamesRead: React.FC<GamesReadProps> = () => {
     }));
     setLastVisible(newGameDocs.docs[newGameDocs.docs.length - 1]);
     //@ts-ignore
-    setGameStateValue((prev) => ({
+    setGameGridStateValue((prev) => ({
       ...prev,
       games: [...prev.games, ...games], // Update the line to spread the games array
     }));
@@ -70,14 +71,14 @@ const GamesRead: React.FC<GamesReadProps> = () => {
 
   useEffect(() => {
     const checkIfLoadMore = () => {
-      if (gameStateValue.games.length === numOfGamesPerPage) {
+      if (gameGridStateValue.games.length === numOfGamesPerPage) {
         setNoMoreLoad(false);
       } else {
         setNoMoreLoad(true);
       }
     };
     checkIfLoadMore();
-  }, [gameStateValue.games]);
+  }, [gameGridStateValue.games]);
 
   return (
     <div className="flex flex-col flex-1 py-2 ">
@@ -88,7 +89,7 @@ const GamesRead: React.FC<GamesReadProps> = () => {
       ) : (
         <>
           <div className="flex flex-col items-center h-full justify-between lg:grid lg:grid-cols-5 lg:gap-4 lg:mt-4">
-            {gameStateValue.games.map((game, index) => (
+            {gameGridStateValue.games.map((game, index) => (
               <GameItem game={game} key={game.id} />
             ))}
           </div>

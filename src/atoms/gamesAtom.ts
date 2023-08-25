@@ -37,6 +37,7 @@ interface GameState {
     games: Game[];
     gameVotes: GameVote[];
     gameCollections: GameCollection[];
+    gameGrid: Game[];
 }
 
 const defaultGameState: GameState = {
@@ -44,9 +45,15 @@ const defaultGameState: GameState = {
     games: [],
     gameVotes: [],
     gameCollections: [],
+    gameGrid: [],
 }
 
 export const gameState = atom<GameState>({
     key: "gameState",
+    default: defaultGameState
+})
+
+export const gameGridState = atom<GameState>({
+    key: "gameGridState",
     default: defaultGameState
 })

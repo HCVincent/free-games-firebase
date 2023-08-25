@@ -1,5 +1,11 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import { Game, GameCollection, GameVote, gameState } from "@/atoms/gamesAtom";
+import {
+  Game,
+  GameCollection,
+  GameVote,
+  gameGridState,
+  gameState,
+} from "@/atoms/gamesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import arrayCompare from "@/utils/arrayCompare";
 import {
@@ -41,7 +47,9 @@ const useGames = () => {
   const [lastVisible, setLastVisible] =
     useState<QueryDocumentSnapshot<DocumentData>>();
   const gameStateValue = useRecoilValue(gameState);
+  const gameGridStateValue = useRecoilValue(gameGridState);
   const setGameStateValue = useSetRecoilState(gameState);
+  const setGameGridStateValue = useSetRecoilState(gameGridState);
   const onSelectGame = (game: Game, parameter?: string) => {
     setGameStateValue((prev) => ({
       ...prev,
@@ -59,7 +67,6 @@ const useGames = () => {
       //   orderBy("createdAt", "desc")
       // );
 
-      // Query the first page of docs
       const gameQuery = parameter
         ? query(
             collection(firestore, firebaseCollection),
@@ -73,16 +80,24 @@ const useGames = () => {
             orderBy("updatedAt", "desc"),
             limit(numOfGamesPerPage)
           );
+
       const gameDocs = await getDocs(gameQuery);
 
       // Get the last visible document
       setLastVisible(gameDocs.docs[gameDocs.docs.length - 1]);
 
       const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setGameStateValue((prev) => ({
-        ...prev,
-        games: games as Game[],
-      }));
+      if (firebaseCollection === "games") {
+        setGameGridStateValue((prev) => ({
+          ...prev,
+          games: games as Game[],
+        }));
+      } else {
+        setGameStateValue((prev) => ({
+          ...prev,
+          games: games as Game[],
+        }));
+      }
     } catch (error) {
       console.log("readGames error", error);
     }
@@ -514,8 +529,10 @@ const useGames = () => {
   return {
     onUpdateGameRec,
     setGameStateValue,
+    setGameGridStateValue,
     onSelectGame,
     gameStateValue,
+    gameGridStateValue,
     onDeleteGame,
     onUpdateGame,
     lastVisible,
