@@ -60,9 +60,12 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
   return (
     <div
       id={`slide${index}`}
-      className="carousel-item relative w-full h-[540px]  bg-slate-600 flex flex-col"
+      className="embla__slide relative w-full h-[540px]  bg-slate-600 flex flex-col"
       key={game.id}
     >
+      <div className="embla__slide__number">
+        <span>{index + 1}</span>
+      </div>
       <Image
         /* @ts-ignore */
         src={game.coverImage}
@@ -70,7 +73,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
         width={0}
         height={0}
         sizes="100vw"
-        className="flex object-cover w-full h-[480px] cursor-pointer"
+        className="embla__slide__img flex object-cover w-full h-[480px] cursor-pointer"
         onClick={() => {
           onSelectGame(game);
         }}
@@ -137,7 +140,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
             )}
           </div>
           <button
-            className="flex flex-1 text-white justify-center items-center hover:bg-slate-800 hover:rounded"
+            className="flex flex-1 text-white justify-center items-center transition-all hover:scale-110"
             onClick={() => setLike(!like)}
           >
             {userCollectionValue === game.id ? (
@@ -152,13 +155,13 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
               />
             )}
           </button>
-          <div className="flex flex-1  align-middle items-center justify-center text-white cursor-pointer hover:bg-slate-800 hover:rounded">
+          {/* <div className="flex flex-1  align-middle items-center justify-center text-white cursor-pointer hover:bg-slate-800 hover:rounded">
             {game.address && (
               <a href={game.address}>
                 <AiOutlineDownload className="w-12 h-12" />
               </a>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -31,10 +31,11 @@ const GamesVerticalItem: React.FC<GamesVerticalItemProps> = ({
             <span className="loading loading-spinner loading-lg"></span>
           </div>
         )}
+
         <Image
           src={game.coverImage ? game.coverImage : questionmark.src}
           alt="cover"
-          className="w-full object-cover rounded-lg "
+          className="w-80 h-full object-cover rounded-lg "
           width={100}
           height={50}
           onLoad={() => setImageLoading(false)}

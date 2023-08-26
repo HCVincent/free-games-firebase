@@ -56,7 +56,7 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
           </p>
           <div className="card-actions justify-end">
             <button
-              className="flex text-white w-12 h-12 transition-all hover:scale-105"
+              className="flex text-white w-12 h-12 transition-all hover:scale-110"
               onClick={(e) => {
                 e.stopPropagation();
                 setLike(!like);
