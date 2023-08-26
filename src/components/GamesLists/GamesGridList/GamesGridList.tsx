@@ -10,7 +10,7 @@ const GamesGridList: React.FC<GamesGridListProps> = () => {
   const { lastVisible, setLastVisible, readGames, numOfGamesPerPage } =
     useGames();
   const [loading, setLoading] = useState(false);
-  const { gameGridStateValue, onCollect, onSelectGame } = useGames();
+  const { gameStateValue, onCollect, onSelectGame } = useGames();
   const handleOnReadGames = async () => {
     setLoading(true);
     try {
@@ -24,13 +24,13 @@ const GamesGridList: React.FC<GamesGridListProps> = () => {
     handleOnReadGames();
   }, []);
   return (
-    <div className="flex flex-col w-full">
-      {gameGridStateValue.games.map((item) => (
+    <div className="flex flex-col items-center h-full justify-between lg:grid lg:grid-cols-5 lg:gap-4 lg:mt-4">
+      {gameStateValue.games.map((item) => (
         <GamesGridItem
           key={item.id}
           game={item}
           userCollectionValue={
-            gameGridStateValue.gameCollections.find(
+            gameStateValue.gameCollections.find(
               (collection) => collection.gameId === item.id
             )?.gameId
           }

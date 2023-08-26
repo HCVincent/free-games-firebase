@@ -1,11 +1,5 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import {
-  Game,
-  GameCollection,
-  GameVote,
-  gameGridState,
-  gameState,
-} from "@/atoms/gamesAtom";
+import { Game, GameCollection, GameVote, gameState } from "@/atoms/gamesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import arrayCompare from "@/utils/arrayCompare";
 import {
@@ -47,9 +41,7 @@ const useGames = () => {
   const [lastVisible, setLastVisible] =
     useState<QueryDocumentSnapshot<DocumentData>>();
   const gameStateValue = useRecoilValue(gameState);
-  const gameGridStateValue = useRecoilValue(gameGridState);
   const setGameStateValue = useSetRecoilState(gameState);
-  const setGameGridStateValue = useSetRecoilState(gameGridState);
   const onSelectGame = (game: Game, parameter?: string) => {
     setGameStateValue((prev) => ({
       ...prev,
@@ -88,14 +80,14 @@ const useGames = () => {
 
       const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       if (firebaseCollection === "games") {
-        setGameGridStateValue((prev) => ({
+        setGameStateValue((prev) => ({
           ...prev,
           games: games as Game[],
         }));
       } else {
         setGameStateValue((prev) => ({
           ...prev,
-          games: games as Game[],
+          gameRecommendations: games as Game[],
         }));
       }
     } catch (error) {
@@ -529,10 +521,8 @@ const useGames = () => {
   return {
     onUpdateGameRec,
     setGameStateValue,
-    setGameGridStateValue,
     onSelectGame,
     gameStateValue,
-    gameGridStateValue,
     onDeleteGame,
     onUpdateGame,
     lastVisible,

@@ -25,8 +25,7 @@ const GamesRead: React.FC<GamesReadProps> = () => {
     useGames();
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { onSelectGame, gameGridStateValue, setGameGridStateValue } =
-    useGames();
+  const { onSelectGame, gameStateValue, setGameStateValue } = useGames();
 
   const handleOnReadGames = async () => {
     setLoading(true);
@@ -71,14 +70,14 @@ const GamesRead: React.FC<GamesReadProps> = () => {
 
   useEffect(() => {
     const checkIfLoadMore = () => {
-      if (gameGridStateValue.games.length === numOfGamesPerPage) {
+      if (gameStateValue.games.length === numOfGamesPerPage) {
         setNoMoreLoad(false);
       } else {
         setNoMoreLoad(true);
       }
     };
     checkIfLoadMore();
-  }, [gameGridStateValue.games]);
+  }, [gameStateValue.games]);
 
   return (
     <div className="flex flex-col flex-1 py-2 ">
@@ -89,7 +88,7 @@ const GamesRead: React.FC<GamesReadProps> = () => {
       ) : (
         <>
           <div className="flex flex-col items-center h-full justify-between lg:grid lg:grid-cols-5 lg:gap-4 lg:mt-4">
-            {gameGridStateValue.games.map((game, index) => (
+            {gameStateValue.games.map((game, index) => (
               <GameItem game={game} key={game.id} />
             ))}
           </div>

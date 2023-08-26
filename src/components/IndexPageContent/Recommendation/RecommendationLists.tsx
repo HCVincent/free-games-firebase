@@ -30,7 +30,10 @@ const RecommendationLists: React.FC<RecommendationListsProps> = () => {
 
   return (
     <section className="sandbox__carousel">
-      <EmblaCarousel slides={gameStateValue.games} options={OPTIONS} />
+      <EmblaCarousel
+        slides={gameStateValue.gameRecommendations}
+        options={OPTIONS}
+      />
     </section>
   );
 };

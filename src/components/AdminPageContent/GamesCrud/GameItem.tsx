@@ -95,7 +95,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
             />
           </div>
         </figure>
-        <div className="card-body w-full p-2   ">
+        <div className="card-body w-full p-2  ">
           <h2 className="text-xs">{game.title}</h2>
           {game.createdAt && (
             <span className="text-xs text-slate-700">

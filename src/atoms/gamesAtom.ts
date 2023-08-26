@@ -35,6 +35,7 @@ export type GameCollection = {
 interface GameState {
     selectedGame: Game | null;
     games: Game[];
+    gameRecommendations: Game[];
     gameVotes: GameVote[];
     gameCollections: GameCollection[];
     gameGrid: Game[];
@@ -46,6 +47,7 @@ const defaultGameState: GameState = {
     gameVotes: [],
     gameCollections: [],
     gameGrid: [],
+    gameRecommendations: []
 }
 
 export const gameState = atom<GameState>({
@@ -53,7 +55,3 @@ export const gameState = atom<GameState>({
     default: defaultGameState
 })
 
-export const gameGridState = atom<GameState>({
-    key: "gameGridState",
-    default: defaultGameState
-})

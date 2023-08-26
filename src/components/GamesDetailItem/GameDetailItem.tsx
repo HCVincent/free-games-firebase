@@ -13,7 +13,7 @@ const GameDetailItem: React.FC<GameDetailItemProps> = ({ game, user }) => {
       <GameCover coverImage={game.coverImage} imagesGroup={game.imagesGroup} />
       <span className="mt-10 text-6xl font-bold">{game.title}</span>
       {game.createdAt && (
-        <span className="text-xs">
+        <span className="text-xs mt-2">
           {moment(new Date(game.createdAt?.seconds * 1000)).fromNow()}
         </span>
       )}
