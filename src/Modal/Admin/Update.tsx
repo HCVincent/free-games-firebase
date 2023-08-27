@@ -119,12 +119,11 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
           value={textInputs.description}
         />{" "}
         <input
-          required
           name="address"
           placeholder="address"
           className="input input-bordered"
           onChange={onChange}
-          value={textInputs.address}
+          value={textInputs.address || ""}
         />
       </div>
       <div className="form-control">

@@ -1,9 +1,19 @@
-import AuthModal from "@/Modal/Auth/AuthModal";
 import SignOut from "@/components/SignOut/SignOut";
 import React from "react";
-import ThemeButton from "../ThemeButton/ThemeButton";
-import Avatar from "./Avatar";
+import dynamic from "next/dynamic";
 import { User } from "firebase/auth";
+
+// solving for
+// Error: There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.
+const ThemeButton = dynamic(import("../ThemeButton/ThemeButton"), {
+  ssr: false,
+});
+const Avatar = dynamic(import("./Avatar"), {
+  ssr: false,
+});
+const AuthModal = dynamic(import("@/Modal/Auth/AuthModal"), {
+  ssr: false,
+});
 
 type RightContentProps = {
   isLogin: boolean;

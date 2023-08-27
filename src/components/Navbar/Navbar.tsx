@@ -93,8 +93,10 @@ const Navbar: React.FC<NavbarProps> = () => {
               </label>
             </div>
             <div className="drawer-side">
-              <label htmlFor="my-drawer" className="drawer-overlay"></label>
-              <div className="menu p-4 w-80 h-full bg-base-200 text-base-content justify-between w-5/6">
+              <label htmlFor="my-drawer" className="drawer-overlay">
+                {" "}
+              </label>
+              <div className="menu p-4  h-full bg-base-200 text-base-content justify-between w-5/6">
                 <ul>
                   {/* Sidebar content here */}
                   <li>
@@ -134,15 +136,16 @@ const Navbar: React.FC<NavbarProps> = () => {
                       />
                       <div className="modal">
                         <div className="modal-box">
-                          <div className="flex flex-col w-full justify-start items-start bg-base-100">
+                          <header className="flex flex-col w-full justify-start items-start bg-base-100">
                             <label className="label">
+                              {" "}
                               {modalState.view === "login" && "login"}
                               {modalState.view === "signup" && "signup"}
                             </label>
 
                             <AuthInputs />
                             <OAuthButtons />
-                          </div>
+                          </header>
                         </div>
                         <label
                           className="modal-backdrop"

@@ -14,7 +14,7 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
   ]);
   return (
     <div>
-      {imagesGroup ? (
+      {imagesGroup && imagesGroup.length > 0 ? (
         <div className="embla  hover:scale-105 transition-all p-0 mt-10">
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container">
@@ -36,8 +36,8 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
         <Image
           alt="cover"
           src={coverImage ? coverImage : defaultCover}
-          width={0}
-          height={0}
+          width={100}
+          height={100}
           sizes="100vw"
           className="flex object-cover w-full h-[480px] cursor-pointer"
         ></Image>

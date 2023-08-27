@@ -52,7 +52,11 @@ const useGames = () => {
     }
   };
 
-  const readGames = async (firebaseCollection: string, parameter?: string) => {
+  const readGames = async (
+    firebaseCollection: string,
+    parameter?: string,
+    limitedNum?: number
+  ) => {
     try {
       // const gameQuery = query(
       //   collection(firestore, "games"),
@@ -65,12 +69,12 @@ const useGames = () => {
             orderBy("title", "asc"),
             where("title", ">=", parameter),
             where("title", "<=", parameter + "\uf8ff"),
-            limit(numOfGamesPerPage)
+            limit(limitedNum ? limitedNum : numOfGamesPerPage)
           )
         : query(
             collection(firestore, firebaseCollection),
             orderBy("updatedAt", "desc"),
-            limit(numOfGamesPerPage)
+            limit(limitedNum ? limitedNum : numOfGamesPerPage)
           );
 
       const gameDocs = await getDocs(gameQuery);

@@ -57,7 +57,7 @@ const GamesRead: React.FC<GamesReadProps> = () => {
     }));
     setLastVisible(newGameDocs.docs[newGameDocs.docs.length - 1]);
     //@ts-ignore
-    setGameGridStateValue((prev) => ({
+    setGameStateValue((prev) => ({
       ...prev,
       games: [...prev.games, ...games], // Update the line to spread the games array
     }));

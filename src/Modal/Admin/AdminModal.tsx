@@ -44,13 +44,6 @@ const AdminModal: React.FC<AdminModalProps> = ({
       >
         add
       </label>
-      <label
-        htmlFor="my_modal_admin_add"
-        className="btn btn-primary"
-        onClick={handleRecommendations}
-      >
-        add recommendations
-      </label>
 
       <input type="checkbox" id="my_modal_admin_add" className="modal-toggle" />
       <div className="modal ">
@@ -90,9 +83,9 @@ const AdminModal: React.FC<AdminModalProps> = ({
             >
               <path
                 stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
               />
             </svg>
