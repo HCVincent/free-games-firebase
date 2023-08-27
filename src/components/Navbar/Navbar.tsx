@@ -136,7 +136,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                       />
                       <div className="modal">
                         <div className="modal-box">
-                          <header className="flex flex-col w-full justify-start items-start bg-base-100">
+                          <div className="flex flex-col w-full justify-start items-start bg-base-100">
                             <label className="label">
                               {" "}
                               {modalState.view === "login" && "login"}
@@ -145,7 +145,7 @@ const Navbar: React.FC<NavbarProps> = () => {
 
                             <AuthInputs />
                             <OAuthButtons />
-                          </header>
+                          </div>
                         </div>
                         <label
                           className="modal-backdrop"

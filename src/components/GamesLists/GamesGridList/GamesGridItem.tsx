@@ -26,7 +26,7 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
   return (
     <div className="flex justify-center">
       <div className="card  bg-base-100 shadow-xl h-80 w-96 hover:scale-105 transition-all ">
-        <figure className="h-32">
+        <figure className="h-44">
           {imageLoading && (
             <div className="flex w-full h-full items-center justify-center">
               <span className="loading loading-spinner loading-lg"></span>
