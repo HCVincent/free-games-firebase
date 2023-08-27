@@ -1,9 +1,8 @@
 import useGames from "@/hooks/useGames";
+import { EmblaOptionsType } from "embla-carousel-react";
 import { DocumentData, Query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import RecommendationItem from "./RecommendationItem";
 import EmblaCarousel from "./EmblaCarousel";
-import { EmblaOptionsType } from "embla-carousel-react";
 
 type RecommendationListsProps = {};
 const OPTIONS: EmblaOptionsType = { loop: true };

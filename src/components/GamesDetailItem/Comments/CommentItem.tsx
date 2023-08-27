@@ -1,14 +1,13 @@
-import React from "react";
-import { Timestamp } from "firebase-admin/firestore";
-import { Box, Flex, Icon, Spinner, Stack, Text } from "@chakra-ui/react";
-import { FaReddit } from "react-icons/fa";
-import moment from "moment";
-import {
-  IoArrowUpCircleOutline,
-  IoArrowDownCircleOutline,
-} from "react-icons/io5";
+import { Icon, Stack, Text } from "@chakra-ui/react";
 import { User } from "@firebase/auth";
+import { Timestamp } from "firebase-admin/firestore";
+import moment from "moment";
 import Image from "next/image";
+import React from "react";
+import {
+  IoArrowDownCircleOutline,
+  IoArrowUpCircleOutline,
+} from "react-icons/io5";
 import defaultcover from "../../../../public/default_cover.png";
 
 export type Comment = {

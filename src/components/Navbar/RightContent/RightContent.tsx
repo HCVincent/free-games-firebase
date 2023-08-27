@@ -1,7 +1,6 @@
-import SignOut from "@/components/SignOut/SignOut";
-import React from "react";
-import dynamic from "next/dynamic";
 import { User } from "firebase/auth";
+import dynamic from "next/dynamic";
+import React from "react";
 
 // solving for
 // Error: There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.

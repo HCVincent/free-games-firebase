@@ -5,8 +5,6 @@ import arrayCompare from "@/utils/arrayCompare";
 import {
   DocumentData,
   QueryDocumentSnapshot,
-  Timestamp,
-  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -14,12 +12,9 @@ import {
   limit,
   orderBy,
   query,
-  startAt,
-  endAt,
+  updateDoc,
   where,
   writeBatch,
-  setDoc,
-  updateDoc,
 } from "firebase/firestore";
 import {
   deleteObject,

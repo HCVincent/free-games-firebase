@@ -1,12 +1,8 @@
-import { Game } from "@/atoms/gamesAtom";
-import { NextRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import GamesGridItem from "./GamesGridItem";
+import { firestore } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
 import {
   DocumentData,
   Query,
-  QueryDocumentSnapshot,
   collection,
   getDocs,
   limit,
@@ -14,7 +10,8 @@ import {
   query,
   startAfter,
 } from "firebase/firestore";
-import { firestore } from "@/firebase/clientApp";
+import React, { useEffect, useState } from "react";
+import GamesGridItem from "./GamesGridItem";
 type GamesGridListProps = {};
 
 const GamesGridList: React.FC<GamesGridListProps> = () => {

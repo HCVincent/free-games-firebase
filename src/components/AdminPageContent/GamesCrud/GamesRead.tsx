@@ -1,10 +1,8 @@
-import { Game } from "@/atoms/gamesAtom";
 import { firestore } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
 import {
   DocumentData,
   Query,
-  QueryDocumentSnapshot,
   collection,
   getDocs,
   limit,

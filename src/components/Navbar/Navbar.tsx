@@ -1,17 +1,15 @@
+import AuthInputs from "@/Modal/Auth/AuthInputs";
+import OAuthButtons from "@/Modal/Auth/OAuthButtons";
+import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
-import { setCookie, deleteCookie } from "cookies-next";
+import { deleteCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useRecoilState } from "recoil";
 import SignOut from "../SignOut/SignOut";
-import AuthModal from "@/Modal/Auth/AuthModal";
-import Link from "next/link";
 import RightContent from "./RightContent/RightContent";
 import ThemeButton from "./ThemeButton/ThemeButton";
-import { authModalState } from "@/atoms/authModalAtom";
-import { useRecoilState } from "recoil";
-import AuthInputs from "@/Modal/Auth/AuthInputs";
-import OAuthButtons from "@/Modal/Auth/OAuthButtons";
 
 type NavbarProps = {};
 

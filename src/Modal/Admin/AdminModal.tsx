@@ -1,9 +1,7 @@
 import { adminModalState } from "@/atoms/adminModalAtom";
+import useGames from "@/hooks/useGames";
 import { useRecoilState } from "recoil";
 import Add from "./Add";
-import { SearchIcon } from "@chakra-ui/icons";
-import { Flex, Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import useGames from "@/hooks/useGames";
 import Recommendations from "./Recommendations";
 
 type AdminModalProps = {

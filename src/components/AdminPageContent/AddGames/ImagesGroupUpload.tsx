@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import { TiDelete } from "react-icons/ti";
 
 type ImagesGroupUploadProps = {
   selectedImagesGroup?: Array<string>;

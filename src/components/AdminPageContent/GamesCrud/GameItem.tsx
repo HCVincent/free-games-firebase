@@ -1,22 +1,12 @@
-import Update from "@/Modal/Admin/Update";
-import { adminModalState } from "@/atoms/adminModalAtom";
 import { Game } from "@/atoms/gamesAtom";
+import { firestore } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
+import Update from "@/Modal/Admin/Update";
 import { Image } from "@chakra-ui/react";
+import { doc, serverTimestamp, setDoc, Timestamp } from "firebase/firestore";
 import moment from "moment";
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
 import default_cover from "../../../../public/default_cover.png";
-import {
-  addDoc,
-  collection,
-  doc,
-  serverTimestamp,
-  setDoc,
-  Timestamp,
-  writeBatch,
-} from "firebase/firestore";
-import { firestore } from "@/firebase/clientApp";
 
 type GameItemProps = {
   game: Game;

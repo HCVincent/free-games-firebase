@@ -1,12 +1,10 @@
 import { authModalState } from "@/atoms/authModalAtom";
 import { auth } from "@/firebase/clientApp";
 import { FIREBASE_ERRORS } from "@/firebase/errors";
-import { sendEmailVerification } from "firebase/auth";
 import React, { useState } from "react";
 import {
   useAuthState,
   useCreateUserWithEmailAndPassword,
-  useSendEmailVerification,
 } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
 

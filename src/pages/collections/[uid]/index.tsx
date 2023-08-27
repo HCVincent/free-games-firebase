@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { GetServerSidePropsContext } from "next";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
-import { auth, firestore } from "@/firebase/clientApp";
-import { useAuthState } from "react-firebase-hooks/auth";
-import useGames from "@/hooks/useGames";
 import { Game } from "@/atoms/gamesAtom";
-import { useRouter } from "next/router";
 import GamesVerticalList from "@/components/GamesLists/GamesVerticalList/GamesVerticalList";
 import PageContent from "@/components/Layout/PageContent";
-import Layout from "@/components/Layout/Layout";
+import { auth, firestore } from "@/firebase/clientApp";
+import useGames from "@/hooks/useGames";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { GetServerSidePropsContext } from "next";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 type CollectionsProps = {
   uid: string;
