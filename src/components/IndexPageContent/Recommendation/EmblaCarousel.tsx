@@ -77,9 +77,9 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
             />
           ))}
         </div>
-        <div className="embla-thumbs flex h-20">
-          <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
-            <div className="embla-thumbs__container flex">
+        <div className="embla-thumbs flex h-20 lg:h-40 w-full">
+          <div className="embla-thumbs__viewport w-full" ref={emblaThumbsRef}>
+            <div className="embla-thumbs__container flex w-full">
               {slides.map((game, index) => (
                 <Thumb
                   onClick={() => onThumbClick(index)}

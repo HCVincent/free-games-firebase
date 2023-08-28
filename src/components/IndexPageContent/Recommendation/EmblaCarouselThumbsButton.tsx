@@ -26,7 +26,7 @@ export const Thumb: React.FC<PropType> = (props) => {
           <span className="text-slate-500">{index + 1}</span>
         </div>
         <Image
-          className={`h-full embla-thumbs__slide__img w-auto ${
+          className={`flex object-cover h-full w-auto embla-thumbs__slide__img  ${
             selected ? "" : "opacity-50"
           }`}
           src={imgSrc}
