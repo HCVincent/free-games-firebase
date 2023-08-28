@@ -32,7 +32,7 @@ export const Thumb: React.FC<PropType> = (props) => {
           src={imgSrc}
           width={60}
           height={60}
-          alt="Your alt text"
+          alt={index.toString()}
         />
       </button>
     </div>

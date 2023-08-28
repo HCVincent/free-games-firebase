@@ -77,7 +77,7 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
             />
           ))}
         </div>
-        <div className="embla-thumbs flex">
+        <div className="embla-thumbs flex h-20">
           <div className="embla-thumbs__viewport" ref={emblaThumbsRef}>
             <div className="embla-thumbs__container flex">
               {slides.map((game, index) => (
