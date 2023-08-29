@@ -1,6 +1,7 @@
 import { User } from "firebase/auth";
 import dynamic from "next/dynamic";
 import React from "react";
+import SearchInput from "./SearchInput";
 
 // solving for
 // Error: There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.
@@ -29,6 +30,7 @@ const RightContent: React.FC<RightContentProps> = ({
 }) => {
   return (
     <div className="hidden lg:flex lg:items-center">
+      <SearchInput />
       <div className="lg:flex  ">
         <ThemeButton toggleTheme={toggleTheme} theme={theme} />
       </div>
