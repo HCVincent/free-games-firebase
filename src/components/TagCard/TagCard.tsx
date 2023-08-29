@@ -7,9 +7,9 @@ type TagCardProps = {
 
 const TagCard: React.FC<TagCardProps> = ({ tag }) => {
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-auto bg-base-100 shadow-xl">
       <div className="card-body">
-        <p>{tag.title}</p>
+        <p className="text-2xl">{tag.title}</p>
       </div>
     </div>
   );

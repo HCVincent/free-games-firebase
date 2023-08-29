@@ -49,7 +49,7 @@ const GamePage: React.FC = () => {
             />
           )}
         </div>
-        <div className="flex w-full ">2</div>
+        <div className="flex w-full "></div>
       </PageContent>
     </div>
   );

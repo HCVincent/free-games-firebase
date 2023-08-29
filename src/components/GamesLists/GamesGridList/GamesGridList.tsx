@@ -127,10 +127,10 @@ const GamesGridList: React.FC<GamesGridListProps> = () => {
                   </div>
                 ) : (
                   <button
-                    className="btn btn-ghost mt-4 w-full h-full"
+                    className="btn btn-ghost mt-4 w-full h-full normal-case"
                     onClick={loadMore}
                   >
-                    load more
+                    Load More
                   </button>
                 )}
               </div>

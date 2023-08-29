@@ -38,7 +38,7 @@ const Tags: React.FC<TagsProps> = () => {
       }));
     } catch (error: any) {
       console.log("add tags error", error);
-      setError(error);
+      setError(error.message);
     }
     setTagName("");
     setLoading(false);
@@ -51,7 +51,10 @@ const Tags: React.FC<TagsProps> = () => {
           placeholder="Type here"
           className="input input-bordered input-primary w-full max-w-xs border-none"
           value={tagName}
-          onChange={(e) => setTagName(e.currentTarget.value)}
+          onChange={(e) => {
+            setError("");
+            setTagName(e.currentTarget.value);
+          }}
         />
       </div>
       <div className="flex w-full justify-end">
@@ -65,7 +68,8 @@ const Tags: React.FC<TagsProps> = () => {
           {loading ? <span className="loading loading-spinner"></span> : "Add"}
         </button>
       </div>
-      {error}
+      <div className="text-red-500"> {error}</div>
+
       <div className="flex mt-10">
         {gameStateValue.gameTag.map((tag) => (
           <TagCard tag={tag} key={tag.id}></TagCard>

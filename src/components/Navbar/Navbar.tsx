@@ -10,6 +10,8 @@ import { useRecoilState } from "recoil";
 import SignOut from "../SignOut/SignOut";
 import RightContent from "./RightContent/RightContent";
 import ThemeButton from "./ThemeButton/ThemeButton";
+import Image from "next/image";
+import logo from "../../../public/logo_icon.png";
 
 type NavbarProps = {};
 
@@ -165,10 +167,13 @@ const Navbar: React.FC<NavbarProps> = () => {
             </div>
           </div>
           <button
-            className="hidden lg:flex lg:text-4xl lg:h-full btn btn-ghost"
+            className="hidden lg:flex lg:text-4xl  btn btn-ghost"
             onClick={() => router.push("/")}
           >
-            Home
+            <div className="flex w-auto h-10">
+              <Image src={logo} alt="home" className="w-full h-full"></Image>
+              <span className="normal-case">Home</span>
+            </div>
           </button>
         </div>
 
