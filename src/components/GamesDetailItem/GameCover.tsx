@@ -26,7 +26,7 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
                   width={0}
                   height={0}
                   sizes="100vw"
-                  className="flex object-cover w-full h-[480px] cursor-pointer"
+                  className="flex object-cover w-full h-[420px] cursor-pointer"
                 />
               ))}
             </div>

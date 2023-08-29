@@ -68,10 +68,10 @@ const GamesRead: React.FC<GamesReadProps> = () => {
 
   useEffect(() => {
     const checkIfLoadMore = () => {
-      if (gameStateValue.games.length === numOfGamesPerPage) {
-        setNoMoreLoad(false);
-      } else {
+      if (gameStateValue.games.length < numOfGamesPerPage) {
         setNoMoreLoad(true);
+      } else {
+        setNoMoreLoad(false);
       }
     };
     checkIfLoadMore();
