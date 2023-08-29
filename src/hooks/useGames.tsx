@@ -1,5 +1,11 @@
 import { authModalState } from "@/atoms/authModalAtom";
-import { Game, GameCollection, GameVote, gameState } from "@/atoms/gamesAtom";
+import {
+  Game,
+  GameCollection,
+  GameTag,
+  GameVote,
+  gameState,
+} from "@/atoms/gamesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import arrayCompare from "@/utils/arrayCompare";
 import {
@@ -500,6 +506,23 @@ const useGames = () => {
       gameCollections: gameCollections as GameCollection[],
     }));
   };
+  const getGameTags = async () => {
+    const gameTagsQuery = query(collection(firestore, "tags"));
+
+    const gameTagsDocs = await getDocs(gameTagsQuery);
+    const gameTags = gameTagsDocs.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setGameStateValue((prev) => ({
+      ...prev,
+      gameTag: gameTags as GameTag[],
+    }));
+  };
+
+  useEffect(() => {
+    getGameTags();
+  }, []);
 
   useEffect(() => {
     if (!user) return;

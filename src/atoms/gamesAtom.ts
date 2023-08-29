@@ -32,6 +32,12 @@ export type GameCollection = {
     title: string;
 }
 
+export type GameTag = {
+    id: string;
+    gameId: string[];
+    title: string;
+}
+
 interface GameState {
     selectedGame: Game | null;
     games: Game[];
@@ -39,6 +45,7 @@ interface GameState {
     gameVotes: GameVote[];
     gameCollections: GameCollection[];
     gameGrid: Game[];
+    gameTag: GameTag[];
 }
 
 const defaultGameState: GameState = {
@@ -47,7 +54,8 @@ const defaultGameState: GameState = {
     gameVotes: [],
     gameCollections: [],
     gameGrid: [],
-    gameRecommendations: []
+    gameRecommendations: [],
+    gameTag: []
 }
 
 export const gameState = atom<GameState>({

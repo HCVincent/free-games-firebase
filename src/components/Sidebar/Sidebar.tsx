@@ -14,6 +14,9 @@ const Sidebar: React.FC<SidebarProps> = ({ setSelectedTab }) => {
         <li onClick={() => setSelectedTab("recommendations")}>
           <a>recommendations</a>
         </li>
+        <li onClick={() => setSelectedTab("tags")}>
+          <a>tags</a>
+        </li>
         <li onClick={() => setSelectedTab("users")}>
           <a>users</a>
         </li>

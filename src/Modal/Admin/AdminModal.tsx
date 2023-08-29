@@ -2,7 +2,7 @@ import { adminModalState } from "@/atoms/adminModalAtom";
 import useGames from "@/hooks/useGames";
 import { useRecoilState } from "recoil";
 import Add from "./Add";
-import Recommendations from "./Recommendations";
+import Tags from "./Tags";
 
 type AdminModalProps = {
   setSearchInput: (value: string) => void;
@@ -21,10 +21,10 @@ const AdminModal: React.FC<AdminModalProps> = ({
       view: "add",
     }));
   };
-  const handleRecommendations = () => {
+  const handleTags = () => {
     setModalState((prev) => ({
       ...prev,
-      view: "recommendations",
+      view: "tags",
     }));
   };
 
@@ -42,19 +42,25 @@ const AdminModal: React.FC<AdminModalProps> = ({
       >
         add
       </label>
-
+      <label
+        htmlFor="my_modal_admin_add"
+        className="btn btn-primary"
+        onClick={handleTags}
+      >
+        tags
+      </label>
       <input type="checkbox" id="my_modal_admin_add" className="modal-toggle" />
       <div className="modal ">
         <div className="modal-box">
           <div className="flex flex-col w-full justify-start items-start bg-base-100">
             <label className="label">
               {modalState.view === "add" && "add"}
-              {modalState.view === "recommendations" && "recommendations"}
+              {modalState.view === "tags" && "tags"}
             </label>
 
             <div className="flex flex-col w-full">
               {modalState.view === "add" && <Add />}
-              {modalState.view === "recommendations" && <Recommendations />}
+              {modalState.view === "tags" && <Tags />}
             </div>
           </div>
         </div>

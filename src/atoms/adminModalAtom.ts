@@ -2,7 +2,7 @@ import { atom } from "recoil";
 
 export interface AdminModalState {
     open: boolean;
-    view: "add" | "update" | "recommendations";
+    view: "add" | "update" | "recommendations" | "tags";
 }
 
 const defaultModalState: AdminModalState = {
