@@ -21,6 +21,7 @@ import {
   updateDoc,
   where,
   writeBatch,
+  or,
 } from "firebase/firestore";
 import {
   deleteObject,
@@ -55,21 +56,26 @@ const useGames = () => {
 
   const readGames = async (
     firebaseCollection: string,
-    parameter?: string,
-    limitedNum?: number
+    searchWord?: string,
+    limitedNum?: number,
+    notToSetGameState?: boolean
   ) => {
     try {
       // const gameQuery = query(
       //   collection(firestore, "games"),
       //   orderBy("createdAt", "desc")
       // );
-
-      const gameQuery = parameter
+      const gameQuery = searchWord
         ? query(
             collection(firestore, firebaseCollection),
             orderBy("title", "asc"),
-            where("title", ">=", parameter),
-            where("title", "<=", parameter + "\uf8ff"),
+            where(
+              "titleArray",
+              "array-contains-any",
+              searchWord.toLowerCase().split(" ")
+            ),
+            // where("title", ">=", searchWord.toLowerCase()),
+            // where("title", "<=", searchWord.toLowerCase() + "\uf8ff")
             limit(limitedNum ? limitedNum : numOfGamesPerPage)
           )
         : query(
@@ -77,24 +83,26 @@ const useGames = () => {
             orderBy("updatedAt", "desc"),
             limit(limitedNum ? limitedNum : numOfGamesPerPage)
           );
-
       const gameDocs = await getDocs(gameQuery);
-
       // Get the last visible document
       setLastVisible(gameDocs.docs[gameDocs.docs.length - 1]);
 
       const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      if (firebaseCollection === "games") {
-        setGameStateValue((prev) => ({
-          ...prev,
-          games: games as Game[],
-        }));
-      } else {
-        setGameStateValue((prev) => ({
-          ...prev,
-          gameRecommendations: games as Game[],
-        }));
+      if (!notToSetGameState) {
+        if (firebaseCollection === "games") {
+          setGameStateValue((prev) => ({
+            ...prev,
+            games: games as Game[],
+          }));
+        } else {
+          setGameStateValue((prev) => ({
+            ...prev,
+            gameRecommendations: games as Game[],
+          }));
+        }
       }
+
+      return games as Game[];
     } catch (error) {
       console.log("readGames error", error);
     }
@@ -127,11 +135,13 @@ const useGames = () => {
     try {
       const gameDocRef = doc(firestore, firebaseCollection, oldGame?.id!);
       const batch = writeBatch(firestore);
+      const newTitle = newGame.title.toLowerCase();
       batch.update(gameDocRef, {
-        title: newGame.title,
+        title: newTitle,
         body: newGame.body,
         address: newGame.address || "",
         updatedAt: newGame.updatedAt,
+        titleArray: newTitle.split(" "),
       });
 
       if (uploadImages) {

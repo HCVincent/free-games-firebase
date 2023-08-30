@@ -1,20 +1,51 @@
 import { useSearchDebounce } from "@/hooks/useSearchDebounce";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useDebounce } from "@uidotdev/usehooks";
+import useGames from "@/hooks/useGames";
+import { Game } from "@/atoms/gamesAtom";
 
-type SearchInputProps = {};
+type SearchInputProps = {
+  results: Game[];
+  setResults: (games: Game[]) => void;
+  setIsMyInputFocused: (isFocused: boolean) => void;
+};
 
-const SearchInput: React.FC<SearchInputProps> = () => {
-  const [search, setSearch, searchQuery] = useSearchDebounce();
+const SearchInput: React.FC<SearchInputProps> = ({
+  results,
+  setResults,
+  setIsMyInputFocused,
+}) => {
+  const { readGames } = useGames();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const router = useRouter();
 
   const onSubmit = async () => {
-    setSearch(""); // Use setSearchQuery to clear the search query
-    router.push({ pathname: "/search", query: { search: search } });
+    router.push({ pathname: "/search", query: { search: searchTerm } });
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
+  React.useEffect(() => {
+    const searchHN = async () => {
+      let results: Game[] = [];
+      setIsSearching(true);
+      if (debouncedSearchTerm) {
+        const data = await readGames("games", searchTerm, undefined, true);
+        results = data || [];
+      }
+      setIsSearching(false);
+      setResults(results);
+    };
+
+    searchHN();
+  }, [debouncedSearchTerm]);
   return (
-    <form className="mr-2">
+    <form>
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only"
@@ -44,11 +75,13 @@ const SearchInput: React.FC<SearchInputProps> = () => {
           id="default-search"
           className="block  w-full p-4 pl-10 text-sm text-gray-900 rounded-lg border border-b-2 focus:outline-none hover:border-gray-800 align-middle items-center"
           placeholder="Search"
-          onChange={(e) => setSearch(e.currentTarget.value)}
-          value={searchQuery}
+          onChange={handleChange}
+          onBlur={() => setIsMyInputFocused(false)}
+          onFocus={() => setIsMyInputFocused(true)}
           required
         />
         <button
+          disabled={isSearching}
           type="submit"
           className="btn normal-case absolute right-2 bottom-[0.25rem]  font-medium rounded-lg text-sm"
           onClick={(e) => {

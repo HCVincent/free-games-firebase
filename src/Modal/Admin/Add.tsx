@@ -54,7 +54,7 @@ const Add: React.FC<AddProps> = () => {
     setLoading(true);
     try {
       const newGame: Game = {
-        title: textInputs.title,
+        title: textInputs.title.toLowerCase(),
         body: textInputs.description,
         address: textInputs.address,
         recommend: false,
