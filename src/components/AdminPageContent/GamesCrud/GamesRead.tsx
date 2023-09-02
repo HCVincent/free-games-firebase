@@ -24,7 +24,6 @@ const GamesRead: React.FC<GamesReadProps> = () => {
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const { onSelectGame, gameStateValue, setGameStateValue } = useGames();
-
   const handleOnReadGames = async () => {
     setLoading(true);
     try {

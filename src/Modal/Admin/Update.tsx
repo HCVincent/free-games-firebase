@@ -14,7 +14,7 @@ type GameItemProps = {
 
 const Update: React.FC<GameItemProps> = ({ game }) => {
   const { gameStateValue } = useGames();
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>(game.tags || []);
   const [uploaded, setUploaded] = useState(false);
   const [uploadImages, setUploadImages] = useState(false);
   const [error, setError] = useState("");
@@ -71,6 +71,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
       coverImage: selectedImage,
       video: selectedVideo,
       imagesGroup: selectedImagesGroup,
+      tags: tags,
     };
 
     setLoading(true);
@@ -80,6 +81,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
         throw new Error("Failed to update game");
       } else {
         handleShowComplete();
+        setTags([]);
         setLoading(false);
       }
     } catch (error: any) {

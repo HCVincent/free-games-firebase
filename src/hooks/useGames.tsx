@@ -8,6 +8,8 @@ import {
 } from "@/atoms/gamesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
 import arrayCompare from "@/utils/arrayCompare";
+import differenceSet from "@/utils/differenceSet";
+import intersect from "@/utils/intersect";
 import {
   DocumentData,
   QueryDocumentSnapshot,
@@ -22,6 +24,8 @@ import {
   where,
   writeBatch,
   or,
+  arrayUnion,
+  arrayRemove,
 } from "firebase/firestore";
 import {
   deleteObject,
@@ -142,8 +146,34 @@ const useGames = () => {
         address: newGame.address || "",
         updatedAt: newGame.updatedAt,
         titleArray: newTitle.split(" "),
+        tags: newGame.tags || [],
       });
-
+      if (!oldGame.tags && newGame.tags && newGame.tags.length > 0) {
+        for (let index = 0; index < newGame.tags.length; index++) {
+          const tagDocRef = doc(firestore, "tags", newGame.tags[index]);
+          batch.update(tagDocRef, {
+            gameId: arrayUnion(newGame.id),
+          });
+        }
+      } else if (oldGame.tags && oldGame.tags.length > 0) {
+        const deletingArray = differenceSet(oldGame.tags, newGame.tags!);
+        if (deletingArray && deletingArray.length > 0) {
+          for (let index = 0; index < deletingArray.length; index++) {
+            const tagDocRef = doc(firestore, "tags", deletingArray[index]);
+            batch.update(tagDocRef, {
+              gameId: arrayRemove(newGame.id),
+            });
+          }
+        }
+        if (newGame.tags && newGame.tags.length > 0) {
+          for (let index = 0; index < newGame.tags.length; index++) {
+            const tagDocRef = doc(firestore, "tags", newGame.tags[index]);
+            batch.update(tagDocRef, {
+              gameId: arrayUnion(newGame.id),
+            });
+          }
+        }
+      }
       if (uploadImages) {
         const coverImageRef = ref(storage, `games/${oldGame.id}/coverImage`);
         if (oldGame.coverImage && oldGame.coverImage !== newGame.coverImage) {
@@ -268,7 +298,16 @@ const useGames = () => {
     game: Game
   ): Promise<boolean> => {
     try {
+      const batch = writeBatch(firestore);
       if (firebaseCollection === "games") {
+        if (game.tags && game.tags.length > 0) {
+          for (let index = 0; index < game.tags.length; index++) {
+            const tagDocRef = doc(firestore, "tags", game.tags[index]);
+            batch.update(tagDocRef, {
+              gameId: arrayRemove(game.id),
+            });
+          }
+        }
         if (game.coverImage) {
           const coverImageRef = ref(storage, `games/${game.id}/coverImage`);
 
@@ -315,7 +354,8 @@ const useGames = () => {
       }
 
       const gameDocRef = doc(firestore, firebaseCollection, game.id!);
-      await deleteDoc(gameDocRef);
+      batch.delete(gameDocRef);
+      await batch.commit();
       if (firebaseCollection === "games") {
         setGameStateValue((prev) => ({
           ...prev,
