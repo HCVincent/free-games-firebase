@@ -6,6 +6,7 @@ import Image from "next/image";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import ThumbsLike from "@/components/IndexPageContent/Recommendation/ThumbsLike";
 import Link from "next/link";
+import TagsCardList from "@/components/Tags/TagsCardList";
 
 type GamesGridItemProps = {
   game: Game;
@@ -37,7 +38,7 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
   return (
     <div className="flex">
       <Link href={`/games/${game.id}`}>
-        <div className="card  bg-base-100 shadow-xl h-80 w-96 hover:scale-105 transition-all ">
+        <div className="card  bg-base-100 shadow-xl h-96 w-80 hover:scale-105 transition-all ">
           <figure className="h-32 w-full items-start">
             {imageLoading && (
               <div className="flex w-full h-full items-center justify-center">
@@ -63,6 +64,7 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
                   new Date(game.createdAt.seconds * 1000)
                 ).fromNow()}`}
             </span>
+            {game.tags && <TagsCardList tags={game.tags} />}
             <ThumbsLike
               userVoteValue={userVoteValue}
               game={game}

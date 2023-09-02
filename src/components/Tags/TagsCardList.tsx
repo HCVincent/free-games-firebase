@@ -1,8 +1,17 @@
 import React from "react";
+import TagCard from "./TagCard";
 
-type TagsCardListProps = {};
+type TagsCardListProps = {
+  tags: string[];
+};
 
-const TagsCardList: React.FC<TagsCardListProps> = () => {
-  return <div>Have a good coding</div>;
+const TagsCardList: React.FC<TagsCardListProps> = ({ tags }) => {
+  return (
+    <div className="flex flex-wrap">
+      {tags.map((tag) => (
+        <TagCard tag={tag} key={tag}></TagCard>
+      ))}
+    </div>
+  );
 };
 export default TagsCardList;

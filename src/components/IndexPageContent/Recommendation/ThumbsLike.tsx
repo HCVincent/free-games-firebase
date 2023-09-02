@@ -46,7 +46,7 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
   };
   const [like, setLike] = useState(false);
   return (
-    <div className="flex w-[240px] h-full justify-between align-middle p-2 text-xl">
+    <div className="flex  h-full justify-between align-middle p-2 text-xl">
       <div className="flex flex-1 justify-between px-2 items-center">
         {loadingUpVote ? (
           <span className="flex loading loading-spinner"></span>

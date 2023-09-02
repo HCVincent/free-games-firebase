@@ -12,7 +12,7 @@ const Tags: React.FC<TagsProps> = () => {
   const [tagName, setTagName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const gameTags = gameStateValue.gameTags;
   const onSubmit = async () => {
     if (error) {
       setError("");
@@ -31,7 +31,7 @@ const Tags: React.FC<TagsProps> = () => {
           gameId: [],
         });
       });
-      const gameTag = [...gameStateValue.gameTag];
+      const gameTag = [...gameStateValue.gameTags];
       setGameStateValue((pref) => ({
         ...pref,
         gameTag: [...gameTag, { id: tagDocRef.id, title: tagName, gameId: [] }],
@@ -71,8 +71,8 @@ const Tags: React.FC<TagsProps> = () => {
       <div className="text-red-500"> {error}</div>
 
       <div className="flex mt-10">
-        {gameStateValue.gameTag.map((tag) => (
-          <TagCard tag={tag} key={tag.id}></TagCard>
+        {gameTags.map((tag) => (
+          <TagCard tag={tag.title} key={tag.id}></TagCard>
         ))}
       </div>
     </div>
