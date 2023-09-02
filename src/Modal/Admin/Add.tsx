@@ -1,7 +1,8 @@
-import { Game } from "@/atoms/gamesAtom";
+import { Game, GameTag } from "@/atoms/gamesAtom";
 import ImageUpload from "@/components/AdminPageContent/AddGames/ImageUpload";
 import ImagesGroupUpload from "@/components/AdminPageContent/AddGames/ImagesGroupUpload";
 import VideoUpload from "@/components/AdminPageContent/AddGames/VideoUpload";
+import TagsCheckboxList from "@/components/Tags/TagsCheckboxList";
 import { firestore, storage } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
 import useSelectFile from "@/hooks/useSelectFile";
@@ -10,7 +11,9 @@ import {
   Timestamp,
   addDoc,
   collection,
+  doc,
   serverTimestamp,
+  updateDoc,
   writeBatch,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
@@ -23,6 +26,8 @@ const Add: React.FC<AddProps> = () => {
   const [loading, setLoading] = useState(false);
   const [addComplete, setAddComplete] = useState(false);
   const { gameStateValue, setGameStateValue } = useGames();
+  const [canAdd, setCanAdd] = useState(false);
+  const [tags, setTags] = useState<string[]>([]);
   const {
     selectedImage,
     setSelectedImage,
@@ -61,6 +66,7 @@ const Add: React.FC<AddProps> = () => {
         voteStatus: 0,
         createdAt: serverTimestamp() as Timestamp,
         updatedAt: serverTimestamp() as Timestamp,
+        tags: tags,
       };
       const gameDocRef = await addDoc(collection(firestore, "games"), newGame);
       const batch = writeBatch(firestore);
@@ -69,6 +75,14 @@ const Add: React.FC<AddProps> = () => {
         id: gameDocRef.id,
       });
 
+      if (tags && tags.length > 0) {
+        for (let index = 0; index < tags.length; index++) {
+          const tagDocRef = doc(firestore, "tags", tags[index]);
+          batch.update(tagDocRef, {
+            gameId: arrayUnion(newGame.id),
+          });
+        }
+      }
       if (selectedImage) {
         const coverImageRef = ref(
           storage,
@@ -120,6 +134,7 @@ const Add: React.FC<AddProps> = () => {
       setSelectedImage("");
       setSelectedVideo("");
       setSelectedImagesGroup([]);
+      setTags([]);
     } catch (error: any) {
       console.log("handleUploadGame error", error.message);
       setError(error);
@@ -138,6 +153,7 @@ const Add: React.FC<AddProps> = () => {
       ...prev,
       [name]: value,
     }));
+    setCanAdd(true);
   };
 
   return (
@@ -185,7 +201,11 @@ const Add: React.FC<AddProps> = () => {
         onSelectImagesGroup={onSelectImagesGroup}
         setSelectedImagesGroup={setSelectedImagesGroup}
       />
-
+      <TagsCheckboxList
+        gameTags={gameStateValue.gameTags}
+        setTags={setTags}
+        tags={tags}
+      />
       {addComplete && (
         <div className="alert alert-success">
           <svg
@@ -211,6 +231,7 @@ const Add: React.FC<AddProps> = () => {
             e.preventDefault;
             onSubmit();
           }}
+          disabled={!canAdd}
         >
           {loading ? <span className="loading loading-spinner"></span> : "Add"}
         </button>

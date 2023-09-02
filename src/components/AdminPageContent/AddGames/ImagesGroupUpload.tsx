@@ -51,9 +51,7 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
           className="btn"
           onClick={(e) => {
             e.preventDefault();
-            console.log("selectedImagesGroup", selectedImagesGroup?.length);
             setSelectedImagesGroup([]);
-            console.log("selectedImagesGroup", selectedImagesGroup?.length);
             selectedFileRef.current?.click();
           }}
         >

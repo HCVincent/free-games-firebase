@@ -1,5 +1,5 @@
 import { GameTag } from "@/atoms/gamesAtom";
-import TagCard from "@/components/TagCard/TagCard";
+import TagCard from "@/components/Tags/TagCard";
 import { firestore } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
 import { collection, doc, getDoc, runTransaction } from "firebase/firestore";

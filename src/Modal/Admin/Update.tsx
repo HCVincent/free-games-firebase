@@ -2,6 +2,7 @@ import { Game } from "@/atoms/gamesAtom";
 import ImageUpload from "@/components/AdminPageContent/AddGames/ImageUpload";
 import ImagesGroupUpload from "@/components/AdminPageContent/AddGames/ImagesGroupUpload";
 import VideoUpload from "@/components/AdminPageContent/AddGames/VideoUpload";
+import TagsCheckboxList from "@/components/Tags/TagsCheckboxList";
 import useGames from "@/hooks/useGames";
 import useSelectFile from "@/hooks/useSelectFile";
 import { Timestamp, serverTimestamp } from "firebase/firestore";
@@ -12,6 +13,8 @@ type GameItemProps = {
 };
 
 const Update: React.FC<GameItemProps> = ({ game }) => {
+  const { gameStateValue } = useGames();
+  const [tags, setTags] = useState<string[]>([]);
   const [uploaded, setUploaded] = useState(false);
   const [uploadImages, setUploadImages] = useState(false);
   const [error, setError] = useState("");
@@ -29,7 +32,6 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
     selectedImagesGroup,
     setSelectedImagesGroup,
   } = useSelectFile();
-
   useEffect(() => {
     setUploaded(false);
     setTextInputs({
@@ -162,7 +164,12 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
           />
         </div>
       )}
-
+      <TagsCheckboxList
+        gameTags={gameStateValue.gameTags}
+        setTags={setTags}
+        tags={tags}
+        currentGameTags={game.tags}
+      />
       {addComplete && (
         <div className="alert alert-success">
           <svg

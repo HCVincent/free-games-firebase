@@ -12,18 +12,12 @@ type PropType = {
 };
 
 const EmblaCarousel: React.FC<PropType> = (props) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const { onSelectGame, gameStateValue, onVote, onCollect } = useGames();
-  const handlePrevSlide = () => {};
-
-  const handleNextSlide = () => {};
   const { slides, options } = props;
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options, [
     Autoplay({ stopOnInteraction: false }),
   ]);
-  const [emblaRef] = useEmblaCarousel(options, [
-    Autoplay({ stopOnInteraction: false }),
-  ]);
+
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
     containScroll: "keepSnaps",
@@ -50,7 +44,6 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
   }, [emblaMainApi, onSelect]);
 
   return (
-    //
     <div className="embla hover:scale-105 transition-all">
       <div className="embla__viewport" ref={emblaMainRef}>
         <div className="embla__container">
@@ -59,9 +52,6 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
               key={game.id}
               game={game}
               index={index}
-              handlePrevSlide={handlePrevSlide}
-              handleNextSlide={handleNextSlide}
-              currentSlide={currentSlide}
               onSelectGame={onSelectGame}
               onVote={onVote}
               onCollect={onCollect}

@@ -76,9 +76,10 @@ const SearchInput: React.FC<SearchInputProps> = ({
           className="block  w-full p-4 pl-10 text-sm text-gray-900 rounded-lg border border-b-2 focus:outline-none hover:border-gray-800 align-middle items-center"
           placeholder="Search"
           onChange={handleChange}
-          onBlur={() => setIsMyInputFocused(false)}
+          onBlur={() => {
+            setTimeout(() => setIsMyInputFocused(false), 100);
+          }}
           onFocus={() => setIsMyInputFocused(true)}
-          required
         />
         <button
           disabled={isSearching}

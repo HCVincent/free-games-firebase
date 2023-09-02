@@ -17,6 +17,7 @@ export type Game = {
     createdAt?: Timestamp;
     updatedAt: Timestamp;
     numberOfComments?: number;
+    tags?: string[];
 }
 
 
@@ -45,7 +46,7 @@ interface GameState {
     gameVotes: GameVote[];
     gameCollections: GameCollection[];
     gameGrid: Game[];
-    gameTag: GameTag[];
+    gameTags: GameTag[];
 }
 
 const defaultGameState: GameState = {
@@ -55,7 +56,7 @@ const defaultGameState: GameState = {
     gameCollections: [],
     gameGrid: [],
     gameRecommendations: [],
-    gameTag: []
+    gameTags: []
 }
 
 export const gameState = atom<GameState>({

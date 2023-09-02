@@ -12,7 +12,7 @@ const AdminPage: React.FC<AdminPageProps> = ({ children }) => {
           {children && children[0 as keyof typeof children]}
         </div>
 
-        <div className="flex flex-1 overflow-y-auto paragraph">
+        <div className="flex flex-1 overflow-y-auto">
           {children && children[1 as keyof typeof children]}
         </div>
       </div>

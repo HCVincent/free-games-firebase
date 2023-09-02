@@ -26,7 +26,7 @@ const GamesGridList: React.FC<GamesGridListProps> = () => {
   const [noMoreLoad, setNoMoreLoad] = useState(false);
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { gameStateValue, onCollect, onSelectGame } = useGames();
+  const { gameStateValue, onVote, onCollect, onSelectGame } = useGames();
   const handleOnReadGames = async () => {
     setLoading(true);
     try {
@@ -82,16 +82,22 @@ const GamesGridList: React.FC<GamesGridListProps> = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center h-full justify-between mt-10">
-          <div className="flex flex-col items-center h-full justify-between lg:grid lg:grid-cols-5 lg:gap-4">
-            {gameStateValue.games.map((item) => (
+          <div className="flex flex-col items-center h-full justify-between lg:grid lg:grid-cols-4 lg:gap-4">
+            {gameStateValue.games.map((game) => (
               <GamesGridItem
-                key={item.id}
-                game={item}
+                key={game.id}
+                game={game}
                 userCollectionValue={
                   gameStateValue.gameCollections.find(
-                    (collection) => collection.gameId === item.id
+                    (collection) => collection.gameId === game.id
                   )?.gameId
                 }
+                userVoteValue={
+                  gameStateValue.gameVotes.find(
+                    (vote) => vote.gameId === game.id
+                  )?.voteValue
+                }
+                onVote={onVote}
                 onCollect={onCollect}
                 onSelectGame={onSelectGame}
               />

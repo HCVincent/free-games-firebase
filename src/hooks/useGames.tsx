@@ -526,7 +526,7 @@ const useGames = () => {
     }));
     setGameStateValue((prev) => ({
       ...prev,
-      gameTag: gameTags as GameTag[],
+      gameTags: gameTags as GameTag[],
     }));
   };
 
