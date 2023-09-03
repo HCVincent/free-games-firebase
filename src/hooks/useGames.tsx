@@ -58,6 +58,24 @@ const useGames = () => {
     }
   };
 
+  const readGamesByTag = async (tag: string) => {
+    try {
+      const gameQuery = query(
+        collection(firestore, "games"),
+        orderBy("updatedAt", "desc"),
+        where("tags", "array-contains", tag)
+      );
+      const gameDocs = await getDocs(gameQuery);
+      const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setGameStateValue((prev) => ({
+        ...prev,
+        gamesInTag: games as Game[],
+      }));
+    } catch (error) {
+      console.log("gameQuery error", error);
+    }
+  };
+
   const readGames = async (
     firebaseCollection: string,
     searchWord?: string,
@@ -600,6 +618,7 @@ const useGames = () => {
     lastVisible,
     setLastVisible,
     readGames,
+    readGamesByTag,
     numOfGamesPerPage,
     onVote,
     onCollect,

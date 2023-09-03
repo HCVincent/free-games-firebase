@@ -38,7 +38,7 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
   return (
     <div className="flex">
       <Link href={`/games/${game.id}`}>
-        <div className="card  bg-base-100 shadow-xl h-96 w-80 hover:scale-105 transition-all ">
+        <div className="card  bg-base-100 shadow-xl h-[30rem] w-80 hover:scale-105 transition-all ">
           <figure className="h-32 w-full items-start">
             {imageLoading && (
               <div className="flex w-full h-full items-center justify-center">
@@ -64,7 +64,10 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
                   new Date(game.createdAt.seconds * 1000)
                 ).fromNow()}`}
             </span>
-            {game.tags && <TagsCardList tags={game.tags} />}
+            <div className="flex flex-1">
+              {game.tags && <TagsCardList tags={game.tags} />}
+            </div>
+
             <ThumbsLike
               userVoteValue={userVoteValue}
               game={game}

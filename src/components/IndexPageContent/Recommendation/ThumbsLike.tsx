@@ -47,9 +47,9 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
   const [like, setLike] = useState(false);
   return (
     <div className="flex  h-full justify-between align-middle p-2 text-xl">
-      <div className="flex flex-1 justify-between px-2 items-center">
+      <div className="flex flex-1 justify-between px-2 items-end">
         {loadingUpVote ? (
-          <span className="flex loading loading-spinner"></span>
+          <span className="flex loading loading-spinner "></span>
         ) : (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -70,7 +70,7 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
           </svg>
         )}
 
-        <span className="flex text-4xl p-4 text-white">
+        <span className="flex text-4xl  text-white align-bottom mb-1">
           {game.voteStatus ? game.voteStatus : 0}
         </span>
         {loadingDownVote ? (
@@ -96,7 +96,7 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
         )}
       </div>
       <button
-        className="flex flex-1 text-white justify-end items-center transition-all hover:scale-110"
+        className="flex flex-1 text-white justify-end items-end transition-all hover:scale-110"
         onClick={() => setLike(!like)}
       >
         {userCollectionValue === game.id ? (

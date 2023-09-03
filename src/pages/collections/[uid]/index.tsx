@@ -55,7 +55,7 @@ const CollectionPage: React.FC<CollectionsProps> = ({ uid }) => {
                   <GamesVerticalList games={collections} router={router} />
                 </div>
               ) : (
-                <>loading</>
+                <>no collections yet</>
               )}
             </div>
             <>advertisement</>
