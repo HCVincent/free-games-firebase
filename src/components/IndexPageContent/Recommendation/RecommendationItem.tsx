@@ -66,13 +66,15 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
               moment(new Date(game.createdAt.seconds * 1000)).fromNow()}
           </span>
         </div>
-        <ThumbsLike
-          userVoteValue={userVoteValue}
-          game={game}
-          userCollectionValue={userCollectionValue}
-          onCollect={onCollect}
-          onVote={onVote}
-        />
+        <div className="flex flex-col flex-0 min-w-[20rem] ">
+          <ThumbsLike
+            userVoteValue={userVoteValue}
+            game={game}
+            userCollectionValue={userCollectionValue}
+            onCollect={onCollect}
+            onVote={onVote}
+          />
+        </div>
       </div>
     </div>
   );
