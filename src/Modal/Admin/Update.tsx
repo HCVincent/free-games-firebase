@@ -17,6 +17,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
   const [tags, setTags] = useState<string[]>(game.tags || []);
   const [uploaded, setUploaded] = useState(false);
   const [uploadImages, setUploadImages] = useState(false);
+  const [uploadTags, setUploadTags] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [addComplete, setAddComplete] = useState(false);
@@ -165,13 +166,26 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
             setSelectedImagesGroup={setSelectedImagesGroup}
           />
         </div>
+      )}{" "}
+      <div className="form-control">
+        <label className="label cursor-pointer">
+          <span className="label-text">Upload Tags?</span>
+          <input
+            onChange={() => setUploadTags(!uploadTags)}
+            type="checkbox"
+            checked={uploadTags}
+            className="checkbox checkbox-primary"
+          />
+        </label>
+      </div>
+      {uploadTags && (
+        <TagsCheckboxList
+          gameTags={gameStateValue.gameTags}
+          setTags={setTags}
+          tags={tags}
+          currentGameTags={game.tags}
+        />
       )}
-      <TagsCheckboxList
-        gameTags={gameStateValue.gameTags}
-        setTags={setTags}
-        tags={tags}
-        currentGameTags={game.tags}
-      />
       {addComplete && (
         <div className="alert alert-success">
           <svg

@@ -36,8 +36,6 @@ const GamesRead: React.FC<GamesReadProps> = () => {
 
   const loadMore = async () => {
     setLoadMoreLoading(true);
-    // Construct a new query starting at this document,
-    // get the next 25 cities.
     next = query(
       collection(firestore, "games"),
       orderBy("updatedAt", "desc"),
@@ -52,6 +50,11 @@ const GamesRead: React.FC<GamesReadProps> = () => {
       id: doc.id,
       ...doc.data(),
     }));
+    if (games.length < numOfGamesPerPage) {
+      setNoMoreLoad(true);
+    } else {
+      setNoMoreLoad(false);
+    }
     setLastVisible(newGameDocs.docs[newGameDocs.docs.length - 1]);
     //@ts-ignore
     setGameStateValue((prev) => ({
@@ -64,17 +67,6 @@ const GamesRead: React.FC<GamesReadProps> = () => {
   useEffect(() => {
     handleOnReadGames();
   }, []);
-
-  useEffect(() => {
-    const checkIfLoadMore = () => {
-      if (gameStateValue.games.length < numOfGamesPerPage) {
-        setNoMoreLoad(true);
-      } else {
-        setNoMoreLoad(false);
-      }
-    };
-    checkIfLoadMore();
-  }, [gameStateValue.games]);
 
   return (
     <div className="flex flex-col flex-1 py-2 ">

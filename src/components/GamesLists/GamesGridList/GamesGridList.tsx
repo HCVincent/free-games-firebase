@@ -53,6 +53,11 @@ const GamesGridList: React.FC<GamesGridListProps> = () => {
       id: doc.id,
       ...doc.data(),
     }));
+    if (games.length < numOfGamesPerPage) {
+      setNoMoreLoad(true);
+    } else {
+      setNoMoreLoad(false);
+    }
     setLastVisible(newGameDocs.docs[newGameDocs.docs.length - 1]);
     //@ts-ignore
     setGameStateValue((prev) => ({
@@ -64,16 +69,7 @@ const GamesGridList: React.FC<GamesGridListProps> = () => {
   useEffect(() => {
     handleOnReadGames();
   }, []);
-  useEffect(() => {
-    const checkIfLoadMore = () => {
-      if (gameStateValue.games.length === 15) {
-        setNoMoreLoad(false);
-      } else {
-        setNoMoreLoad(true);
-      }
-    };
-    checkIfLoadMore();
-  }, [gameStateValue.games]);
+
   return (
     <>
       {loading ? (

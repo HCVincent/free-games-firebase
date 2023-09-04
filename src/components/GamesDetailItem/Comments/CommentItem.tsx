@@ -3,7 +3,7 @@ import { User } from "@firebase/auth";
 import { Timestamp } from "firebase-admin/firestore";
 import moment from "moment";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import {
   IoArrowDownCircleOutline,
   IoArrowUpCircleOutline,
@@ -32,6 +32,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
   loadingDelete,
   user,
 }) => {
+  const [reply, setReply] = useState(false);
+  const [replyText, setReplyText] = useState("");
   return (
     <div className="flex mt-4">
       <div className="flex h-20 w-20 justify-center">
@@ -56,25 +58,36 @@ const CommentItem: React.FC<CommentItemProps> = ({
             <span className="loading loading-spinner loading-md ml-4"></span>
           )}
         </div>
-        <Text fontSize="10pt">{comment.text}</Text>
-        <Stack direction="row" align="center" cursor="pointer" color="gray.500">
-          <Icon as={IoArrowUpCircleOutline} />
-          <Icon as={IoArrowDownCircleOutline} />
+        <span className="text-lg">{comment.text}</span>
+        <div className="flex align-middle cursor-pointer">
+          {/* <Icon as={IoArrowUpCircleOutline} />
+          <Icon as={IoArrowDownCircleOutline} /> */}
+          <button
+            className="text-base btn btn-ghost"
+            onClick={() => setReply(!reply)}
+          >
+            Reply
+          </button>{" "}
           {user.uid === comment.creatorId && (
             <>
-              <Text fontSize="9pt" _hover={{ color: "blue.500" }}>
-                Edit
-              </Text>
-              <Text
-                fontSize="9pt"
-                _hover={{ color: "blue.500" }}
+              {reply && (
+                <textarea
+                  value={replyText}
+                  // onChange={(event) => setCommentText(event.target.value)}
+                  // onChange={handleChange}
+                  placeholder="What are your thoughts?"
+                  className="textarea textarea-bordered textarea-lg w-full h-40 overflow:hidden"
+                />
+              )}
+              <button
+                className="text-base ml-5 btn btn-ghost"
                 onClick={() => onDeleteComment(comment)}
               >
                 Delete
-              </Text>
+              </button>
             </>
           )}
-        </Stack>
+        </div>
       </div>
     </div>
   );
