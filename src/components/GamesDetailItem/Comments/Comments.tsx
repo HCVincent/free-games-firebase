@@ -40,6 +40,7 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
         gameTitle: game.title!,
         text: commentText,
         createdAt: serverTimestamp() as Timestamp,
+        isRoot: true,
       };
       batch.set(commentDocRef, newComment);
       newComment.createdAt = { seconds: Date.now() / 1000 } as Timestamp;
@@ -101,7 +102,11 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
         id: doc.id,
         ...doc.data(),
       }));
-      setComments(comments as Comment[]);
+      let rootComments = comments as Comment[];
+      rootComments = rootComments.filter((rootComment) => {
+        return rootComment.isRoot;
+      });
+      setComments(rootComments as Comment[]);
     } catch (error) {
       console.log("getGameComments error", error);
     }
@@ -125,60 +130,19 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
         ) : (
           <>
             {comments.map((comment) => (
-              <CommentItem
-                key={comment.id}
-                comment={comment}
-                onDeleteComment={onDeleteComment}
-                loadingDelete={loadingDeleteId === comment.id}
-                user={user}
-              ></CommentItem>
+              <div className="flex" key={comment.id}>
+                <CommentItem
+                  key={comment.id}
+                  comment={comment}
+                  onDeleteComment={onDeleteComment}
+                  loadingDelete={loadingDeleteId === comment.id}
+                  user={user}
+                ></CommentItem>
+              </div>
             ))}
           </>
         )}
       </div>
-      {/* <Stack spacing={6} p={2}>
-        {fetchLoading ? (
-          <>
-            {[0, 1, 2].map((item) => (
-              <Box key={item} padding="6" bg="white">
-                <SkeletonCircle size="10" />
-                <SkeletonText mt="4" noOfLines={2} spacing="4" />
-              </Box>
-            ))}
-          </>
-        ) : (
-          <>
-            {comments.length === 0 ? (
-              <>
-                <Flex
-                  direction="column"
-                  justify="center"
-                  align="center"
-                  borderTop="1px solid"
-                  borderColor="gray.100"
-                  p={20}
-                >
-                  <Text fontWeight={700} opacity={0.3}>
-                    No Comments Yet
-                  </Text>
-                </Flex>
-              </>
-            ) : (
-              <>
-                {comments.map((comment) => (
-                  <CommentItem
-                    key={comment.id}
-                    comment={comment}
-                    onDeleteComment={onDeleteComment}
-                    loadingDelete={loadingDeleteId === comment.id}
-                    userId={user.uid}
-                  />
-                ))}
-              </>
-            )}
-          </>
-        )}
-      </Stack> */}
     </div>
   );
 };
