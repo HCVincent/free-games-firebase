@@ -5,6 +5,7 @@ import CommentItem, { Comment } from "./CommentItem";
 import { firestore } from "@/firebase/clientApp";
 import {
   Timestamp,
+  arrayRemove,
   collection,
   doc,
   getDocs,
@@ -36,6 +37,7 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
         id: commentDocRef.id,
         creatorId: user.uid,
         creatorDisplayText: user.email!.split("@")[0],
+        creatorImageURL: user.photoURL || undefined,
         gameId: game.id!,
         gameTitle: game.title!,
         text: commentText,
@@ -69,6 +71,12 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
     setLoadingDeleteId(comment.id);
     try {
       const batch = writeBatch(firestore);
+      if (comment.fatherCommentId) {
+        const fatherDocRef = doc(firestore, "games", comment.id!);
+        batch.update(fatherDocRef, {
+          subCommentsId: arrayRemove(comment.id),
+        });
+      }
       const commentDocRef = doc(firestore, "comments", comment.id);
       batch.delete(commentDocRef);
       const gameDocRef = doc(firestore, "games", game.id!);
@@ -132,11 +140,14 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
             {comments.map((comment) => (
               <div className="flex" key={comment.id}>
                 <CommentItem
+                  gameId={game.id!}
+                  gameTitle={game.title!}
                   key={comment.id}
                   comment={comment}
                   onDeleteComment={onDeleteComment}
                   loadingDelete={loadingDeleteId === comment.id}
                   user={user}
+                  loadingDeleteId={loadingDeleteId}
                 ></CommentItem>
               </div>
             ))}

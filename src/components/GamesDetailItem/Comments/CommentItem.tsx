@@ -3,33 +3,51 @@ import { User } from "@firebase/auth";
 import { Timestamp } from "firebase-admin/firestore";
 import moment from "moment";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   IoArrowDownCircleOutline,
   IoArrowUpCircleOutline,
 } from "react-icons/io5";
 import defaultcover from "../../../../public/default_cover.png";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { authModalState } from "@/atoms/authModalAtom";
-import { writeBatch } from "firebase/firestore";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  increment,
+  orderBy,
+  query,
+  serverTimestamp,
+  where,
+  writeBatch,
+  getDocs,
+  getDoc,
+} from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
+import { Game, gameState } from "@/atoms/gamesAtom";
 
 export type Comment = {
   id: string;
   creatorId: string;
   creatorDisplayText: string;
+  creatorImageURL?: string;
   gameId: string;
   gameTitle: string;
   text: string;
   createdAt: Timestamp;
-  subComments?: Comment[];
+  subCommentsId?: string[];
   isRoot?: boolean;
+  fatherCommentId?: string;
 };
 type CommentItemProps = {
   comment: Comment;
   onDeleteComment: (comment: Comment) => void;
   loadingDelete: boolean;
   user: User;
+  gameId: string;
+  gameTitle: string;
+  loadingDeleteId: string;
 };
 
 const CommentItem: React.FC<CommentItemProps> = ({
@@ -37,7 +55,11 @@ const CommentItem: React.FC<CommentItemProps> = ({
   onDeleteComment,
   loadingDelete,
   user,
+  gameId,
+  gameTitle,
+  loadingDeleteId,
 }) => {
+  const setGameState = useSetRecoilState(gameState);
   const [subComments, setSubComments] = useState<Comment[]>([]);
   const [charsRemaining, setCharsRemaining] = useState(1000);
   const [reply, setReply] = useState(false);
@@ -56,45 +78,76 @@ const CommentItem: React.FC<CommentItemProps> = ({
       view: "login",
     }));
   };
-  // const onCreateComment = async (commentText: string) => {
-  //   try {
-  //     const batch = writeBatch(firestore);
-  //     const commentDocRef = doc(collection(firestore, "comments"));
-  //     const newComment: Comment = {
-  //       id: commentDocRef.id,
-  //       creatorId: user.uid,
-  //       creatorDisplayText: user.email!.split("@")[0],
-  //       gameId: game.id!,
-  //       gameTitle: game.title!,
-  //       text: commentText,
-  //       createdAt: serverTimestamp() as Timestamp,
-  //       isRoot: false,
-  //     };
-  //     batch.set(commentDocRef, newComment);
-  //     newComment.createdAt = { seconds: Date.now() / 1000 } as Timestamp;
-  //     const gameDocRef = doc(firestore, "games", game.id!);
-  //     batch.update(gameDocRef, {
-  //       numberOfComments: increment(1),
-  //     });
-  //     await batch.commit();
-  //     setCommentText("");
-  //     setComments((prev) => [newComment, ...prev]);
-  //     setGameState((prev) => ({
-  //       ...prev,
-  //       selectedGame: {
-  //         ...prev.selectedGame,
-  //         numberOfComments: prev.selectedGame?.numberOfComments! + 1,
-  //       } as Game,
-  //     }));
-  //   } catch (error) {
-  //     console.log("onCreateComment error", error);
-  //   }
-  // };
+  const onCreateComment = async (commentText: string) => {
+    try {
+      const batch = writeBatch(firestore);
+      const commentDocRef = doc(collection(firestore, "comments"));
+      const newComment: Comment = {
+        id: commentDocRef.id,
+        creatorId: user.uid,
+        creatorDisplayText: user.email!.split("@")[0],
+        creatorImageURL: user.photoURL || undefined,
+        gameId: gameId,
+        gameTitle: gameTitle,
+        text: commentText,
+        createdAt: serverTimestamp() as Timestamp,
+        isRoot: false,
+        fatherCommentId: comment.id,
+      };
+      const subCommentDocRef = doc(firestore, "comments", comment.id);
+      batch.update(subCommentDocRef, {
+        subCommentsId: arrayUnion(commentDocRef.id),
+      });
+      batch.set(commentDocRef, newComment);
+      newComment.createdAt = { seconds: Date.now() / 1000 } as Timestamp;
+      const gameDocRef = doc(firestore, "games", gameId);
+      batch.update(gameDocRef, {
+        numberOfComments: increment(1),
+      });
+      await batch.commit();
+      setCommentText("");
+      setSubComments((prev) => [newComment, ...prev]);
+      setReply(false);
+      setGameState((prev) => ({
+        ...prev,
+        selectedGame: {
+          ...prev.selectedGame,
+          numberOfComments: prev.selectedGame?.numberOfComments! + 1,
+        } as Game,
+      }));
+    } catch (error) {
+      console.log("onCreateComment error", error);
+    }
+  };
+  const getGameComments = async () => {
+    try {
+      if (comment.subCommentsId && comment.subCommentsId.length > 0) {
+        const subCommentsQuery = query(
+          collection(firestore, "comments"),
+          where("id", "in", comment.subCommentsId),
+          orderBy("createdAt", "desc")
+        );
+        const commentDocs = await getDocs(subCommentsQuery);
+        const comments = commentDocs.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setSubComments(comments as Comment[]);
+      }
+    } catch (error) {
+      console.log("getGameComments error", error);
+    }
+  };
+
+  useEffect(() => {
+    if (!gameId) return;
+    getGameComments();
+  }, [gameId]);
   return (
     <div className="flex mt-4 w-full">
       <div className="flex h-20 w-20 justify-center">
         <Image
-          src={user.photoURL ? user.photoURL : defaultcover}
+          src={comment.creatorImageURL ? comment.creatorImageURL : defaultcover}
           color="gray.300"
           alt="avatar"
           width={50}
@@ -124,7 +177,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
           >
             Reply
           </button>{" "}
-          {user.uid === comment.creatorId && (
+          {user?.uid === comment.creatorId && (
             <>
               <button
                 className="text-base ml-5 btn btn-ghost"
@@ -169,7 +222,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
                   <button
                     className="btn btn-primary h-full"
                     disabled={!commentText.length || commentText.length > 1000}
-                    // onClick={() => onCreateComment(commentText)}
+                    onClick={() => onCreateComment(commentText)}
                   >
                     Reply
                   </button>
@@ -193,7 +246,22 @@ const CommentItem: React.FC<CommentItemProps> = ({
             )}
           </div>
         )}
-        {subComments && subComments.length > 0 && <></>}
+        {subComments &&
+          subComments.length > 0 &&
+          subComments.map((comment) => (
+            <div className="flex" key={comment.id}>
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                onDeleteComment={onDeleteComment}
+                loadingDelete={loadingDeleteId === comment.id}
+                user={user}
+                gameId={gameId}
+                gameTitle={gameTitle}
+                loadingDeleteId={loadingDeleteId}
+              ></CommentItem>
+            </div>
+          ))}
       </div>
     </div>
   );
