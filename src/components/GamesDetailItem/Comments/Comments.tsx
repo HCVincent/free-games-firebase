@@ -71,8 +71,28 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
     setLoadingDeleteId(comment.id);
     try {
       const batch = writeBatch(firestore);
+      if (comment.subCommentsId && comment.subCommentsId.length > 0) {
+        const commentsQuery = query(
+          collection(firestore, "comments"),
+          where("id", "in", comment.subCommentsId)
+        );
+        const commentDocs = await getDocs(commentsQuery);
+        const comments = commentDocs.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Comment[];
+        if (comments && comments.length > 0) {
+          comments.map((com) => {
+            onDeleteComment(com);
+          });
+        }
+        comment.subCommentsId.map((subCommentId) => {
+          const subCommentDocRef = doc(firestore, "comments", subCommentId);
+          batch.delete(subCommentDocRef);
+        });
+      }
       if (comment.fatherCommentId) {
-        const fatherDocRef = doc(firestore, "games", comment.id!);
+        const fatherDocRef = doc(firestore, "comments", comment.id!);
         batch.update(fatherDocRef, {
           subCommentsId: arrayRemove(comment.id),
         });
