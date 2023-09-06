@@ -54,11 +54,11 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
               onLoad={() => setImageLoading(false)}
             />
           </figure>
-          <div className="card-body cursor-pointer flex flex-col h-48 m-0 p-1">
-            <h2 className="card-title flex-1 text-xl justify-start top-0 align-top items-start line-clamp-2 min-h-[6rem]">
+          <div className="card-body cursor-pointer flex flex-col h-48 m-0 p-2">
+            <h2 className="card-title flex-1 text-xl justify-start top-0 align-top items-start capitalize line-clamp-2 min-h-[4rem]">
               {game.title.charAt(0).toUpperCase() + game.title.slice(1)}
             </h2>
-            <span className="flex-1 text-slate-500">
+            <span className="flex text-slate-500">
               {game.createdAt &&
                 `updated at ${moment(
                   new Date(game.createdAt.seconds * 1000)

@@ -10,7 +10,7 @@ const TagsCrud: React.FC = () => {
   return (
     <div className="flex flex-col h-full p-4">
       <AdminModal setSearchInput={setSearchInput} searchInput={searchInput} />
-      <div className="grid grid-cols-7">
+      <div className="flex ">
         {gameStateValue.gameTags.map((tag) => (
           <TagCard tag={tag.title} key={tag.id}></TagCard>
         ))}

@@ -57,7 +57,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
 
       <div className="flex flex-1 h-full items-center justify-between px-8">
         <div className="flex items-end p-2">
-          <span className="text-xl  text-white max-w-2xl line-clamp-1 lg:text-4xl">
+          <span className="text-xl  text-white max-w-2xl line-clamp-1 lg:text-4xl capitalize">
             {game.title.charAt(0).toUpperCase() + game.title.slice(1)}
           </span>
           <span className="ml-2 text-slate-500">

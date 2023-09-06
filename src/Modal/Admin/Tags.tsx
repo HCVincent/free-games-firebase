@@ -34,7 +34,10 @@ const Tags: React.FC<TagsProps> = () => {
       const gameTag = [...gameStateValue.gameTags];
       setGameStateValue((pref) => ({
         ...pref,
-        gameTag: [...gameTag, { id: tagDocRef.id, title: tagName, gameId: [] }],
+        gameTags: [
+          ...gameTag,
+          { id: tagDocRef.id, title: tagName, gameId: [] },
+        ],
       }));
     } catch (error: any) {
       console.log("add tags error", error);

@@ -46,8 +46,8 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
   };
   const [like, setLike] = useState(false);
   return (
-    <div className="flex  h-full justify-between align-middle p-2 text-xl">
-      <div className="flex flex-1 justify-between px-2 items-end">
+    <div className="flex  h-[4rem] justify-between align-middle p-2 text-xl">
+      <div className="flex w-[12rem] justify-between px-2 items-end">
         {loadingUpVote ? (
           <span className="flex loading loading-spinner "></span>
         ) : (
@@ -60,7 +60,11 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
             className={`flex w-12 h-12 ${
               userVoteValue === 1 ? "text-blue-500" : "text-gray-500"
             } cursor-pointer`}
-            onClick={(event) => handleVote(event, 1)}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              handleVote(event, 1);
+            }}
           >
             <path
               strokeLinecap="round"
@@ -85,7 +89,11 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
             className={`flex w-12 h-12 ${
               userVoteValue === -1 ? "text-red-500" : "text-gray-500"
             } cursor-pointer`}
-            onClick={(event) => handleVote(event, -1)}
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              handleVote(event, -1);
+            }}
           >
             <path
               strokeLinecap="round"
@@ -96,15 +104,30 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
         )}
       </div>
       <button
-        className="flex flex-1 text-white justify-end items-end transition-all hover:scale-110"
-        onClick={() => setLike(!like)}
+        className="flex  text-white justify-end items-end transition-all hover:scale-110"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setLike(!like);
+        }}
       >
         {userCollectionValue === game.id ? (
-          <FaHeart className="w-12 h-12" onClick={(e) => onCollect(e, game)} />
+          <FaHeart
+            className="w-12 h-12"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onCollect(e, game);
+            }}
+          />
         ) : (
           <FaRegHeart
             className="w-12 h-12"
-            onClick={(e) => onCollect(e, game)}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              onCollect(e, game);
+            }}
           />
         )}
       </button>

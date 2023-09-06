@@ -86,7 +86,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
         id: commentDocRef.id,
         creatorId: user.uid,
         creatorDisplayText: user.email!.split("@")[0],
-        creatorImageURL: user.photoURL || undefined,
+        creatorImageURL: user.photoURL || "",
         gameId: gameId,
         gameTitle: gameTitle,
         text: commentText,
@@ -145,15 +145,25 @@ const CommentItem: React.FC<CommentItemProps> = ({
   }, [gameId]);
   return (
     <div className="flex mt-4 w-full">
-      <div className="flex h-20 w-20 justify-center">
-        <Image
-          src={comment.creatorImageURL ? comment.creatorImageURL : defaultcover}
-          color="gray.300"
-          alt="avatar"
-          width={50}
-          height={50}
-          className="h-full w-full rounded-md object-cover"
-        />
+      <div className="flex  justify-center">
+        <div className="flex flex-col ">
+          {" "}
+          <Image
+            src={
+              comment.creatorImageURL ? comment.creatorImageURL : defaultcover
+            }
+            color="gray.300"
+            alt="avatar"
+            width={50}
+            height={50}
+            className=" rounded-md object-cover h-20 w-20"
+          />
+          {subComments.length > 0 && (
+            <div className="flex flex-1 justify-center">
+              <div className=" border-l-4 h-1/2 border-gray-500"></div>
+            </div>
+          )}
+        </div>
       </div>
       <div className="ml-4 flex flex-col flex-1">
         <div className="flex items-end">
@@ -168,7 +178,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
           )}
         </div>
         <span className="text-lg">{comment.text}</span>
-        <div className="flex align-middle cursor-pointer">
+        <div className="flex align-middle ">
           {/* <Icon as={IoArrowUpCircleOutline} />
           <Icon as={IoArrowDownCircleOutline} /> */}
           <button
