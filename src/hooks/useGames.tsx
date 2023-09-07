@@ -165,6 +165,7 @@ const useGames = () => {
         updatedAt: newGame.updatedAt,
         titleArray: newTitle.split(" "),
         tags: newGame.tags || [],
+        password: newGame.password || "",
       });
       if (!oldGame.tags && newGame.tags && newGame.tags.length > 0) {
         for (let index = 0; index < newGame.tags.length; index++) {
@@ -208,8 +209,12 @@ const useGames = () => {
         }
         if (newGame.coverImage) {
           if (oldGame.coverImage !== newGame.coverImage) {
+            const newCoverImageRef = ref(
+              storage,
+              `games/${newGame.id}/coverImage/coverImage`
+            );
             await uploadString(
-              coverImageRef,
+              newCoverImageRef,
               newGame.coverImage as string,
               "data_url"
             );
@@ -227,41 +232,43 @@ const useGames = () => {
         }
 
         const imageGroupRef = ref(storage, `games/${oldGame.id}/imagesGroup`);
-        if (oldGame.imagesGroup && oldGame.imagesGroup.length > 0) {
-          listAll(imageGroupRef)
-            .then(async (listResults) => {
-              const promises = listResults.items.map((item) => {
-                return deleteObject(item);
+        if (arrayCompare(oldGame.imagesGroup, newGame.imagesGroup)) {
+          if (oldGame.imagesGroup && oldGame.imagesGroup.length > 0) {
+            listAll(imageGroupRef)
+              .then(async (listResults) => {
+                const promises = listResults.items.map((item) => {
+                  return deleteObject(item);
+                });
+                await Promise.all(promises);
+              })
+              .catch((error) => {
+                console.log("deleteStorageError", error);
               });
-              await Promise.all(promises);
-            })
-            .catch((error) => {
-              console.log("deleteStorageError", error);
-            });
-        }
-        if (newGame.imagesGroup && newGame.imagesGroup.length > 0) {
-          if (!arrayCompare(newGame.imagesGroup, oldGame.imagesGroup)) {
-            const imagesUrlGroup = [];
-            for (let index = 0; index < newGame.imagesGroup.length; index++) {
-              const image = newGame.imagesGroup[index];
-              const imagesGroupRef = ref(
-                storage,
-                `games/${newGame.id}/imagesGroup/${index}`
-              );
-              await uploadString(imagesGroupRef, image as string, "data_url");
-              const downloadURL = await getDownloadURL(imagesGroupRef);
-              imagesUrlGroup.unshift(downloadURL);
-              batch.update(gameDocRef, {
-                imagesGroup: imagesUrlGroup,
-              });
-            }
-            newGame.imagesGroup = imagesUrlGroup;
           }
-        } else {
-          batch.update(gameDocRef, {
-            imagesGroup: [],
-          });
-          newGame.imagesGroup = [];
+          if (newGame.imagesGroup && newGame.imagesGroup.length > 0) {
+            if (!arrayCompare(newGame.imagesGroup, oldGame.imagesGroup)) {
+              const imagesUrlGroup = [];
+              for (let index = 0; index < newGame.imagesGroup.length; index++) {
+                const image = newGame.imagesGroup[index];
+                const imagesGroupRef = ref(
+                  storage,
+                  `games/${newGame.id}/imagesGroup/${index}`
+                );
+                await uploadString(imagesGroupRef, image as string, "data_url");
+                const downloadURL = await getDownloadURL(imagesGroupRef);
+                imagesUrlGroup.unshift(downloadURL);
+                batch.update(gameDocRef, {
+                  imagesGroup: imagesUrlGroup,
+                });
+              }
+              newGame.imagesGroup = imagesUrlGroup;
+            }
+          } else {
+            batch.update(gameDocRef, {
+              imagesGroup: [],
+            });
+            newGame.imagesGroup = [];
+          }
         }
       }
 

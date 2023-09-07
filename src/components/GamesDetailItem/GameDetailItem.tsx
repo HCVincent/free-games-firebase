@@ -15,7 +15,7 @@ const GameDetailItem: React.FC<GameDetailItemProps> = ({ game, user }) => {
     <div className="flex flex-col">
       <GameCover coverImage={game.coverImage} imagesGroup={game.imagesGroup} />
       <div className="flex mt-10 items-center justify-between">
-        <span className=" text-6xl font-bold">{game.title}</span>
+        <span className=" text-6xl font-bold capitalize">{game.title}</span>
         <ThumbsLike
           userVoteValue={
             gameStateValue.gameVotes.find((vote) => vote.gameId === game.id)
