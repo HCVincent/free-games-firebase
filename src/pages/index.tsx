@@ -11,7 +11,6 @@ const Home: React.FC = () => {
         <RecommendationLists />
         <GamesGridList />
       </div>
-      <Footer />
     </div>
   );
 };

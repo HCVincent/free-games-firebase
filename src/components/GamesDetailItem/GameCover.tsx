@@ -23,8 +23,8 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
                   alt={`image${index}`}
                   key={index}
                   src={image}
-                  width={0}
-                  height={0}
+                  width={500}
+                  height={500}
                   sizes="100vw"
                   className="flex object-cover w-full h-[420px] cursor-pointer rounded-md"
                 />
@@ -36,8 +36,8 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
         <Image
           alt="cover"
           src={coverImage ? coverImage : defaultCover}
-          width={100}
-          height={100}
+          width={500}
+          height={500}
           sizes="100vw"
           className="flex object-cover w-full h-[480px] cursor-pointer rounded-md"
         ></Image>
