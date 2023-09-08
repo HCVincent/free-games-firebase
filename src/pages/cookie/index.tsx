@@ -5,7 +5,7 @@ type indexProps = {};
 const index: React.FC<indexProps> = () => {
   return (
     <p>
-      Certainly, here's an example of a simplified cookie policy for a website:
+      {`Certainly, here's an example of a simplified cookie policy for a website:
       Cookie Policy Last Updated: [Date] 1. Introduction Welcome to [Website
       Name] ("we," "us," or "our"). This Cookie Policy explains how we use
       cookies and similar tracking technologies on our website. By using our
@@ -43,7 +43,7 @@ const index: React.FC<indexProps> = () => {
       adjusted to align with your website's activities and the types of cookies
       you use. It's essential to ensure that your cookie policy complies with
       relevant regulations and accurately reflects your cookie practices.
-      Consulting with legal professionals or experts is advisable.
+      Consulting with legal professionals or experts is advisable.`}
     </p>
   );
 };

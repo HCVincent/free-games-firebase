@@ -5,7 +5,7 @@ type indexProps = {};
 const index: React.FC<indexProps> = () => {
   return (
     <p>
-      Privacy Policy Last Updated: [Date] Thank you for visiting [Website Name]
+      {`Privacy Policy Last Updated: [Date] Thank you for visiting [Website Name]
       ("we," "us," or "our"). Your privacy is important to us, and we are
       committed to protecting your personal information. This Privacy Policy
       explains how we collect, use, and safeguard your data when you visit our
@@ -48,7 +48,7 @@ const index: React.FC<indexProps> = () => {
       website's activities, the data you collect, and applicable laws. It's
       important to consult with legal professionals or experts to ensure that
       your privacy policy complies with all relevant regulations and accurately
-      reflects your data practices.
+      reflects your data practices.`}
     </p>
   );
 };
