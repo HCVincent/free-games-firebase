@@ -12,10 +12,14 @@ import RightContent from "./RightContent/RightContent";
 import ThemeButton from "./ThemeButton/ThemeButton";
 import Image from "next/image";
 import logo from "../../../public/logo_icon.png";
+import SearchInput from "./RightContent/SearchInput";
+import { Game } from "@/atoms/gamesAtom";
+import SearchResultList from "./RightContent/SearchResultList";
 
 type NavbarProps = {};
 
 const Navbar: React.FC<NavbarProps> = () => {
+  const [isMyInputFocused, setIsMyInputFocused] = useState(false);
   const router = useRouter();
   const [user] = useAuthState(auth);
   const [isLogin, setIsLogin] = useState(false);
@@ -24,7 +28,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     setTheme(theme === "dark" ? "default" : "dark");
   };
   const [modalState, setModalState] = useRecoilState(authModalState);
-
+  const [results, setResults] = useState<Game[]>([]);
   const handleLogin = () => {
     setModalState((prev) => ({
       ...prev,
@@ -103,7 +107,14 @@ const Navbar: React.FC<NavbarProps> = () => {
                     <a>Sidebar Item 1</a>
                   </li>
                   <li>
-                    <a>Sidebar Item 2</a>
+                    <SearchInput
+                      results={results}
+                      setResults={setResults}
+                      setIsMyInputFocused={setIsMyInputFocused}
+                    />{" "}
+                    {results && isMyInputFocused && (
+                      <SearchResultList results={results} />
+                    )}
                   </li>
                 </ul>
                 <div className="flex flex-col">

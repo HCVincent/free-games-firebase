@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Game } from "@/atoms/gamesAtom";
 import useGames from "@/hooks/useGames";
+import GamesVerticalList from "@/components/GamesLists/GamesVerticalList/GamesVerticalList";
 type indexProps = {};
 
 const Page: React.FC<indexProps> = () => {
@@ -32,7 +33,7 @@ const Page: React.FC<indexProps> = () => {
       ) : (
         <div className="flex h-full w-full">
           {results && results.length > 0 ? (
-            <>{results.length}</>
+            <GamesVerticalList games={results} />
           ) : (
             <div className="flex h-full w-full justify-center items-center">
               there is no data for {search}

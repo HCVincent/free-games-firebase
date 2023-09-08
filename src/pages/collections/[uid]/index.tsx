@@ -52,7 +52,7 @@ const CollectionPage: React.FC<CollectionsProps> = ({ uid }) => {
             <div className="justify-start w-full">
               {collections && collections.length > 0 ? (
                 <div className="w-full">
-                  <GamesVerticalList games={collections} router={router} />
+                  <GamesVerticalList games={collections} />
                 </div>
               ) : (
                 <>no collections yet</>

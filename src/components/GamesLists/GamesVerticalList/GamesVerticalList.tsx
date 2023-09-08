@@ -5,14 +5,10 @@ import GamesVerticalItem from "./GamesVerticalItem";
 import useGames from "@/hooks/useGames";
 
 type GamesVerticalListProps = {
-  router: NextRouter;
   games: Game[];
 };
 
-const GamesVerticalList: React.FC<GamesVerticalListProps> = ({
-  router,
-  games,
-}) => {
+const GamesVerticalList: React.FC<GamesVerticalListProps> = ({ games }) => {
   const { gameStateValue, onCollect, onSelectGame } = useGames();
   return (
     <div className="flex flex-col w-full">

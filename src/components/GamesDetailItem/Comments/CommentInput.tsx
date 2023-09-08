@@ -1,3 +1,5 @@
+import AuthInputs from "@/Modal/Auth/AuthInputs";
+import OAuthButtons from "@/Modal/Auth/OAuthButtons";
 import { authModalState } from "@/atoms/authModalAtom";
 import { User } from "firebase/auth";
 import React, { useState } from "react";
@@ -75,6 +77,38 @@ const CommentInput: React.FC<CommentInputProps> = ({
             >
               Login
             </label>
+            <input
+              type="checkbox"
+              id="my_modal_auth"
+              className="modal-toggle"
+              checked={modalState.open}
+              onChange={() => {}}
+            />
+            <div className="modal">
+              <div className="modal-box">
+                <div className="flex flex-col w-full justify-start items-start bg-base-100">
+                  <label className="label">
+                    {modalState.view === "login" && "login"}
+                    {modalState.view === "signup" && "signup"}
+                  </label>
+
+                  <AuthInputs />
+                  <OAuthButtons />
+                </div>
+              </div>
+              <label
+                className="modal-backdrop"
+                htmlFor="my_modal_auth"
+                onClick={() =>
+                  setModalState((prev) => ({
+                    ...prev,
+                    open: false,
+                  }))
+                }
+              >
+                Close
+              </label>
+            </div>
           </div>
         </div>
       )}
