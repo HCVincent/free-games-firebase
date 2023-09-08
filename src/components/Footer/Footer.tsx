@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 type FooterProps = {};
@@ -14,23 +15,27 @@ const Footer: React.FC<FooterProps> = () => {
       </nav>
       <nav>
         <header className="footer-title">Company</header>
-        <a className="link link-hover line-through">About us</a>
-        <a className="link link-hover" href="/contact">
+        <Link className="link link-hover line-through" href="/">
+          About us
+        </Link>
+        <Link className="link link-hover" href="/contact">
           Contact
-        </a>
-        <a className="link link-hover line-through">Jobs</a>
+        </Link>
+        <Link className="link link-hover line-through" href="/">
+          Jobs
+        </Link>
       </nav>
       <nav>
         <header className="footer-title">Legal</header>
-        <a className="link link-hover" href="/terms">
+        <Link className="link link-hover" href="/terms">
           Terms of use
-        </a>
-        <a className="link link-hover" href="/privacy">
+        </Link>
+        <Link className="link link-hover" href="/privacy">
           Privacy policy
-        </a>
-        <a className="link link-hover" href="/cookie">
+        </Link>
+        <Link className="link link-hover" href="/cookie">
           Cookie policy
-        </a>
+        </Link>
       </nav>
     </footer>
   );

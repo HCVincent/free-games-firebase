@@ -15,6 +15,8 @@ export default function App({ Component, pageProps }: AppProps) {
     </RecoilRoot>
   );
 }
+
+//@ts-ignore
 export async function getServerSideProps({ req, res }) {
   res.setHeader(
     "Cache-Control",
