@@ -35,10 +35,7 @@ const TagPage: React.FC = () => {
             {loading ? (
               <span className="loading loading-spinner loading-lg"></span>
             ) : (
-              <GamesVerticalList
-                games={gameStateValue.gamesInTag}
-                router={router}
-              />
+              <GamesVerticalList games={gameStateValue.gamesInTag} />
             )}
           </div>
         </div>
