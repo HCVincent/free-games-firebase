@@ -3,27 +3,32 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import React from "react";
 import { RecoilRoot, RecoilEnv } from "recoil";
+import Head from "next/head";
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 export default function App({ Component, pageProps }: AppProps) {
   const [theme, setTheme] = React.useState("dark");
   return (
-    <RecoilRoot>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </RecoilRoot>
-  );
-}
+    <>
+      <Head>
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+        <link
+          rel="icon"
+          href="/favicon.ico?v=2"
+          type="image/x-icon"
+          sizes="any"
+        />
+        <title>Free Games</title>
 
-//@ts-ignore
-export async function getServerSideProps({ req, res }) {
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=30, stale-while-revalidate=59"
+        <meta name="description" content="You can download games for free" />
+      </Head>
+      <RecoilRoot>
+        <div className="min-w-[450px]">
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </div>
+      </RecoilRoot>
+    </>
   );
-
-  return {
-    props: {},
-  };
 }
