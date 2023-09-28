@@ -78,7 +78,6 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
       tags: tags,
       password: textInputs.password,
     };
-    console.log("newGame.psw", newGame.password);
 
     setLoading(true);
     try {

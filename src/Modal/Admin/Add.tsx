@@ -27,7 +27,6 @@ const Add: React.FC<AddProps> = () => {
   const [addComplete, setAddComplete] = useState(false);
   const { gameStateValue, setGameStateValue } = useGames();
   const [canAdd, setCanAdd] = useState(false);
-  const [password, setPassword] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const {
     selectedImage,
@@ -69,7 +68,7 @@ const Add: React.FC<AddProps> = () => {
         createdAt: serverTimestamp() as Timestamp,
         updatedAt: serverTimestamp() as Timestamp,
         tags: tags,
-        password: password,
+        password: textInputs.password,
       };
       const gameDocRef = await addDoc(collection(firestore, "games"), newGame);
       const batch = writeBatch(firestore);
@@ -186,7 +185,7 @@ const Add: React.FC<AddProps> = () => {
           value={textInputs.address}
         />{" "}
         <input
-          name="unzipPassword"
+          name="password"
           placeholder="password"
           className="input input-bordered"
           onChange={onChange}

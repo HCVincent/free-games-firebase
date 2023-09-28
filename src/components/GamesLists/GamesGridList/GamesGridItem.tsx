@@ -1,4 +1,4 @@
-import { Game } from "@/atoms/gamesAtom";
+import { Game, gameState } from "@/atoms/gamesAtom";
 import moment from "moment";
 import React, { useState } from "react";
 import questionmark from "../../../../public/questionmark.png";
@@ -7,6 +7,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import ThumbsLike from "@/components/IndexPageContent/Recommendation/ThumbsLike";
 import Link from "next/link";
 import TagsCardList from "@/components/Tags/TagsCardList";
+import { useSetRecoilState } from "recoil";
 
 type GamesGridItemProps = {
   game: Game;
@@ -34,11 +35,19 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
 }) => {
   const [imageLoading, setImageLoading] = useState(true);
   const [like, setLike] = useState(false);
-
+  const setGameStateValue = useSetRecoilState(gameState);
   return (
-    <div className="flex">
-      <Link href={`/games/${game.id}`}>
-        <div className="card  bg-base-100 shadow-xl h-[30rem] w-80 hover:scale-105 transition-all ">
+    <div className="flex w-[28rem]">
+      <Link
+        href={`/games/${game.id}`}
+        onClick={() => {
+          setGameStateValue((prev) => ({
+            ...prev,
+            selectedGame: game,
+          }));
+        }}
+      >
+        <div className="card  bg-base-100 shadow-xl h-[30rem]  hover:scale-105 transition-all ">
           <figure className="h-32 w-full items-start">
             {imageLoading && (
               <div className="flex w-full h-full items-center justify-center">
@@ -47,7 +56,7 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
             )}
             <Image
               src={game.coverImage ? game.coverImage : questionmark.src}
-              alt="cover"
+              alt={"cover"}
               className="w-full h-32 object-cover  rounded-lg cursor-pointer"
               width={500}
               height={500}
@@ -55,15 +64,16 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
             />
           </figure>
           <div className="card-body cursor-pointer flex flex-col h-48 m-0 p-2">
-            <h2 className="card-title flex-1 text-xl justify-start top-0 align-top items-start capitalize line-clamp-2 min-h-[4rem]">
-              {game.title.charAt(0).toUpperCase() + game.title.slice(1)}
+            <h2 className="card-title  text-xl justify-start top-0 align-top items-start capitalize line-clamp-2">
+              {game.title.charAt(0).toUpperCase() + game.title.slice(1)}{" "}
             </h2>
-            <span className="flex text-slate-500">
+            <span className="flex text-slate-500 text-sm">
               {game.createdAt &&
                 `updated at ${moment(
                   new Date(game.createdAt.seconds * 1000)
                 ).fromNow()}`}
             </span>
+
             <div className="flex flex-1">
               {game.tags && <TagsCardList tags={game.tags} />}
             </div>
