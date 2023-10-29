@@ -1,4 +1,5 @@
 import { auth } from "@/firebase/clientApp";
+import Image from "next/image";
 import React from "react";
 import {
   useSignInWithGithub,
@@ -15,7 +16,9 @@ const OAuthButtons: React.FC = () => {
         <span className="loading loading-spinner"></span>
       ) : (
         <button className="btn mt-2 " onClick={() => signInWithGoogle()}>
-          <img
+          <Image
+            height={100}
+            width={100}
             src="/googlelogo.png"
             alt="OAuthGoogle"
             className="h-4 w-4 mr-4"

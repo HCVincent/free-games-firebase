@@ -68,6 +68,7 @@ const Add: React.FC<AddProps> = () => {
         createdAt: serverTimestamp() as Timestamp,
         updatedAt: serverTimestamp() as Timestamp,
         tags: tags,
+        titleArray: textInputs.title.toLowerCase().split(" "),
         password: textInputs.password,
       };
       const gameDocRef = await addDoc(collection(firestore, "games"), newGame);
@@ -137,6 +138,8 @@ const Add: React.FC<AddProps> = () => {
       setSelectedVideo("");
       setSelectedImagesGroup([]);
       setTags([]);
+
+      setCanAdd(false);
     } catch (error: any) {
       console.log("handleUploadGame error", error.message);
       setError(error);

@@ -1,6 +1,7 @@
 import Image from "next/image";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
+import ImageViewer from "react-simple-image-viewer";
 import Autoplay from "embla-carousel-autoplay";
 type GameCoverProps = {
   coverImage?: string;
@@ -12,25 +13,60 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
     Autoplay({ stopOnInteraction: false }),
   ]);
+
+  const [currentImage, setCurrentImage] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  const openImageViewer = useCallback((index: number) => {
+    setCurrentImage(index);
+    setIsViewerOpen(true);
+  }, []);
+
+  const closeImageViewer = () => {
+    setCurrentImage(0);
+    setIsViewerOpen(false);
+  };
   return (
-    <div>
+    <div className="w-full h-[420px]">
       {imagesGroup && imagesGroup.length > 0 ? (
-        <div className="embla  hover:scale-105 transition-all p-0 mt-10">
+        <div className="embla   p-0 ">
           <div className="embla__viewport" ref={emblaRef}>
-            <div className="embla__container">
+            <div className="embla__container ">
+              <Image
+                alt="cover"
+                src={coverImage ? coverImage : defaultCover}
+                priority
+                width={300}
+                height={200}
+                sizes="100vw"
+                className="flex object-cover w-full h-[420px] cursor-pointer rounded-md"
+              ></Image>
+
               {imagesGroup.map((image, index) => (
                 <Image
-                  alt={`image${index}`}
                   key={index}
+                  priority
+                  alt={`image${index}`}
+                  onClick={() => openImageViewer(index)}
                   src={image}
-                  width={500}
-                  height={500}
+                  width={300}
+                  height={200}
                   sizes="100vw"
-                  className="flex object-cover w-full h-[420px] cursor-pointer rounded-md"
+                  className="flex  w-[800px] h-[420px] cursor-pointer rounded-md"
                 />
               ))}
             </div>
           </div>
+          {isViewerOpen && (
+            <div className="relative z-50">
+              <ImageViewer
+                src={imagesGroup}
+                currentIndex={currentImage}
+                disableScroll={false}
+                closeOnClickOutside={true}
+                onClose={closeImageViewer}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <Image
@@ -39,7 +75,7 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
           width={500}
           height={500}
           sizes="100vw"
-          className="flex object-cover w-full h-[480px] cursor-pointer rounded-md"
+          className="flex object-cover w-full h-[420px] cursor-pointer rounded-md"
         ></Image>
       )}
     </div>

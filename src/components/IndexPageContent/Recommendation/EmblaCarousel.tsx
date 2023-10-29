@@ -1,10 +1,11 @@
 import React, { useState, useCallback, useEffect } from "react";
 import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { Game } from "@/atoms/gamesAtom";
+import { Game, gameState } from "@/atoms/gamesAtom";
 import RecommendationItem from "./RecommendationItem";
-import useGames from "@/hooks/useGames";
 import { Thumb } from "./EmblaCarouselThumbsButton";
+import router from "next/router";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 type PropType = {
   slides: Game[];
@@ -12,7 +13,18 @@ type PropType = {
 };
 
 const EmblaCarousel: React.FC<PropType> = (props) => {
-  const { onSelectGame, gameStateValue, onVote, onCollect } = useGames();
+  const gameStateValue = useRecoilValue(gameState);
+  const setGameStateValue = useSetRecoilState(gameState);
+  const onSelectGame = (game: Game, parameter?: string) => {
+    setGameStateValue((prev) => ({
+      ...prev,
+      selectedGame: game,
+    }));
+    if (parameter !== "admin") {
+      router.push(`/games/${game.id}`);
+      // window.open(`/games/${game.id}`, "_blank");
+    }
+  };
   const { slides, options } = props;
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options, [
     Autoplay({ stopOnInteraction: false }),
@@ -46,39 +58,40 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
   return (
     <div className="embla hover:scale-105 transition-all">
       <div className="embla__viewport" ref={emblaMainRef}>
-        <div className="embla__container">
-          {slides.map((game, index) => (
-            <RecommendationItem
-              key={game.id}
-              game={game}
-              index={index}
-              onSelectGame={onSelectGame}
-              onVote={onVote}
-              onCollect={onCollect}
-              userVoteValue={
-                gameStateValue.gameVotes.find((vote) => vote.gameId === game.id)
-                  ?.voteValue
-              }
-              userCollectionValue={
-                gameStateValue.gameCollections.find(
-                  (collection) => collection.gameId === game.id
-                )?.gameId
-              }
-            />
-          ))}
+        <div className="embla__container  h-[540px]">
+          {gameStateValue.gameRecommendations &&
+            gameStateValue.gameRecommendations.map((game, index) => (
+              <RecommendationItem
+                key={game.id}
+                game={game}
+                index={index}
+                onSelectGame={onSelectGame}
+                userVoteValue={
+                  gameStateValue.gameVotes.find(
+                    (vote) => vote.gameId === game.id
+                  )?.voteValue
+                }
+                userCollectionValue={
+                  gameStateValue.gameCollections.find(
+                    (collection) => collection.gameId === game.id
+                  )?.gameId
+                }
+              />
+            ))}
         </div>
-        <div className="embla-thumbs flex h-20 lg:h-40 w-full">
+        <div className="embla-thumbs flex h-20 lg:h-30 w-full">
           <div className="embla-thumbs__viewport w-full" ref={emblaThumbsRef}>
             <div className="embla-thumbs__container flex w-full">
-              {slides.map((game, index) => (
-                <Thumb
-                  onClick={() => onThumbClick(index)}
-                  selected={index === selectedIndex}
-                  index={index}
-                  imgSrc={game.coverImage!}
-                  key={index}
-                />
-              ))}
+              {gameStateValue.gameRecommendations &&
+                gameStateValue.gameRecommendations.map((game, index) => (
+                  <Thumb
+                    onClick={() => onThumbClick(index)}
+                    selected={index === selectedIndex}
+                    index={index}
+                    imgSrc={game.coverImage!}
+                    key={index}
+                  />
+                ))}
             </div>
           </div>
         </div>

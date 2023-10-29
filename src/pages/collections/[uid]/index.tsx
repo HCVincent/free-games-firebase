@@ -1,31 +1,27 @@
-import { Game } from "@/atoms/gamesAtom";
+import { Game, gameState } from "@/atoms/gamesAtom";
 import GamesVerticalList from "@/components/GamesLists/GamesVerticalList/GamesVerticalList";
 import PageContent from "@/components/Layout/PageContent";
 import { auth, firestore } from "@/firebase/clientApp";
-import useGames from "@/hooks/useGames";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { GetServerSidePropsContext } from "next";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Image from "next/image";
+import { useRecoilValue } from "recoil";
 
 type CollectionsProps = {
   uid: string;
 };
-
 const CollectionPage: React.FC<CollectionsProps> = ({ uid }) => {
-  const router = useRouter();
   const [collections, setCollections] = useState<Game[]>([]);
   const [userMatch, setUserMatch] = useState(false);
+  const gameStateValue = useRecoilValue(gameState);
   const [user] = useAuthState(auth);
-  const { gameStateValue } = useGames();
   const gamesRef = collection(firestore, "games");
   let array: string[] = [];
   gameStateValue.gameCollections.map((item, i) => {
     array[i] = item.gameId;
   });
-
-  // modify here, it is supposed to query each id in array
 
   useEffect(() => {
     const getCollections = async () => {
@@ -42,12 +38,13 @@ const CollectionPage: React.FC<CollectionsProps> = ({ uid }) => {
         setCollections(games);
       }
     };
+
     getCollections();
   }, [gameStateValue.gameCollections, user]);
   return (
-    <>
+    <div className="flex w-full  justify-center ">
       {userMatch ? (
-        <div className="flex w-full">
+        <div className="flex w-full  justify-center">
           <PageContent>
             <div className="justify-start w-full">
               {collections && collections.length > 0 ? (
@@ -58,13 +55,12 @@ const CollectionPage: React.FC<CollectionsProps> = ({ uid }) => {
                 <>no collections yet</>
               )}
             </div>
-            <>advertisement</>
           </PageContent>
         </div>
       ) : (
         <>you are not authenticated for viewing this</>
       )}
-    </>
+    </div>
   );
 };
 

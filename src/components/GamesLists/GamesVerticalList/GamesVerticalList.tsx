@@ -9,26 +9,30 @@ type GamesVerticalListProps = {
 };
 
 const GamesVerticalList: React.FC<GamesVerticalListProps> = ({ games }) => {
-  const { gameStateValue, onCollect, onSelectGame } = useGames();
+  const { gameStateValue, onSelectGame } = useGames();
   return (
     <div className="flex flex-col w-full">
-      {games.map((item) => (
-        <GamesVerticalItem
-          key={item.id}
-          game={item}
-          userCollectionValue={
-            gameStateValue.gameCollections.find(
-              (collection) => collection.gameId === item.id
-            )?.gameId
-          }
-          onCollect={onCollect}
-          onSelectGame={onSelectGame}
-        />
-        //   onClick={() => {
-        //     router.push(`/games/${item.id}`);
-        //   }}
-        //   key={item.id}
-      ))}
+      {games &&
+        games.map((item) => (
+          <GamesVerticalItem
+            key={item.id}
+            game={item}
+            userCollectionValue={
+              gameStateValue.gameCollections.find(
+                (collection) => collection.gameId === item.id
+              )?.gameId
+            }
+            userVoteValue={
+              gameStateValue.gameVotes.find((vote) => vote.gameId === item.id)
+                ?.voteValue
+            }
+            onSelectGame={onSelectGame}
+          />
+          //   onClick={() => {
+          //     router.push(`/games/${item.id}`);
+          //   }}
+          //   key={item.id}
+        ))}
     </div>
   );
 };

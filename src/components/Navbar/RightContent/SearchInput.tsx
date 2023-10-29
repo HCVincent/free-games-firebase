@@ -6,12 +6,14 @@ import useGames from "@/hooks/useGames";
 import { Game } from "@/atoms/gamesAtom";
 
 type SearchInputProps = {
+  customId: string;
   results: Game[];
   setResults: (games: Game[]) => void;
   setIsMyInputFocused: (isFocused: boolean) => void;
 };
 
 const SearchInput: React.FC<SearchInputProps> = ({
+  customId,
   results,
   setResults,
   setIsMyInputFocused,
@@ -24,6 +26,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
 
   const onSubmit = async () => {
     router.push({ pathname: "/search", query: { search: searchTerm } });
+    setSearchTerm("");
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,10 +75,11 @@ const SearchInput: React.FC<SearchInputProps> = ({
         </div>
         <input
           type="search"
-          id="default-search"
+          id={`${customId}-searchinput`}
           className="block  w-full p-4 pl-10 text-sm text-gray-900 rounded-lg border border-b-2 focus:outline-none hover:border-gray-800 align-middle items-center"
           placeholder="Search"
           onChange={handleChange}
+          value={searchTerm}
           onBlur={() => {
             setTimeout(() => setIsMyInputFocused(false), 100);
           }}

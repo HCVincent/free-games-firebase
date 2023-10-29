@@ -1,25 +1,31 @@
-import { Game } from "@/atoms/gamesAtom";
+import { Game, gameState } from "@/atoms/gamesAtom";
 import React from "react";
-import GameCover from "./GameCover";
 import moment from "moment";
-import { User } from "firebase/auth";
 import Comments from "./Comments/Comments";
 import ThumbsLike from "../IndexPageContent/Recommendation/ThumbsLike";
-import useGames from "@/hooks/useGames";
 import TagsCardList from "../Tags/TagsCardList";
+import Script from "next/script";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/clientApp";
+import dynamic from "next/dynamic";
+import { useRecoilValue } from "recoil";
 
-type GameDetailItemProps = { game: Game; user: User };
+type GameDetailItemProps = { game: Game };
+const GameCover = dynamic(() => import("./GameCover"), {
+  ssr: false,
+});
+const GameDetailItem: React.FC<GameDetailItemProps> = ({ game }) => {
+  const gameStateValue = useRecoilValue(gameState);
+  const [user] = useAuthState(auth);
 
-const GameDetailItem: React.FC<GameDetailItemProps> = ({ game, user }) => {
-  const { onSelectGame, gameStateValue, onVote, onCollect } = useGames();
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col  p-10">
       <GameCover coverImage={game.coverImage} imagesGroup={game.imagesGroup} />
       <div className="flex flex-col mt-10  justify-between">
         <span className=" text-4xl font-bold capitalize lg:text-6xl">
           {game.title}
         </span>
-        <div className="w-[40rem]">
+        <div className="w-[40rem] mt-4">
           <ThumbsLike
             userVoteValue={
               gameStateValue.gameVotes.find((vote) => vote.gameId === game.id)
@@ -31,8 +37,6 @@ const GameDetailItem: React.FC<GameDetailItemProps> = ({ game, user }) => {
                 (collection) => collection.gameId === game.id
               )?.gameId
             }
-            onCollect={onCollect}
-            onVote={onVote}
           />
         </div>
       </div>
@@ -47,8 +51,9 @@ const GameDetailItem: React.FC<GameDetailItemProps> = ({ game, user }) => {
       {game.password && (
         <span className="text-4xl text-red-600">{game.password}</span>
       )}
-      <span className="mt-10">{game.body}</span>
-      <Comments game={game} user={user} />
+
+      <span className="mt-10 line">{game.body}</span>
+      {user && <Comments game={game} user={user} />}
     </div>
   );
 };

@@ -76,21 +76,21 @@ const Login: React.FC = () => {
           />
         </div>
         <div className="flex justify-end">
-          <button className="btn btn-primary mt-8" type="submit">
-            {loading ? (
-              <span className="loading loading-spinner"></span>
-            ) : (
-              "Login"
-            )}
-          </button>
+          {loading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            <button className="btn btn-primary mt-8" type="submit">
+              {"Login"}
+            </button>
+          )}
         </div>
       </form>
       {error ||
         FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS]}
-      <div className="flex justify-end w-full">
-        <p>new here?</p>
-        <p
-          className="text-red-500"
+      <div className="flex justify-end w-full p-2">
+        <p>new here? </p>
+        <button
+          className="text-red-500  btn-ghost capitalize"
           onClick={() => {
             setAuthModalState((prev) => ({
               ...prev,
@@ -98,8 +98,8 @@ const Login: React.FC = () => {
             }));
           }}
         >
-          signup
-        </p>
+          sign up
+        </button>
       </div>
     </div>
   );

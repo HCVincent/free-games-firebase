@@ -194,7 +194,6 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
           gameTags={gameStateValue.gameTags}
           setTags={setTags}
           tags={tags}
-          currentGameTags={game.tags}
         />
       )}
       {addComplete && (

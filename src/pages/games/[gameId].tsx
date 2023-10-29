@@ -1,20 +1,24 @@
-import { Game } from "@/atoms/gamesAtom";
-import GameDetailItem from "@/components/GamesDetailItem/GameDetailItem";
+import { Game, gameState } from "@/atoms/gamesAtom";
 import PageContent from "@/components/Layout/PageContent";
-import { auth, firestore } from "@/firebase/clientApp";
-import useGames from "@/hooks/useGames";
-import { User } from "@firebase/auth";
+import RelatedGames from "@/components/RelatedGames/RelatedGames";
+import { firestore } from "@/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
+const GameDetailItem = dynamic(
+  () => import("../../components/GamesDetailItem/GameDetailItem"),
+  {
+    ssr: false,
+  }
+);
 const GamePage: React.FC = () => {
   const router = useRouter();
-  const [user] = useAuthState(auth);
-  const { gameStateValue, setGameStateValue } = useGames();
+  const gameStateValue = useRecoilValue(gameState);
+  const setGameStateValue = useSetRecoilState(gameState);
   const game: Game = gameStateValue.selectedGame!;
-
   const fetchGame = async (gameId: string) => {
     try {
       const gameDocRef = doc(firestore, "games", gameId);
@@ -29,29 +33,31 @@ const GamePage: React.FC = () => {
   };
 
   useEffect(() => {
-    setGameStateValue((prev) => ({
-      ...prev,
-      selectedGame: null,
-    }));
     const { gameId } = router.query;
-    if (gameId) {
+    if (gameId && !gameStateValue.selectedGame) {
       fetchGame(gameId as string);
     }
-  }, [router.query]);
+  }, [router.query, gameStateValue.selectedGame]);
+
   return (
-    <div className="flex w-full  justify-center">
+    <div className="flex flex-col lg:flex-row w-full h-auto justify-center">
       <PageContent>
-        <div className="flex  w-full">
+        <div className="flex  w-full h-[120rem] lg:h-[160rem] ">
           {gameStateValue.selectedGame && (
-            <GameDetailItem
-              game={gameStateValue.selectedGame}
-              user={user as User}
+            <GameDetailItem game={gameStateValue.selectedGame} />
+          )}
+        </div>
+        <div className=" w-full  lg:flex lg:flex-col pl-5 h-[160rem] ">
+          {game && game.tags && (
+            <RelatedGames
+              gameTag={game.tags[Math.floor(Math.random() * game.tags.length)]}
+              gameId={game.id!}
             />
           )}
         </div>
-        <div className="flex w-full "></div>
       </PageContent>
     </div>
   );
 };
+
 export default GamePage;

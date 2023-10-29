@@ -1,42 +1,54 @@
-import { User } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchInput from "./SearchInput";
 import { Game } from "@/atoms/gamesAtom";
 import SearchResultList from "./SearchResultList";
+import ThemeButton from "../ThemeButton/ThemeButton";
+import Avatar from "./Avatar";
+import { auth } from "@/firebase/clientApp";
+import { setCookie, deleteCookie } from "cookies-next";
 
-// solving for
-// Error: There was an error while hydrating. Because the error happened outside of a Suspense boundary, the entire root will switch to client rendering.
-const ThemeButton = dynamic(import("../ThemeButton/ThemeButton"), {
-  ssr: false,
-});
-const Avatar = dynamic(import("./Avatar"), {
-  ssr: false,
-});
-const AuthModal = dynamic(import("@/Modal/Auth/AuthModal"), {
+const AuthModal = dynamic(() => import("../../../Modal/Auth/AuthModal"), {
   ssr: false,
 });
 
 type RightContentProps = {
-  isLogin: boolean;
   toggleTheme: () => void;
   theme: string;
-  user: User | null | undefined;
 };
 
-const RightContent: React.FC<RightContentProps> = ({
-  isLogin,
-  toggleTheme,
-  theme,
-  user,
-}) => {
+const RightContent: React.FC<RightContentProps> = ({ toggleTheme, theme }) => {
+  const [user] = useAuthState(auth);
   const [results, setResults] = useState<Game[]>([]);
   const [isMyInputFocused, setIsMyInputFocused] = useState(false);
+  useEffect(() => {
+    if (user) {
+      const setDefaultLoginCookie = async () => {
+        await auth.currentUser
+          ?.getIdTokenResult()
+          .then((idTokenResult) => {
+            // Confirm the user is an Admin.
+            if (!!idTokenResult.claims.admin) {
+              // Show admin UI.
+              setCookie(process.env.NEXT_PUBLIC_AUTH_ADMIN!, "true");
+            } else {
+              deleteCookie(process.env.NEXT_PUBLIC_AUTH_ADMIN!);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+      setDefaultLoginCookie();
+    }
+  }, [user]);
   return (
     <div className="hidden lg:flex  items-center ">
       <div className="flex w-full h-full">
         <div className="flex flex-col w-full mr-2">
           <SearchInput
+            customId="navbar"
             results={results}
             setResults={setResults}
             setIsMyInputFocused={setIsMyInputFocused}
@@ -48,7 +60,11 @@ const RightContent: React.FC<RightContentProps> = ({
       </div>
 
       <div className="lg:flex lg:items-center">
-        <ThemeButton toggleTheme={toggleTheme} theme={theme} />
+        <ThemeButton
+          toggleTheme={toggleTheme}
+          theme={theme}
+          buttonId="themeNavbar"
+        />
       </div>
       <div className="lg:flex lg:items-center">
         {user ? <Avatar user={user} /> : <AuthModal />}

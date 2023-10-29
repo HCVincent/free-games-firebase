@@ -21,7 +21,7 @@ const CrudButtons: React.FC<CrudButtonsProps> = () => {
           throw new Error(`Sorry, ${gameDoc} is taken. Try another.`);
         }
         transaction.set(gameDocRef, {
-          gameName: "FF6",
+          gameName: "",
           createdAt: serverTimestamp(),
         });
       });

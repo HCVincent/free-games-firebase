@@ -11,16 +11,33 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="any" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
         <link
           rel="icon"
-          href="/favicon.ico?v=2"
-          type="image/x-icon"
-          sizes="any"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
         />
-        <title>Free Games</title>
-
-        <meta name="description" content="You can download games for free" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <title>FreeVRGames</title>
+        <meta
+          name={process.env.NEXT_PUBLIC_JUICYADS_NAME}
+          content={process.env.NEXT_PUBLIC_JUICYADS_CONTENT}
+        />
+        <meta
+          name="description"
+          content="You can download kinds of type of VR games for free"
+        />
       </Head>
       <RecoilRoot>
         <div className="min-w-[450px]">

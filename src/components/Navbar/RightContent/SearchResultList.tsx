@@ -30,7 +30,7 @@ const SearchResultList: React.FC<SearchResultListProps> = ({ results }) => {
                 height={40}
                 className="object-cover rounded-md"
               />
-              <span className="text-xl  w-full line-clamp-2 overflow-hidden">
+              <span className="text-xl  w-full line-clamp-2 overflow-hidden capitalize">
                 {game.title}
               </span>
             </div>

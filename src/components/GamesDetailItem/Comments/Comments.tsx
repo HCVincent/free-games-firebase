@@ -76,6 +76,7 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
           collection(firestore, "comments"),
           where("id", "in", comment.subCommentsId)
         );
+        console.log("comment.subCommentsId", comment.subCommentsId);
         const commentDocs = await getDocs(commentsQuery);
         const comments = commentDocs.docs.map((doc) => ({
           id: doc.id,

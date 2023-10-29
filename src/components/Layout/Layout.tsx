@@ -1,6 +1,7 @@
+import dynamic from "next/dynamic";
 import React from "react";
-import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
+import Navbar from "../Navbar/Navbar";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,6 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Navbar />
       </div>
       <main className="flex justify-center w-full">{children}</main>
+
       <Footer />
     </div>
   );

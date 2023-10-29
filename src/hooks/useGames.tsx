@@ -26,6 +26,7 @@ import {
   or,
   arrayUnion,
   arrayRemove,
+  startAfter,
 } from "firebase/firestore";
 import {
   deleteObject,
@@ -41,7 +42,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const useGames = () => {
   const router = useRouter();
-  const numOfGamesPerPage = 8;
+  const numOfGamesPerPage = 9;
   const [user] = useAuthState(auth);
   const setAuthModalState = useSetRecoilState(authModalState);
   const [lastVisible, setLastVisible] =
@@ -55,18 +56,42 @@ const useGames = () => {
     }));
     if (parameter !== "admin") {
       router.push(`/games/${game.id}`);
+      // window.open(`/games/${game.id}`, "_blank");
     }
   };
-
-  const readGamesByTag = async (tag: string) => {
+  const onSelectDownload = (game: Game) => {
+    setGameStateValue((prev) => ({
+      ...prev,
+      selectedGame: game,
+    }));
+    // router.push(`/downloads/${game.id}`);
+    window.open(`/downloads/${game.id}`, "_blank");
+  };
+  const readGamesByTag = async (
+    tag: string,
+    limitedNum?: number,
+    gameId?: string
+  ) => {
     try {
-      const gameQuery = query(
-        collection(firestore, "games"),
-        orderBy("updatedAt", "desc"),
-        where("tags", "array-contains", tag)
-      );
+      const gameQuery = limitedNum
+        ? query(
+            collection(firestore, "games"),
+            orderBy("updatedAt", "desc"),
+            where("tags", "array-contains", tag),
+            limit(limitedNum)
+          )
+        : query(
+            collection(firestore, "games"),
+            orderBy("updatedAt", "desc"),
+            where("tags", "array-contains", tag)
+          );
       const gameDocs = await getDocs(gameQuery);
-      const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      let games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      if (gameId) {
+        games = games.filter((game) => {
+          return game.id !== gameId; // Return true for the games you want to keep
+        });
+      }
       setGameStateValue((prev) => ({
         ...prev,
         gamesInTag: games as Game[],
@@ -124,6 +149,21 @@ const useGames = () => {
         }
       }
 
+      return games as Game[];
+    } catch (error) {
+      console.log("readGames error", error);
+    }
+  };
+
+  const readGamesBySiteMap = async () => {
+    try {
+      const gameQuery = query(
+        collection(firestore, "games"),
+        orderBy("title", "asc")
+      );
+
+      const gameDocs = await getDocs(gameQuery);
+      const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       return games as Game[];
     } catch (error) {
       console.log("readGames error", error);
@@ -334,7 +374,10 @@ const useGames = () => {
           }
         }
         if (game.coverImage) {
-          const coverImageRef = ref(storage, `games/${game.id}/coverImage`);
+          const coverImageRef = ref(
+            storage,
+            `games/${game.id}/coverImage/coverImage`
+          );
 
           listAll(coverImageRef)
             .then(async (listResults) => {
@@ -629,6 +672,8 @@ const useGames = () => {
     numOfGamesPerPage,
     onVote,
     onCollect,
+    onSelectDownload,
+    readGamesBySiteMap,
   };
 };
 export default useGames;

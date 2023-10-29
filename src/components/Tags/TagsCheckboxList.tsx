@@ -6,14 +6,12 @@ type TagsCheckboxListProps = {
   gameTags: GameTag[];
   setTags: (tag: string[]) => void;
   tags: string[];
-  currentGameTags?: string[];
 };
 
 const TagsCheckboxList: React.FC<TagsCheckboxListProps> = ({
   gameTags,
   setTags,
   tags,
-  currentGameTags,
 }) => {
   return (
     <div className="flex flex-col ">
@@ -25,7 +23,7 @@ const TagsCheckboxList: React.FC<TagsCheckboxListProps> = ({
             key={tag.id}
             setTags={setTags}
             tags={tags}
-            isChecked={currentGameTags?.includes(tag.id)}
+            isChecked={tags && tags.length > 0 ? tags?.includes(tag.id) : false}
           ></TagCheckbox>
         ))}
       </div>

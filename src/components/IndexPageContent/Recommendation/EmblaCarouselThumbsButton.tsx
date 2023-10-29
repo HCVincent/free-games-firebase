@@ -13,7 +13,7 @@ export const Thumb: React.FC<PropType> = (props) => {
 
   return (
     <div
-      className={"flex w-full embla-thumbs__slide justify-center bg-black".concat(
+      className={"flex w-full embla-thumbs__slide justify-center bg-black h-24".concat(
         selected ? " embla-thumbs__slide--selected " : ""
       )}
     >
@@ -22,9 +22,9 @@ export const Thumb: React.FC<PropType> = (props) => {
         className="embla-thumbs__slide__button relative"
         type="button"
       >
-        <div className="embla-thumbs__slide__number absolute end-2 top-2 w-5 h-5 rounded-full bg-slate-900">
+        {/* <div className="embla-thumbs__slide__number absolute end-2 top-2 w-5 h-5 rounded-full bg-slate-900">
           <span className="text-slate-500">{index + 1}</span>
-        </div>
+        </div> */}
         <Image
           className={`flex object-cover h-full w-auto embla-thumbs__slide__img  ${
             selected ? "" : "opacity-50"

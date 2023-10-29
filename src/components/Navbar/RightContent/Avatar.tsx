@@ -5,6 +5,7 @@ import SignOut from "@/components/SignOut/SignOut";
 import { User } from "firebase/auth";
 import UpdatePhoto from "./profileList/UpdatePhoto";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 type AvatarProps = {
   user: User;
@@ -23,7 +24,12 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
       <label tabIndex={0} className="btn m-1 h-full">
         <div className="avatar items-center cursor-pointer ">
           <div className="flex w-14 h-14 rounded-full">
-            <img src={userPhoto ? userPhoto : default_cover.src} />
+            <Image
+              src={userPhoto ? userPhoto : default_cover.src}
+              alt="avatar"
+              width={50}
+              height={50}
+            />
           </div>
           <AiOutlineDown className="ml-2" />
         </div>

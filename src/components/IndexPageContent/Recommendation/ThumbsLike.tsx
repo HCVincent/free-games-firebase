@@ -1,31 +1,21 @@
 import { Game } from "@/atoms/gamesAtom";
+import useGames from "@/hooks/useGames";
 import React, { useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { BsDownload } from "react-icons/bs";
-import Link from "next/link";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 type ThumbsLikeProps = {
   userVoteValue?: number;
   userCollectionValue?: string;
   game: Game;
-  onCollect: (
-    event: React.MouseEvent<SVGElement, MouseEvent>,
-    post: Game
-  ) => Promise<boolean>;
-  onVote: (
-    event: React.MouseEvent<SVGElement, MouseEvent>,
-    post: Game,
-    vote: number
-  ) => Promise<boolean>;
 };
 
 const ThumbsLike: React.FC<ThumbsLikeProps> = ({
   userVoteValue,
   game,
   userCollectionValue,
-  onCollect,
-  onVote,
 }) => {
+  const { onSelectDownload, onVote, onCollect } = useGames();
   const [error, setError] = useState(false);
   const [loadingDownVote, setLoadingDownVote] = useState(false);
   const [loadingUpVote, setLoadingUpVote] = useState(false);
@@ -47,6 +37,7 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
     setLoadingDownVote(false);
   };
   const [like, setLike] = useState(false);
+
   return (
     <div className="flex  h-[4rem] justify-between align-middle p-2 text-xl">
       <div className="flex w-[12rem] justify-between px-2 items-end">
@@ -105,8 +96,8 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
           </svg>
         )}
       </div>
-      <button
-        className="flex  text-white justify-end items-end transition-all hover:scale-110"
+      <div
+        className="flex  text-white justify-end items-end transition-all hover:scale-110 mr-2 cursor-pointer"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -116,6 +107,7 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
         {userCollectionValue === game.id ? (
           <FaHeart
             className="w-12 h-12"
+            name=""
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -132,18 +124,18 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
             }}
           />
         )}
-      </button>
+      </div>
       {game.address && (
-        <div className="flex justify-center items-center ">
-          <Link
-            href={game.address}
+        <div className="flex justify-center items-center cursor-pointer">
+          <div
             onClick={(e) => {
               e.stopPropagation();
+              onSelectDownload(game);
             }}
             className="w-12 h-12 hover:scale-105"
           >
-            <BsDownload className="w-12 h-12"></BsDownload>
-          </Link>
+            <BsDownload className="w-12 h-12 text-white"></BsDownload>
+          </div>
         </div>
       )}
     </div>

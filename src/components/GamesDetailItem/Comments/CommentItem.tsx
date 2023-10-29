@@ -1,31 +1,25 @@
-import { Icon, Stack, Text } from "@chakra-ui/react";
+import { authModalState } from "@/atoms/authModalAtom";
+import { Game, gameState } from "@/atoms/gamesAtom";
+import { firestore } from "@/firebase/clientApp";
 import { User } from "@firebase/auth";
 import { Timestamp } from "firebase-admin/firestore";
-import moment from "moment";
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import {
-  IoArrowDownCircleOutline,
-  IoArrowUpCircleOutline,
-} from "react-icons/io5";
-import defaultcover from "../../../../public/default_cover.png";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { authModalState } from "@/atoms/authModalAtom";
 import {
   arrayUnion,
   collection,
   doc,
+  getDocs,
   increment,
   orderBy,
   query,
   serverTimestamp,
   where,
   writeBatch,
-  getDocs,
-  getDoc,
 } from "firebase/firestore";
-import { firestore } from "@/firebase/clientApp";
-import { Game, gameState } from "@/atoms/gamesAtom";
+import moment from "moment";
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import defaultcover from "../../../../public/default_cover.png";
 
 export type Comment = {
   id: string;

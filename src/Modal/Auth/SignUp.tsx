@@ -79,21 +79,22 @@ const SignUp = () => {
               ]}
           </p>
         )}
-        <div className="flex justify-end mt-4">
-          <button className="btn btn-primary" type="submit">
-            {loading ? (
-              <span className="loading loading-spinner"></span>
-            ) : (
-              "Sign up"
-            )}
-          </button>
+        <div className="flex justify-end mt-4 p-2">
+          {loading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            <button
+              className="btn btn-primary"
+              type="submit"
+            >{`Sign up`}</button>
+          )}
         </div>
       </form>
 
-      <div className="flex justify-end w-full">
+      <div className="flex justify-end w-full text-lg">
         <p>new here?</p>
-        <p
-          className="text-red-500"
+        <button
+          className="text-red-500  btn-ghost capitalize"
           onClick={() => {
             setAuthModalState((prev) => ({
               ...prev,
@@ -102,7 +103,7 @@ const SignUp = () => {
           }}
         >
           login
-        </p>
+        </button>
       </div>
     </div>
   );

@@ -5,35 +5,32 @@ type FooterProps = {};
 
 const Footer: React.FC<FooterProps> = () => {
   return (
-    <footer className="footer p-10 bg-neutral text-neutral-content mt-10">
+    <footer className="footer p-10 bg-neutral  mt-10 text-white">
+      <p className="text-lg max-w-[20rem]">
+        {`FreeVRGame is a website you can download kinds of type of VR games for
+        free. We will keep on updating contents.`}
+      </p>
       <nav>
-        <header className="footer-title">Services</header>
-        <a className="link link-hover line-through">Branding</a>
-        <a className="link link-hover line-through">Design</a>
-        <a className="link link-hover line-through">Marketing</a>
-        <a className="link link-hover line-through">Advertisement</a>
-      </nav>
-      <nav>
-        <header className="footer-title">Company</header>
-        <Link className="link link-hover line-through" href="/">
+        <header className="footer-title ">Company</header>
+        <Link className="link link-hover line-through " href="/">
           About us
         </Link>
-        <Link className="link link-hover" href="/contact">
+        <Link className="link link-hover " href="/contact">
           Contact
         </Link>
-        <Link className="link link-hover line-through" href="/">
+        <Link className="link link-hover line-through " href="/">
           Jobs
         </Link>
       </nav>
       <nav>
-        <header className="footer-title">Legal</header>
-        <Link className="link link-hover" href="/terms">
+        <header className="footer-title ">Legal</header>
+        <Link className="link link-hover " href="/terms">
           Terms of use
         </Link>
-        <Link className="link link-hover" href="/privacy">
+        <Link className="link link-hover " href="/privacy">
           Privacy policy
         </Link>
-        <Link className="link link-hover" href="/cookie">
+        <Link className="link link-hover " href="/cookie">
           Cookie policy
         </Link>
       </nav>
