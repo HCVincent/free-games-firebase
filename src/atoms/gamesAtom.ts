@@ -18,6 +18,7 @@ export type Game = {
     updatedAt: Timestamp;
     numberOfComments?: number;
     tags?: string[];
+    platformType?: string;
     password?: string;
     titleArray?: string[]
 }

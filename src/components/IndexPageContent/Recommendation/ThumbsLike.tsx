@@ -129,6 +129,7 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
         <div className="flex justify-center items-center cursor-pointer">
           <div
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               onSelectDownload(game);
             }}

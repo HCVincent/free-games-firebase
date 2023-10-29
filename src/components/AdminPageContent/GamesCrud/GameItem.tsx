@@ -50,6 +50,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
           imagesGroup: game.imagesGroup ? game.imagesGroup : [],
           recommend: true,
           tags: game.tags,
+          platformType: game.platformType,
           createdAt: serverTimestamp() as Timestamp,
           updatedAt: serverTimestamp() as Timestamp,
         };
@@ -136,7 +137,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
               </button>
             )}
 
-            <dialog id="my_modal_2" className="modal">
+            <dialog id="my_modal_2" className="modal" data-theme="dark">
               <form method="dialog" className="modal-box">
                 <h3 className="font-bold text-lg text-white">update</h3>
                 {gameStateValue.selectedGame && (

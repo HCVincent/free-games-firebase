@@ -30,10 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
           href="/favicon-16x16.png"
         />
         <title>FreeVRGames</title>
-        <meta
-          name={process.env.NEXT_PUBLIC_JUICYADS_NAME}
-          content={process.env.NEXT_PUBLIC_JUICYADS_CONTENT}
-        />
+
         <meta
           name="description"
           content="You can download kinds of type of VR games for free"

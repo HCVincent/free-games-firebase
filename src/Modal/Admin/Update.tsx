@@ -2,9 +2,11 @@ import { Game } from "@/atoms/gamesAtom";
 import ImageUpload from "@/components/AdminPageContent/AddGames/ImageUpload";
 import ImagesGroupUpload from "@/components/AdminPageContent/AddGames/ImagesGroupUpload";
 import VideoUpload from "@/components/AdminPageContent/AddGames/VideoUpload";
+import PlatformCheckbox from "@/components/PlatformTypes/PlatformCheckbox";
 import TagsCheckboxList from "@/components/Tags/TagsCheckboxList";
 import useGames from "@/hooks/useGames";
 import useSelectFile from "@/hooks/useSelectFile";
+import { allPlatformTypes } from "@/lib/constants";
 import { Timestamp, serverTimestamp } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 
@@ -22,6 +24,9 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
   const [loading, setLoading] = useState(false);
   const [addComplete, setAddComplete] = useState(false);
   const { onUpdateGame } = useGames();
+  const [platformType, setPlatformType] = useState<string>(
+    game.platformType || allPlatformTypes[0]
+  );
   const {
     selectedImage,
     setSelectedImage,
@@ -45,6 +50,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
     if (game.coverImage) setSelectedImage(game.coverImage);
     if (game.video) setSelectedVideo(game.video);
     if (game.imagesGroup) setSelectedImagesGroup(game.imagesGroup);
+    if (game.platformType) setPlatformType(game.platformType);
   }, [game]);
 
   const [textInputs, setTextInputs] = useState({
@@ -76,6 +82,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
       video: selectedVideo,
       imagesGroup: selectedImagesGroup,
       tags: tags,
+      platformType: platformType,
       password: textInputs.password,
     };
 
@@ -115,7 +122,7 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
           required
           name="title"
           placeholder="title"
-          className="input input-bordered"
+          className="input input-bordered "
           value={textInputs.title}
           onChange={onChange}
         />
@@ -196,6 +203,11 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
           tags={tags}
         />
       )}
+      <PlatformCheckbox
+        allPlatformTypes={allPlatformTypes}
+        setPlatformType={setPlatformType}
+        platformType={platformType}
+      />
       {addComplete && (
         <div className="alert alert-success">
           <svg

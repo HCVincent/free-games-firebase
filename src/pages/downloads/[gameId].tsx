@@ -57,7 +57,6 @@ const DownloadPage: React.FC<DownloadPage> = () => {
   return (
     <div className="flex flex-col w-5/6 h-[calc(50vw-14rem)] mb-20 justify-center items-center">
       <div className="flex  w-full h-[60rem] justify-center items-center mt-10">
-        <div className="relative flex-1 h-full"></div>
         <div className="flex flex-col flex-1 w-full h-full justify-center items-center">
           {" "}
           <span className="countdown font-mono text-6xl">

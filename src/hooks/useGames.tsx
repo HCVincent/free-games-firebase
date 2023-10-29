@@ -7,6 +7,7 @@ import {
   gameState,
 } from "@/atoms/gamesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
+import { allPlatformTypes } from "@/lib/constants";
 import arrayCompare from "@/utils/arrayCompare";
 import differenceSet from "@/utils/differenceSet";
 import intersect from "@/utils/intersect";
@@ -192,7 +193,8 @@ const useGames = () => {
     firebaseCollection: string,
     oldGame: Game,
     newGame: Game,
-    uploadImages: boolean
+    uploadImages: boolean,
+    uploadTypes?: boolean
   ): Promise<boolean> => {
     try {
       const gameDocRef = doc(firestore, firebaseCollection, oldGame?.id!);
@@ -205,8 +207,10 @@ const useGames = () => {
         updatedAt: newGame.updatedAt,
         titleArray: newTitle.split(" "),
         tags: newGame.tags || [],
+        platformType: newGame.platformType || allPlatformTypes[0],
         password: newGame.password || "",
       });
+
       if (!oldGame.tags && newGame.tags && newGame.tags.length > 0) {
         for (let index = 0; index < newGame.tags.length; index++) {
           const tagDocRef = doc(firestore, "tags", newGame.tags[index]);

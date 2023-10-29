@@ -2,10 +2,12 @@ import { Game, GameTag } from "@/atoms/gamesAtom";
 import ImageUpload from "@/components/AdminPageContent/AddGames/ImageUpload";
 import ImagesGroupUpload from "@/components/AdminPageContent/AddGames/ImagesGroupUpload";
 import VideoUpload from "@/components/AdminPageContent/AddGames/VideoUpload";
+import PlatformCheckbox from "@/components/PlatformTypes/PlatformCheckbox";
 import TagsCheckboxList from "@/components/Tags/TagsCheckboxList";
 import { firestore, storage } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
 import useSelectFile from "@/hooks/useSelectFile";
+import { allPlatformTypes } from "@/lib/constants";
 import { arrayUnion } from "@firebase/firestore";
 import {
   Timestamp,
@@ -13,7 +15,6 @@ import {
   collection,
   doc,
   serverTimestamp,
-  updateDoc,
   writeBatch,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
@@ -28,6 +29,7 @@ const Add: React.FC<AddProps> = () => {
   const { gameStateValue, setGameStateValue } = useGames();
   const [canAdd, setCanAdd] = useState(false);
   const [tags, setTags] = useState<string[]>([]);
+  const [platformType, setPlatformType] = useState<string>(allPlatformTypes[0]);
   const {
     selectedImage,
     setSelectedImage,
@@ -68,6 +70,7 @@ const Add: React.FC<AddProps> = () => {
         createdAt: serverTimestamp() as Timestamp,
         updatedAt: serverTimestamp() as Timestamp,
         tags: tags,
+        platformType: platformType,
         titleArray: textInputs.title.toLowerCase().split(" "),
         password: textInputs.password,
       };
@@ -138,7 +141,7 @@ const Add: React.FC<AddProps> = () => {
       setSelectedVideo("");
       setSelectedImagesGroup([]);
       setTags([]);
-
+      setPlatformType(allPlatformTypes[0]);
       setCanAdd(false);
     } catch (error: any) {
       console.log("handleUploadGame error", error.message);
@@ -162,32 +165,51 @@ const Add: React.FC<AddProps> = () => {
   };
 
   return (
-    <div className="flex flex-col w-full items-start justify-start">
+    <div className="flex flex-col w-full items-start justify-start space-y-4">
       <div className="form-control w-full mt-4">
+        <label htmlFor="title" className="block">
+          Title
+        </label>
         <input
           required
+          id="title"
           name="title"
           placeholder="title"
           className="input input-bordered"
           value={textInputs.title}
           onChange={onChange}
         />
+
+        <label htmlFor="description" className="block">
+          Description
+        </label>
         <textarea
           required
+          id="description"
           name="description"
           placeholder="description"
           className="input input-bordered h-60 mt-4"
           onChange={onChange}
           value={textInputs.description}
-        />{" "}
+        />
+
+        <label htmlFor="address" className="block">
+          Address
+        </label>
         <input
+          id="address"
           name="address"
           placeholder="address"
           className="input input-bordered"
           onChange={onChange}
           value={textInputs.address}
-        />{" "}
+        />
+
+        <label htmlFor="password" className="block">
+          Password
+        </label>
         <input
+          id="password"
           name="password"
           placeholder="password"
           className="input input-bordered"
@@ -212,6 +234,11 @@ const Add: React.FC<AddProps> = () => {
         selectedImagesGroup={selectedImagesGroup}
         onSelectImagesGroup={onSelectImagesGroup}
         setSelectedImagesGroup={setSelectedImagesGroup}
+      />
+      <PlatformCheckbox
+        allPlatformTypes={allPlatformTypes}
+        setPlatformType={setPlatformType}
+        platformType={platformType}
       />
       <TagsCheckboxList
         gameTags={gameStateValue.gameTags}
