@@ -47,8 +47,8 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
           /* @ts-ignore */
           src={game.coverImage ? game.coverImage : default_cover}
           priority
-          width={300}
-          height={300}
+          width={436}
+          height={219}
           alt=""
           sizes="100vw"
           className="embla__slide__img inline-block object-cover lg:object-fill w-full h-auto lg:w-auto lg:h-full cursor-pointer"

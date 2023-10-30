@@ -32,11 +32,10 @@ const RelatedGames: React.FC<RelatedGamesProps> = ({ gameTag, gameId }) => {
             onClick={() => onSelectGame(game)}
           >
             <Image
-              width={300}
-              height={200}
+              width={436}
+              height={219}
               src={game.coverImage ? game.coverImage : default_cover}
               alt={game.title}
-              className="w-96 h-72"
             />
             <div className="card-body">
               <h2 className="card-title capitalize">{game.title}</h2>

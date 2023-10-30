@@ -1,8 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { Game } from "@/atoms/gamesAtom";
-import useGames from "@/hooks/useGames";
 import { useRouter } from "next/router";
 
 type PropType = {
@@ -11,7 +9,6 @@ type PropType = {
 };
 
 const EmblaCarouselTags: React.FC<PropType> = (props) => {
-  const { onSelectGame, gameStateValue, onVote, onCollect } = useGames();
   const { slides, options } = props;
   const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options, [
     Autoplay({ stopOnInteraction: false }),
@@ -22,13 +19,7 @@ const EmblaCarouselTags: React.FC<PropType> = (props) => {
     containScroll: "keepSnaps",
     dragFree: true,
   });
-  const onThumbClick = useCallback(
-    (index: number) => {
-      if (!emblaMainApi || !emblaThumbsApi) return;
-      emblaMainApi.scrollTo(index);
-    },
-    [emblaMainApi, emblaThumbsApi]
-  );
+
   const onSelect = useCallback(() => {
     if (!emblaMainApi || !emblaThumbsApi) return;
     setSelectedIndex(emblaMainApi.selectedScrollSnap());
@@ -41,7 +32,16 @@ const EmblaCarouselTags: React.FC<PropType> = (props) => {
     emblaMainApi.on("select", onSelect);
     emblaMainApi.on("reInit", onSelect);
   }, [emblaMainApi, onSelect]);
-  const images: string[] = [];
+  const images: string[] = [
+    "Action",
+    "English",
+    "Shooting",
+    "Horror",
+    "Action",
+    "RPG",
+    "Puzzle",
+    "Story-driven",
+  ];
 
   const imageByIndex = (index: number): string => images[index % images.length];
   return (

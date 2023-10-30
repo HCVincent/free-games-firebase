@@ -48,10 +48,10 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
                   alt={`image${index}`}
                   onClick={() => openImageViewer(index)}
                   src={image}
-                  width={300}
-                  height={200}
+                  width={1440}
+                  height={810}
                   sizes="100vw"
-                  className="flex  w-[800px] h-[420px] cursor-pointer rounded-md"
+                  className="flex  cursor-pointer rounded-md"
                 />
               ))}
             </div>
