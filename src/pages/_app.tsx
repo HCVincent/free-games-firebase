@@ -7,7 +7,6 @@ import Head from "next/head";
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [theme, setTheme] = React.useState("dark");
   return (
     <>
       <Head>

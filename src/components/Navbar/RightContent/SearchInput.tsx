@@ -48,7 +48,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
     searchHN();
   }, [debouncedSearchTerm]);
   return (
-    <form>
+    <form className="mr-4">
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only"

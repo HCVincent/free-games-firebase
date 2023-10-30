@@ -1,10 +1,9 @@
-import { auth } from "@/firebase/clientApp";
-import { deleteCookie, setCookie } from "cookies-next";
+import { themeState } from "@/atoms/themeAtom";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, { useEffect } from "react";
+import { useRecoilState } from "recoil";
 import logo from "../../../public/logo_icon.png";
 // import RightContent from "./RightContent/RightContent";
 
@@ -20,14 +19,23 @@ const RightContent = dynamic(
 );
 const Navbar: React.FC<NavbarProps> = () => {
   const router = useRouter();
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useRecoilState(themeState);
+
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "default" : "dark");
   };
+  // When component mounts, read the theme from localStorage
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
+  }, [setTheme]);
 
   useEffect(() => {
     //@ts-ignore
     document.querySelector("html").setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   return (

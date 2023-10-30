@@ -45,7 +45,7 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
       >
         <Image
           /* @ts-ignore */
-          src={game.coverImage ? game.coverImage : default_cover}
+          src={game.imagesGroup[0] ? game.imagesGroup[0] : default_cover}
           priority
           width={436}
           height={219}

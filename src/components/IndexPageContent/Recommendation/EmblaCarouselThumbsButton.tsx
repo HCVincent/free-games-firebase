@@ -30,8 +30,8 @@ export const Thumb: React.FC<PropType> = (props) => {
             selected ? "" : "opacity-50"
           }`}
           src={imgSrc}
-          width={60}
-          height={60}
+          width={436}
+          height={219}
           alt={index.toString()}
         />
       </button>
