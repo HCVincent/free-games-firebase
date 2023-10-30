@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React, { useRef, useState } from "react";
+import { TiDelete } from "react-icons/ti";
 
 type ImagesGroupUploadProps = {
   selectedImagesGroup?: Array<string>;
@@ -19,10 +20,20 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  const handleRemoveImage = (index: number) => {
+    if (selectedImagesGroup) {
+      const filteredImages = selectedImagesGroup.filter((_, i) => i !== index);
+      setSelectedImagesGroup(filteredImages);
+      if (setUploaded) {
+        setUploaded(true);
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col justify-start w-full">
       <div className="flex items-center mt-2 justify-between">
-        <span>9 pictures at most(optional) :</span>
+        <span>9 pictures at most(optional):</span>
         {selectedImagesGroup && selectedImagesGroup.length > 0 ? (
           <div className="flex flex-wrap">
             {selectedImagesGroup.map((image, index) => (
@@ -37,21 +48,22 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
                   height={200}
                   src={image}
                   alt={`Image ${index}`}
-                  className={`border-spacing-1 border-gray-400 rounded-md max-h-20 object-cover ${
-                    hoveredIndex === index ? "hover:border-slate-300" : ""
-                  }`}
+                  className="border-spacing-1 border-gray-400 rounded-md"
                 />
+                {hoveredIndex === index && (
+                  <TiDelete
+                    className="absolute top-0 right-0 z-10 cursor-pointer hover:bg-slate-300"
+                    onClick={() => handleRemoveImage(index)}
+                  />
+                )}
               </div>
             ))}
           </div>
-        ) : (
-          <></>
-        )}
+        ) : null}
         <button
           className="btn"
           onClick={(e) => {
             e.preventDefault();
-            setSelectedImagesGroup([]);
             selectedFileRef.current?.click();
           }}
         >
@@ -62,12 +74,7 @@ const ImagesGroupUpload: React.FC<ImagesGroupUploadProps> = ({
           multiple
           ref={selectedFileRef}
           hidden
-          onChange={(e) => {
-            {
-              setUploaded && setUploaded(true);
-            }
-            onSelectImagesGroup(e);
-          }}
+          onChange={onSelectImagesGroup}
         />
       </div>
     </div>
