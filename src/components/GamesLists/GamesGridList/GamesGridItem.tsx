@@ -46,7 +46,9 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
               alt={"cover"}
               width={436}
               height={219}
-              className="w-full object-cover rounded-lg cursor-pointer"
+              className={`${
+                imageLoading ? "w-0" : "w-full"
+              } object-cover rounded-lg cursor-pointer`}
               onLoad={() => setImageLoading(false)}
             />
           </figure>
