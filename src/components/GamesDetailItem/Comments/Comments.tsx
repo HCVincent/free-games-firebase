@@ -24,7 +24,6 @@ type CommentsProps = { user: User; game: Game };
 const Comments: React.FC<CommentsProps> = ({ user, game }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
-  const [fetchLoading, setFetchLoading] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
   const [loadingDeleteId, setLoadingDeleteId] = useState("");
   const setGameState = useSetRecoilState(gameState);
@@ -130,10 +129,21 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
       const comments = commentDocs.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-      }));
-      let rootComments = comments as Comment[];
-      rootComments = rootComments.filter((rootComment) => {
-        return rootComment.isRoot;
+      })) as Comment[];
+      let rootComments = comments.filter((comment) => {
+        return comment.isRoot;
+      });
+      let rootCommentsWithSubs = rootComments.map((rootComment) => {
+        // Filter comments to find those that are sub-comments of the current rootComment
+        let subComments = comments.filter((comment) =>
+          rootComment.subCommentsId?.includes(comment.id)
+        );
+
+        // Return the root comment with an additional property for sub-comments
+        return {
+          ...rootComment,
+          subComments: subComments,
+        };
       });
       setComments(rootComments as Comment[]);
     } catch (error) {

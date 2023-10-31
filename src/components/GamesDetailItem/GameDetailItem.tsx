@@ -4,7 +4,6 @@ import moment from "moment";
 import Comments from "./Comments/Comments";
 import ThumbsLike from "../IndexPageContent/Recommendation/ThumbsLike";
 import TagsCardList from "../Tags/TagsCardList";
-import Script from "next/script";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
 import dynamic from "next/dynamic";
@@ -20,7 +19,12 @@ const GameDetailItem: React.FC<GameDetailItemProps> = ({ game }) => {
 
   return (
     <div className="flex flex-col  p-10">
-      <GameCover coverImage={game.coverImage} imagesGroup={game.imagesGroup} />
+      <div className="min-h-[400px]">
+        <GameCover
+          coverImage={game.coverImage}
+          imagesGroup={game.imagesGroup}
+        />
+      </div>
       <div className="flex flex-col mt-10  justify-between">
         <span className=" text-4xl font-bold capitalize lg:text-6xl">
           {game.title}

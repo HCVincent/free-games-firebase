@@ -23,7 +23,6 @@ const GamesVerticalItem: React.FC<GamesVerticalItemProps> = ({
   userVoteValue,
 }) => {
   const [imageLoading, setImageLoading] = useState(true);
-  const [like, setLike] = useState(false);
   const setGameStateValue = useSetRecoilState(gameState);
   return (
     <Link
@@ -48,17 +47,16 @@ const GamesVerticalItem: React.FC<GamesVerticalItemProps> = ({
           alt={`cover${game.id}`}
           priority
           className="rounded-lg"
-          width={200}
-          height={200}
+          width={436}
+          height={219}
           onLoad={() => setImageLoading(false)}
         />
       </figure>{" "}
       <div className="flex flex-1 flex-col">
-        {game.tags && <TagsCardList tags={game.tags} />}
-        <div className="card-body cursor-pointer flex flex-1">
-          <h2 className="card-title capitalize">{game.title}</h2>
+        <div className="card-body cursor-pointer flex flex-1 p-1">
+          <h2 className="card-title capitalize p-2 text-2xl">{game.title}</h2>
           <MomentSpan timeStamp={game.updatedAt} />
-          <div className="card-actions justify-end">
+          <div className="card-actions justify-start">
             <ThumbsLike
               userVoteValue={userVoteValue}
               game={game}
@@ -66,6 +64,7 @@ const GamesVerticalItem: React.FC<GamesVerticalItemProps> = ({
             />
           </div>
         </div>
+        {game.tags && <TagsCardList tags={game.tags} />}
       </div>
     </Link>
   );

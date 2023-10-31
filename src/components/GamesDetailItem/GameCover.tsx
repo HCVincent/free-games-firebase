@@ -13,7 +13,7 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
     Autoplay({ stopOnInteraction: false }),
   ]);
-
+  const [loading, setLoading] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const openImageViewer = useCallback((index: number) => {
@@ -26,7 +26,7 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
     setIsViewerOpen(false);
   };
   return (
-    <div className="w-full h-[420px]">
+    <div className="w-full min-h-[400px]">
       {imagesGroup && imagesGroup.length > 0 ? (
         <div className="embla   p-0 ">
           <div className="embla__viewport" ref={emblaRef}>
@@ -40,8 +40,7 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
                   src={image}
                   width={1440}
                   height={810}
-                  sizes="100vw"
-                  className="flex  cursor-pointer rounded-md"
+                  className="flex  cursor-pointer rounded-md min-h-[400px]"
                 />
               ))}
             </div>
@@ -62,10 +61,9 @@ const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
         <Image
           alt="cover"
           src={coverImage ? coverImage : defaultCover}
-          width={500}
-          height={500}
-          sizes="100vw"
-          className="flex object-cover w-full h-[420px] cursor-pointer rounded-md"
+          width={1440}
+          height={810}
+          className="flex object-cover w-full cursor-pointer rounded-md min-h-[400px]"
         ></Image>
       )}
     </div>

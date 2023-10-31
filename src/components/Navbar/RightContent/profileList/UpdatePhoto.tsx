@@ -4,6 +4,10 @@ import { updateProfile } from "firebase/auth";
 import useSelectFile from "@/hooks/useSelectFile";
 import { firestore, storage } from "@/firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import AvatarModal from "@/Modal/Admin/AvatarModal";
+import { adminModalState } from "@/atoms/adminModalAtom";
+import { useRecoilState } from "recoil";
+import { avatarModalState } from "@/atoms/avatarModalAtom";
 type UpdatePhotoProps = {
   user: User;
   setUserPhoto: (photoUrl: string) => void;
@@ -12,6 +16,7 @@ type UpdatePhotoProps = {
 const UpdatePhoto: React.FC<UpdatePhotoProps> = ({ user, setUserPhoto }) => {
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const { onSelectImage, selectedImage } = useSelectFile();
+  const [modalState, setModalState] = useRecoilState(avatarModalState);
   const handleUpdatePhoto = async () => {
     try {
       if (selectedImage) {
@@ -25,8 +30,7 @@ const UpdatePhoto: React.FC<UpdatePhotoProps> = ({ user, setUserPhoto }) => {
             setUserPhoto(downloadURL);
           })
           .catch((error) => {
-            // An error occurred
-            // ...
+            console.log("updateProfile error", error);
           });
       }
     } catch (error) {
@@ -34,27 +38,18 @@ const UpdatePhoto: React.FC<UpdatePhotoProps> = ({ user, setUserPhoto }) => {
     }
   };
   return (
-    <div className="flex w-full">
-      <div
-        className="flex justify-center w-full"
-        onClick={async (e) => {
-          e.preventDefault();
-          selectedFileRef.current?.click();
-          await handleUpdatePhoto();
-        }}
-      >
-        Update Photo
-      </div>
-      <input
-        required
-        type="file"
-        ref={selectedFileRef}
-        className="hidden"
-        onChange={(e) => {
-          onSelectImage(e);
-        }}
-      />
-    </div>
+    <label
+      htmlFor="my_modal_avatar"
+      className="flex w-full"
+      onClick={(e) => {
+        setModalState((prev) => ({
+          ...prev,
+          view: "avatar",
+        }));
+      }}
+    >
+      <div className="flex justify-center w-full h-full">Update Photo</div>
+    </label>
   );
 };
 export default UpdatePhoto;

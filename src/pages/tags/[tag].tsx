@@ -21,6 +21,7 @@ import {
 } from "firebase/firestore";
 import { firestore } from "@/firebase/clientApp";
 import { Game } from "@/atoms/gamesAtom";
+import TagCard from "@/components/Tags/TagCard";
 type TagPageProps = {
   // documentSnapShot: QueryDocumentSnapshot<DocumentData>;
   // gamesInTag: Game[];
@@ -73,6 +74,7 @@ const TagPage: React.FC<TagPageProps> = ({
 
   useEffect(() => {
     const fetchGamesInTag = async () => {
+      setLoading(true);
       const gameQuery = query(
         collection(firestore, "games"),
         orderBy("updatedAt", "desc"),
@@ -88,67 +90,76 @@ const TagPage: React.FC<TagPageProps> = ({
       }));
       setLastVisible(gameDocs.docs[gameDocs.docs.length - 1]);
       if (games.length < 9) setNoMoreLoad(true);
+      setLoading(false);
     };
     fetchGamesInTag();
   }, []);
   return (
     <div className="flex w-full justify-center items-center">
-      <PageContent>
-        <div className="justify-start w-full  h-[280rem]">
-          <div className="w-full">
-            <span className="px-10 text-2xl">{tag} Games</span>
-            {loading ? (
-              <span className="loading loading-spinner loading-lg"></span>
-            ) : (
-              <GamesVerticalList games={gameStateValue.gamesInTag || []} />
-            )}
-          </div>
-          <div className="flex w-full">
-            {noMoreLoad ? (
-              <div className="alert alert-info">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="stroke-current shrink-0 w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-                <span>this is a bottom line</span>
-              </div>
-            ) : (
-              <div className="flex w-full justify-center">
-                {loadMoreLoading ? (
-                  <div className="flex w-full  items-center justify-center">
-                    <span className="loading loading-spinner loading-lg"></span>
-                  </div>
-                ) : (
-                  <button
-                    className="btn btn-ghost mt-4 w-full  normal-case text-4xl"
-                    onClick={loadMore}
+      {loading ? (
+        <div className="flex w-full h-full items-center justify-center">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      ) : (
+        <PageContent>
+          <div className="justify-start w-full  h-[280rem]">
+            <div className="w-full">
+              {loading ? (
+                <span className="loading loading-spinner loading-lg"></span>
+              ) : (
+                <div className="flex flex-col">
+                  <span className="mt-10 px-10 text-2xl font-bold">
+                    {tag} Games
+                  </span>
+                  <GamesVerticalList games={gameStateValue.gamesInTag || []} />
+                </div>
+              )}
+            </div>
+            <div className="flex w-full">
+              {noMoreLoad ? (
+                <div className="alert alert-info">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="stroke-current shrink-0 w-6 h-6"
                   >
-                    Load More
-                  </button>
-                )}
-              </div>
-            )}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  <span>this is a bottom line</span>
+                </div>
+              ) : (
+                <div className="flex w-full justify-center">
+                  {loadMoreLoading ? (
+                    <div className="flex w-full  items-center justify-center">
+                      <span className="loading loading-spinner loading-lg"></span>
+                    </div>
+                  ) : (
+                    <button
+                      className="btn btn-ghost mt-4 w-full  normal-case text-4xl"
+                      onClick={loadMore}
+                    >
+                      Load More
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="flex w-full  justify-center items-center  h-[80rem] lg:h-[280rem]">
-          <Script
-            async
-            type="application/javascript"
-            src="https://a.magsrv.com/ad-provider.js"
-          ></Script>
-          <ins className="eas6a97888e" data-zoneid="5078966"></ins>
-          <Script id="tags-sticky-banner">{`(AdProvider = window.AdProvider || []).push({"serve": {}});`}</Script>
-        </div>
-      </PageContent>
+          <div className="flex w-full  justify-center items-start h-[80rem] lg:h-[280rem]">
+            <div className="flex flex-wrap mt-10">
+              {gameStateValue.gameTags.map((tag) => (
+                <TagCard tag={tag.title} key={tag.id}></TagCard>
+              ))}
+            </div>
+          </div>
+        </PageContent>
+      )}
     </div>
   );
 };

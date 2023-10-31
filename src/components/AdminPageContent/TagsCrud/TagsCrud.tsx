@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 const TagsCrud: React.FC = () => {
   const [searchInput, setSearchInput] = useState("");
-  const { onSelectGame, gameStateValue, setGameStateValue } = useGames();
+  const { gameStateValue } = useGames();
   return (
     <div className="flex flex-col h-full p-4">
       <AdminModal setSearchInput={setSearchInput} searchInput={searchInput} />

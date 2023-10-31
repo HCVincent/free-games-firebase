@@ -57,7 +57,6 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const [subComments, setSubComments] = useState<Comment[]>([]);
   const [charsRemaining, setCharsRemaining] = useState(1000);
   const [reply, setReply] = useState(false);
-  const [replyText, setReplyText] = useState("");
   const [commentText, setCommentText] = useState("");
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (event.target.value.length > 1000) return;
@@ -100,7 +99,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
       });
       await batch.commit();
       setCommentText("");
-      setSubComments((prev) => [newComment, ...prev]);
+      setSubComments((prev) => [...prev, newComment]);
       setReply(false);
       setGameState((prev) => ({
         ...prev,

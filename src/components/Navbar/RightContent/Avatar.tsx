@@ -6,6 +6,7 @@ import { User } from "firebase/auth";
 import UpdatePhoto from "./profileList/UpdatePhoto";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import AvatarModal from "@/Modal/Admin/AvatarModal";
 
 type AvatarProps = {
   user: User;
@@ -21,6 +22,8 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
   }, [user]);
   return (
     <div className="dropdown dropdown-end ">
+      <AvatarModal user={user} setUserPhoto={setUserPhoto} />
+
       <label tabIndex={0} className="btn m-1 h-full">
         <div className="avatar items-center cursor-pointer ">
           <div className="flex w-14 h-14 rounded-full">

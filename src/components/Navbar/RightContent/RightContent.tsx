@@ -8,6 +8,7 @@ import ThemeButton from "../ThemeButton/ThemeButton";
 import Avatar from "./Avatar";
 import { auth } from "@/firebase/clientApp";
 import { setCookie, deleteCookie } from "cookies-next";
+import AvatarModal from "@/Modal/Admin/AvatarModal";
 
 const AuthModal = dynamic(() => import("../../../Modal/Auth/AuthModal"), {
   ssr: false,
