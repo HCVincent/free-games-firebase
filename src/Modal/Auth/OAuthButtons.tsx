@@ -13,7 +13,9 @@ const OAuthButtons: React.FC = () => {
   return (
     <div className="flex flex-col w-full mb-4">
       {googleLoading ? (
-        <span className="loading loading-spinner"></span>
+        <div className="flex justify-center">
+          <span className="loading loading-spinner"></span>
+        </div>
       ) : (
         <button className="btn mt-2 " onClick={() => signInWithGoogle()}>
           <Image
