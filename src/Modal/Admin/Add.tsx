@@ -1,4 +1,4 @@
-import { Game, GameTag } from "@/atoms/gamesAtom";
+import { Game } from "@/atoms/gamesAtom";
 import ImageUpload from "@/components/AdminPageContent/AddGames/ImageUpload";
 import ImagesGroupUpload from "@/components/AdminPageContent/AddGames/ImagesGroupUpload";
 import VideoUpload from "@/components/AdminPageContent/AddGames/VideoUpload";

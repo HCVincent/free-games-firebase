@@ -1,5 +1,4 @@
 import React from "react";
-import { Game, GameTag } from "@/atoms/gamesAtom";
 
 type PlatformCheckboxProps = {
   allPlatformTypes: string[];

@@ -1,13 +1,10 @@
-import { User } from "firebase/auth";
-import React, { useRef } from "react";
-import { updateProfile } from "firebase/auth";
-import useSelectFile from "@/hooks/useSelectFile";
-import { firestore, storage } from "@/firebase/clientApp";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import AvatarModal from "@/Modal/Admin/AvatarModal";
-import { adminModalState } from "@/atoms/adminModalAtom";
-import { useRecoilState } from "recoil";
 import { avatarModalState } from "@/atoms/avatarModalAtom";
+import { storage } from "@/firebase/clientApp";
+import useSelectFile from "@/hooks/useSelectFile";
+import { User, updateProfile } from "firebase/auth";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import React, { useRef } from "react";
+import { useRecoilState } from "recoil";
 type UpdatePhotoProps = {
   user: User;
   setUserPhoto: (photoUrl: string) => void;

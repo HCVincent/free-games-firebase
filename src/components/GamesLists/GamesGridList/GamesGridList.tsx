@@ -1,9 +1,9 @@
+import { Game, gameState } from "@/atoms/gamesAtom";
 import { firestore } from "@/firebase/clientApp";
 import useGames from "@/hooks/useGames";
 import {
   DocumentData,
   Query,
-  QueryDocumentSnapshot,
   collection,
   getDocs,
   limit,
@@ -12,10 +12,8 @@ import {
   startAfter,
 } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import GamesGridItem from "./GamesGridItem";
-import { Game, gameState } from "@/atoms/gamesAtom";
-import Link from "next/link";
 import { useRecoilValue } from "recoil";
+import GamesGridItem from "./GamesGridItem";
 type GamesGridListProps = {};
 
 const GamesGridList: React.FC<GamesGridListProps> = ({}) => {

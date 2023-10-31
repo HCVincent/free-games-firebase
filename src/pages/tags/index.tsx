@@ -1,5 +1,4 @@
 import TagsRead from "@/components/AdminPageContent/TagsCrud/TagsRead";
-import useGames from "@/hooks/useGames";
 import React from "react";
 
 type indexProps = {};

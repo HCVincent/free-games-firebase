@@ -1,5 +1,5 @@
-import { Game, GameTag } from "@/atoms/gamesAtom";
-import React, { useState, useEffect } from "react";
+import { GameTag } from "@/atoms/gamesAtom";
+import React, { useEffect, useState } from "react";
 
 type TagCheckboxProps = {
   tag: GameTag;

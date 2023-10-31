@@ -1,13 +1,13 @@
+import Autoplay from "embla-carousel-autoplay";
+import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import React, { useCallback, useState } from "react";
-import useEmblaCarousel, { EmblaOptionsType } from "embla-carousel-react";
 import ImageViewer from "react-simple-image-viewer";
-import Autoplay from "embla-carousel-autoplay";
+import defaultCover from "../../../public/default_cover.png";
 type GameCoverProps = {
   coverImage?: string;
   imagesGroup?: string[];
 };
-import defaultCover from "../../../public/default_cover.png";
 
 const GameCover: React.FC<GameCoverProps> = ({ coverImage, imagesGroup }) => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [

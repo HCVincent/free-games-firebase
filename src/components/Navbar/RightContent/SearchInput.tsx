@@ -1,9 +1,8 @@
-import { useSearchDebounce } from "@/hooks/useSearchDebounce";
+import { Game } from "@/atoms/gamesAtom";
+import useGames from "@/hooks/useGames";
+import { useDebounce } from "@uidotdev/usehooks";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useDebounce } from "@uidotdev/usehooks";
-import useGames from "@/hooks/useGames";
-import { Game } from "@/atoms/gamesAtom";
 
 type SearchInputProps = {
   customId: string;

@@ -10,12 +10,12 @@ import { auth, firestore, storage } from "@/firebase/clientApp";
 import { allPlatformTypes } from "@/lib/constants";
 import arrayCompare from "@/utils/arrayCompare";
 import differenceSet from "@/utils/differenceSet";
-import intersect from "@/utils/intersect";
 import {
   DocumentData,
   QueryDocumentSnapshot,
+  arrayRemove,
+  arrayUnion,
   collection,
-  deleteDoc,
   doc,
   getDocs,
   limit,
@@ -24,10 +24,6 @@ import {
   updateDoc,
   where,
   writeBatch,
-  or,
-  arrayUnion,
-  arrayRemove,
-  startAfter,
 } from "firebase/firestore";
 import {
   deleteObject,

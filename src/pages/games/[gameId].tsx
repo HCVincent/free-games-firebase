@@ -5,7 +5,7 @@ import { firestore } from "@/firebase/clientApp";
 import { doc, getDoc } from "firebase/firestore";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 const GameDetailItem = dynamic(

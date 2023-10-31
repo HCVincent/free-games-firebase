@@ -1,6 +1,6 @@
+import { GameTag } from "@/atoms/gamesAtom";
 import React from "react";
 import TagCheckbox from "./TagCheckbox";
-import { Game, GameTag } from "@/atoms/gamesAtom";
 
 type TagsCheckboxListProps = {
   gameTags: GameTag[];

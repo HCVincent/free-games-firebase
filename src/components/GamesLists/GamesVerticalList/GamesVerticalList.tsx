@@ -1,8 +1,7 @@
 import { Game } from "@/atoms/gamesAtom";
-import { NextRouter } from "next/router";
+import useGames from "@/hooks/useGames";
 import React from "react";
 import GamesVerticalItem from "./GamesVerticalItem";
-import useGames from "@/hooks/useGames";
 
 type GamesVerticalListProps = {
   games: Game[];

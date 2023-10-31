@@ -1,8 +1,6 @@
 import GamesVerticalList from "@/components/GamesLists/GamesVerticalList/GamesVerticalList";
 import PageContent from "@/components/Layout/PageContent";
 import useGames from "@/hooks/useGames";
-import { useRouter } from "next/router";
-import Script from "next/script";
 import React, { useEffect, useState } from "react";
 //@ts-ignore
 import safeJsonStringify from "safe-json-stringify";

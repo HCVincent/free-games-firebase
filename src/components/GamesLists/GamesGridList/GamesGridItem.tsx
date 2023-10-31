@@ -1,13 +1,12 @@
 import { Game, gameState } from "@/atoms/gamesAtom";
-import moment from "moment";
-import React, { useState } from "react";
-import questionmark from "../../../../public/questionmark.png";
 import ThumbsLike from "@/components/IndexPageContent/Recommendation/ThumbsLike";
-import Link from "next/link";
 import TagsCardList from "@/components/Tags/TagsCardList";
-import Image from "next/image";
-import { useSetRecoilState } from "recoil";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import questionmark from "../../../../public/questionmark.png";
 const MomentSpan = dynamic(() => import("@/components/MomentSpan/MomentSpan"));
 type GamesGridItemProps = {
   game: Game;

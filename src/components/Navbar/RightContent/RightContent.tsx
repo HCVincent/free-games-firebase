@@ -1,14 +1,13 @@
-import { useAuthState } from "react-firebase-hooks/auth";
+import { Game } from "@/atoms/gamesAtom";
+import { auth } from "@/firebase/clientApp";
+import { deleteCookie, setCookie } from "cookies-next";
 import dynamic from "next/dynamic";
 import React, { useEffect, useState } from "react";
-import SearchInput from "./SearchInput";
-import { Game } from "@/atoms/gamesAtom";
-import SearchResultList from "./SearchResultList";
+import { useAuthState } from "react-firebase-hooks/auth";
 import ThemeButton from "../ThemeButton/ThemeButton";
 import Avatar from "./Avatar";
-import { auth } from "@/firebase/clientApp";
-import { setCookie, deleteCookie } from "cookies-next";
-import AvatarModal from "@/Modal/Admin/AvatarModal";
+import SearchInput from "./SearchInput";
+import SearchResultList from "./SearchResultList";
 
 const AuthModal = dynamic(() => import("../../../Modal/Auth/AuthModal"), {
   ssr: false,
