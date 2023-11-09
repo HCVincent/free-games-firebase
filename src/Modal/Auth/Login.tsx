@@ -12,8 +12,8 @@ const Login: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [error, setError] = useState("");
   const [loginForm, setLoginForm] = useState({
-    email: process.env.NEXT_PUBLIC_EMAIL,
-    password: process.env.NEXT_PUBLIC_PASSWORD,
+    email: "111@111.com",
+    password: "111111",
   });
   const [signInWithEmailAndPassword, userCred, loading, userError] =
     useSignInWithEmailAndPassword(auth);
