@@ -16,6 +16,11 @@ import { useRecoilValue } from "recoil";
 import GamesGridItem from "./GamesGridItem";
 type GamesGridListProps = {};
 
+const orderByOptions = {
+  UPDATED_TIME: "updatedAt",
+  LIKES: "likes",
+};
+
 const GamesGridList: React.FC<GamesGridListProps> = ({}) => {
   let next: Query<DocumentData>;
   const {
@@ -25,10 +30,16 @@ const GamesGridList: React.FC<GamesGridListProps> = ({}) => {
     numOfGamesPerPage,
     setGameStateValue,
   } = useGames();
+  const [orderedBy, setOrderedBy] = useState(orderByOptions.UPDATED_TIME);
   const [noMoreLoad, setNoMoreLoad] = useState(false);
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const gameStateValue = useRecoilValue(gameState);
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setOrderedBy(event.target.value);
+  };
+
   const handleOnReadGames = async () => {
     setLoading(true);
     try {
@@ -42,12 +53,20 @@ const GamesGridList: React.FC<GamesGridListProps> = ({}) => {
     setLoadMoreLoading(true);
     // Construct a new query starting at this document,
     const limitedNumber = 9;
-    next = query(
-      collection(firestore, "games"),
-      orderBy("updatedAt", "desc"),
-      startAfter(lastVisible),
-      limit(limitedNumber)
-    );
+    next =
+      orderedBy === orderByOptions.UPDATED_TIME
+        ? query(
+            collection(firestore, "games"),
+            orderBy("updatedAt", "desc"),
+            startAfter(lastVisible),
+            limit(limitedNumber)
+          )
+        : query(
+            collection(firestore, "games"),
+            orderBy("voteStatus", "desc"),
+            startAfter(lastVisible),
+            limit(limitedNumber)
+          );
     const newGameDocs = await getDocs(next);
     if (newGameDocs.docs.length < limitedNumber) {
       setNoMoreLoad(true);
@@ -68,27 +87,57 @@ const GamesGridList: React.FC<GamesGridListProps> = ({}) => {
     }));
     setLoadMoreLoading(false);
   };
+  const fetchGamesByUpdatedTime = async () => {
+    const gameQuery = query(
+      collection(firestore, "games"),
+      orderBy("updatedAt", "desc"),
+      limit(9)
+    );
+    const gameDocs = await getDocs(gameQuery);
+    const documentSnapShot = gameDocs.docs[gameDocs.docs.length - 1];
+    const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    setGameStateValue((prev) => ({
+      ...prev,
+      games: games as Game[],
+    }));
+    setLastVisible(documentSnapShot);
+  };
+  const fetchGamesByLikes = async () => {
+    const gameQuery = query(
+      collection(firestore, "games"),
+      orderBy("voteStatus", "desc"),
+      limit(9)
+    );
+    const gameDocs = await getDocs(gameQuery);
+    const documentSnapShot = gameDocs.docs[gameDocs.docs.length - 1];
+    const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    setGameStateValue((prev) => ({
+      ...prev,
+      games: games as Game[],
+    }));
+    setLastVisible(documentSnapShot);
+  };
   useEffect(() => {
     handleOnReadGames();
   }, []);
   useEffect(() => {
-    const fetchGames = async () => {
-      const gameQuery = query(
-        collection(firestore, "games"),
-        orderBy("updatedAt", "desc"),
-        limit(9)
-      );
-      const gameDocs = await getDocs(gameQuery);
-      const documentSnapShot = gameDocs.docs[gameDocs.docs.length - 1];
-      const games = gameDocs.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setGameStateValue((prev) => ({
-        ...prev,
-        games: games as Game[],
-      }));
-      setLastVisible(documentSnapShot);
-    };
-    fetchGames();
+    fetchGamesByUpdatedTime();
   }, []);
+
+  useEffect(() => {
+    const fetchAndSortGames = async () => {
+      // Fetch games logic...
+      // After fetching, sort the games based on the selected orderBy state
+      if (orderedBy === orderByOptions.UPDATED_TIME) {
+        fetchGamesByUpdatedTime(); // Assuming updatedAt is a timestamp
+      } else if (orderedBy === orderByOptions.LIKES) {
+        fetchGamesByLikes(); // Assuming likes is a number
+      }
+    };
+
+    fetchAndSortGames();
+  }, [orderedBy]);
+
   return (
     <>
       {loading ? (
@@ -97,14 +146,36 @@ const GamesGridList: React.FC<GamesGridListProps> = ({}) => {
         </div>
       ) : (
         <div className="flex flex-col items-center h-full justify-between mt-10">
-          {/* <div className="flex w-full justify-start">
-            <Link
-              className="btn btn-ghost flex  hover:scale-105 transition-all justify-start text-4xl ml-36 mb-4"
-              href={`/games`}
-            >
-              All Games
-            </Link>
-          </div> */}
+          <div className="w-full flex justify-end">
+            <div className="form-control">
+              <label className="label cursor-pointer space-x-2 p-2 hover:bg-slate-600 rounded-xl">
+                <span className="label-text capitalize text-xl">latest</span>
+                <input
+                  type="radio"
+                  name="radio-10"
+                  className="radio checked:bg-red-500"
+                  value={orderByOptions.UPDATED_TIME}
+                  checked={orderedBy === orderByOptions.UPDATED_TIME}
+                  onChange={handleRadioChange}
+                />
+              </label>
+            </div>
+            <div className="form-control">
+              <label className="label cursor-pointer space-x-2 p-2 hover:bg-slate-600 rounded-xl">
+                <span className="label-text capitalize text-xl">
+                  most likes
+                </span>
+                <input
+                  type="radio"
+                  name="radio-10"
+                  className="radio checked:bg-blue-500"
+                  value={orderByOptions.LIKES}
+                  checked={orderedBy === orderByOptions.LIKES}
+                  onChange={handleRadioChange}
+                />
+              </label>
+            </div>
+          </div>
           <div className="flex flex-col  h-full  gap-y-6 lg:grid lg:grid-cols-3 lg:gap-10">
             {gameStateValue.games.map((game) => (
               <GamesGridItem

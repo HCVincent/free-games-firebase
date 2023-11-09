@@ -22,7 +22,7 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
   const [imageLoading, setImageLoading] = useState(true);
   const setGameStateValue = useSetRecoilState(gameState);
   return (
-    <div className="flex w-[28rem]">
+    <div className="flex w-[28rem] hover:shadow-2xl">
       <Link
         target="_blank"
         href={`/games/${game.id}`}
