@@ -7,7 +7,7 @@ type MomentSpanProps = {
 
 const MomentSpan: React.FC<MomentSpanProps> = ({ timeStamp }) => {
   return (
-    <span className="hidden lg:flex  text-slate-400 p-2">
+    <span className="hidden lg:flex  text-slate-400 px-2">
       updated at{" "}
       {timeStamp && moment(new Date(timeStamp.seconds * 1000)).fromNow()}
     </span>

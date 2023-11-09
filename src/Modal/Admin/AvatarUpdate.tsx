@@ -48,7 +48,7 @@ const AvatarUpdate: React.FC<AvatarUpdateProps> = ({ user, setUserPhoto }) => {
         className="flex self-center rounded-full w-60 h-60"
       />
       <button
-        className="btn btn-ghost"
+        className="btn btn-ghost capitalize"
         onClick={() => {
           selectedFileRef.current?.click();
         }}

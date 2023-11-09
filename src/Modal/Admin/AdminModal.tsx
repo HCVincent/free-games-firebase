@@ -35,20 +35,22 @@ const AdminModal: React.FC<AdminModalProps> = ({
 
   return (
     <div className="hidden lg:flex lg:w-full lg:justify-between">
-      <label
-        htmlFor="my_modal_admin_add"
-        className="btn btn-primary"
-        onClick={handleAdd}
-      >
-        add
-      </label>
-      <label
-        htmlFor="my_modal_admin_add"
-        className="btn btn-primary"
-        onClick={handleTags}
-      >
-        tags
-      </label>
+      <div className="space-x-6 ml-10">
+        <label
+          htmlFor="my_modal_admin_add"
+          className="btn btn-primary"
+          onClick={handleAdd}
+        >
+          add
+        </label>
+        <label
+          htmlFor="my_modal_admin_add"
+          className="btn btn-primary"
+          onClick={handleTags}
+        >
+          tags
+        </label>
+      </div>
       <input type="checkbox" id="my_modal_admin_add" className="modal-toggle" />
       <div className="modal ">
         <div className="modal-box">

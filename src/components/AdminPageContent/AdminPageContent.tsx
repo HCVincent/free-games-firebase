@@ -13,7 +13,6 @@ const AdminPageContent: React.FC<AdminPageContentProps> = ({ selectedTab }) => {
       {selectedTab === "games" && <GamesCrud />}
       {selectedTab === "recommendations" && <RecommendationsCrud />}
       {selectedTab === "tags" && <TagsCrud />}
-      {selectedTab === "users" && <>users</>}
     </div>
   );
 };

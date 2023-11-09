@@ -57,10 +57,12 @@ const RecommendationItem: React.FC<RecommendationItemProps> = ({
 
       <div className="flex flex-1 h-full items-center justify-between px-8">
         <div className="flex items-end p-2">
-          <span className="text-2xl  text-white  line-clamp-2 lg:line-clamp-1 lg:text-4xl capitalize">
-            {game.title}
-          </span>
-          <MomentSpan timeStamp={game.updatedAt} />
+          <div className="flex flex-col">
+            <span className="text-2xl  text-white  line-clamp-2 lg:line-clamp-1 lg:text-4xl capitalize px-2">
+              {game.title}
+            </span>
+            <MomentSpan timeStamp={game.updatedAt} />
+          </div>
         </div>
         <div className="flex-col flex-0 min-w-[20rem] hidden lg:flex">
           <ThumbsLike

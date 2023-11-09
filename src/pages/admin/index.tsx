@@ -18,8 +18,8 @@ const AdminHome: React.FC = () => {
   const route = useRouter();
   if (loading) {
     return (
-      <div>
-        <p>Initialising User...</p>
+      <div className="flex w-full h-full items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
   }

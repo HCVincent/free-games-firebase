@@ -37,7 +37,7 @@ const GamesRead: React.FC<GamesReadProps> = () => {
   const loadMore = async () => {
     setLoadMoreLoading(true);
     next = query(
-      collection(firestore, "games"),
+      collection(firestore, "recommendations"),
       orderBy("updatedAt", "desc"),
       startAfter(lastVisible),
       limit(10)

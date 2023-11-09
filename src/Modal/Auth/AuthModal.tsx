@@ -2,6 +2,8 @@ import { useRecoilState } from "recoil";
 import AuthInputs from "./AuthInputs";
 import { authModalState } from "@/atoms/authModalAtom";
 import OAuthButtons from "./OAuthButtons";
+import { auth } from "@/firebase/clientApp";
+import { useEffect, useState } from "react";
 
 const AuthModal: React.FC = () => {
   const [modalState, setModalState] = useRecoilState(authModalState);
@@ -47,9 +49,9 @@ const AuthModal: React.FC = () => {
       <div className="modal">
         <div className="modal-box">
           <div className="flex flex-col w-full justify-start items-start bg-base-100">
-            <label className="label">
-              {modalState.view === "login" && "login"}
-              {modalState.view === "signup" && "signup"}
+            <label className="label flex w-full justify-center text-3xl font-bold">
+              {modalState.view === "login" && "Log In"}
+              {modalState.view === "signup" && "Sign Up"}
             </label>
 
             <AuthInputs />

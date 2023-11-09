@@ -14,7 +14,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({ user, setUserPhoto }) => {
       <div className="modal">
         <div className="modal-box">
           <div className="flex flex-col w-full justify-start items-start bg-base-100">
-            <label className="flex w-full label justify-center">
+            <label className="flex w-full label justify-center text-3xl font-bold">
               {modalState.view === "avatar" && "Update Avatar"}
             </label>
 

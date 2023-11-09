@@ -47,7 +47,7 @@ const SignUp = () => {
         <div className="form-control w-full mt-4">
           <input
             name="email"
-            placeholder="email"
+            placeholder="Email"
             type="email"
             className="input input-bordered"
             onChange={onChange}
@@ -56,7 +56,7 @@ const SignUp = () => {
         <div className="form-control w-full mt-4">
           <input
             name="password"
-            placeholder="password"
+            placeholder="Password"
             type="password"
             className="input input-bordered"
             onChange={onChange}
@@ -65,7 +65,7 @@ const SignUp = () => {
         <div className="form-control w-full mt-4">
           <input
             name="confirmPassword"
-            placeholder="confirm Password"
+            placeholder="Confirm Password"
             type="password"
             className="input input-bordered"
             onChange={onChange}

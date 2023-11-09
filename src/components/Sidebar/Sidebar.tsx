@@ -1,5 +1,5 @@
 import SignOut from "../SignOut/SignOut";
-
+import { Gamepad2, Sparkles, Tag } from "lucide-react";
 type SidebarProps = {
   setSelectedTab: (value: string) => void;
 };
@@ -7,18 +7,24 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ setSelectedTab }) => {
   return (
     <div className="flex flex-col w-full h-full bg-base-200 justify-between">
-      <ul className="menu bg-base-200 rounded-box w-full">
+      <ul className="menu bg-base-200 rounded-box w-full text-2xl">
         <li onClick={() => setSelectedTab("games")}>
-          <a>games</a>
+          <a>
+            Games
+            <Gamepad2 />
+          </a>
         </li>
         <li onClick={() => setSelectedTab("recommendations")}>
-          <a>recommendations</a>
+          <a>
+            Recommendations
+            <Sparkles />
+          </a>
         </li>
         <li onClick={() => setSelectedTab("tags")}>
-          <a>tags</a>
-        </li>
-        <li onClick={() => setSelectedTab("users")}>
-          <a>users</a>
+          <a>
+            Tags
+            <Tag />
+          </a>
         </li>
       </ul>
       <SignOut />
