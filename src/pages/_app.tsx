@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import React from "react";
 import { RecoilRoot, RecoilEnv } from "recoil";
 import Head from "next/head";
+import { ToastProvider } from "@/providers/toaster-provider";
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -38,6 +39,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <RecoilRoot>
         <div className="min-w-[450px]">
           <Layout>
+            <ToastProvider />
             <Component {...pageProps} />
           </Layout>
         </div>

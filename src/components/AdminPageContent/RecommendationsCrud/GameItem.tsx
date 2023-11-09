@@ -110,49 +110,6 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
               </span>
             )}
           </button>
-          <div className="card-actions w-full justify-between ">
-            <button
-              className="btn"
-              //@ts-ignore
-              onClick={() => {
-                if (document) {
-                  onSelectGame(game, "admin");
-                  (
-                    document.getElementById("my_modal_2") as HTMLFormElement
-                  ).showModal();
-                }
-              }}
-            >
-              UPDATE
-            </button>
-
-            {deleteLoading ? (
-              <div className="flex w-full h-full items-center justify-center">
-                <span className="loading loading-spinner loading-lg"></span>
-              </div>
-            ) : (
-              <button
-                className="btn btn-ghost flex-1 text-sm p-0"
-                onClick={() => handleDelete()}
-              >
-                delete
-              </button>
-            )}
-
-            <dialog id="my_modal_2" className="modal" data-theme="dark">
-              <form method="dialog" className="modal-box">
-                <h3 className="font-bold text-lg text-white">update</h3>
-                {gameStateValue.selectedGame && (
-                  <div className="flex flex-col w-full">
-                    <Update game={gameStateValue.selectedGame} />
-                  </div>
-                )}
-              </form>
-              <form method="dialog" className="modal-backdrop">
-                <button>close</button>
-              </form>
-            </dialog>
-          </div>
         </div>
       </div>
     </div>

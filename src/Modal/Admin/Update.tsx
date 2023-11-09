@@ -16,6 +16,7 @@ type GameItemProps = {
 
 const Update: React.FC<GameItemProps> = ({ game }) => {
   const { gameStateValue } = useGames();
+
   const [tags, setTags] = useState<string[]>(game.tags || []);
   const [uploaded, setUploaded] = useState(false);
   const [uploadImages, setUploadImages] = useState(false);
@@ -52,6 +53,10 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
     if (game.imagesGroup) setSelectedImagesGroup(game.imagesGroup);
     if (game.platformType) setPlatformType(game.platformType);
   }, [game]);
+
+  useEffect(() => {
+    setUploaded(true);
+  }, [platformType]);
 
   const [textInputs, setTextInputs] = useState({
     title: game.title,
@@ -153,7 +158,10 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
         <label className="label cursor-pointer">
           <span className="label-text">Upload images or videos?</span>
           <input
-            onChange={() => setUploadImages(!uploadImages)}
+            onChange={() => {
+              setUploadImages(!uploadImages);
+              setUploaded(true);
+            }}
             type="checkbox"
             checked={uploadImages}
             className="checkbox checkbox-primary"
@@ -189,7 +197,10 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
         <label className="label cursor-pointer">
           <span className="label-text">Upload Tags?</span>
           <input
-            onChange={() => setUploadTags(!uploadTags)}
+            onChange={() => {
+              setUploadTags(!uploadTags);
+              setUploaded(true);
+            }}
             type="checkbox"
             checked={uploadTags}
             className="checkbox checkbox-primary"

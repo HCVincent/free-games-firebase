@@ -61,8 +61,8 @@ const useGames = () => {
       ...prev,
       selectedGame: game,
     }));
-    // router.push(`/downloads/${game.id}`);
-    window.open(`/downloads/${game.id}`, "_blank");
+    // window.open(`/downloads/${game.id}`, "_blank");
+    window.open(`${game.address}`, "_blank");
   };
   const readGamesByTag = async (
     tag: string,

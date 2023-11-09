@@ -7,6 +7,7 @@ import { doc, serverTimestamp, setDoc, Timestamp } from "firebase/firestore";
 import moment from "moment";
 import React, { useState } from "react";
 import default_cover from "../../../../public/default_cover.png";
+import toast from "react-hot-toast";
 
 type GameItemProps = {
   game: Game;
@@ -16,11 +17,15 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
   const { onUpdateGameRec } = useGames();
   const [recommend, setRecommend] = useState(game.recommend);
   const [loading, setLoading] = useState(false);
-  const { onDeleteGame, onSelectGame, gameStateValue } = useGames();
+  const { onDeleteGame, onSelectGame } = useGames();
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [error, setError] = useState("");
   const [imageLoading, setImageLoading] = useState(true);
   const handleDelete = () => {
+    if (game.recommend) {
+      toast.error("remove it from recommendations first");
+      return;
+    }
     setDeleteLoading(true);
     onDeleteGame("games", game);
     setDeleteLoading(false);
@@ -97,7 +102,10 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
               {moment(new Date(game.createdAt?.seconds * 1000)).fromNow()}
             </span>
           )}
-          <button className="btn text-xs" onClick={() => handleRecommend()}>
+          <button
+            className="btn text-xs capitalize"
+            onClick={() => handleRecommend()}
+          >
             {loading ? (
               <span className="loading loading-spinner"></span>
             ) : (
@@ -106,7 +114,7 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
                   recommend ? "text-red-400 " : "text-green-400"
                 }`}
               >
-                {`${recommend ? "remove from ll" : "add on rcm games "}`}
+                {`${recommend ? "remove from rec" : "add on rcm games "}`}
               </span>
             )}
           </button>
@@ -116,6 +124,10 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
               //@ts-ignore
               onClick={() => {
                 if (document) {
+                  if (game.recommend) {
+                    toast.error("remove it from recommendations first");
+                    return;
+                  }
                   onSelectGame(game, "admin");
                   (
                     document.getElementById("my_modal_2") as HTMLFormElement
@@ -138,20 +150,6 @@ const GameItem: React.FC<GameItemProps> = ({ game }) => {
                 delete
               </button>
             )}
-
-            <dialog id="my_modal_2" className="modal" data-theme="dark">
-              <form method="dialog" className="modal-box">
-                <h3 className="font-bold text-lg text-white">update</h3>
-                {gameStateValue.selectedGame && (
-                  <div className="flex flex-col w-full">
-                    <Update game={gameStateValue.selectedGame} />
-                  </div>
-                )}
-              </form>
-              <form method="dialog" className="modal-backdrop">
-                <button>close</button>
-              </form>
-            </dialog>
           </div>
         </div>
       </div>
