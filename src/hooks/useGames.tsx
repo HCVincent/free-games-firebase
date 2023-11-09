@@ -57,6 +57,10 @@ const useGames = () => {
     }
   };
   const onSelectDownload = (game: Game) => {
+    if (!user?.uid) {
+      setAuthModalState({ open: true, view: "login" });
+      return false;
+    }
     setGameStateValue((prev) => ({
       ...prev,
       selectedGame: game,

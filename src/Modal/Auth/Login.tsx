@@ -12,8 +12,8 @@ const Login: React.FC = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [error, setError] = useState("");
   const [loginForm, setLoginForm] = useState({
-    email: "",
-    password: "",
+    email: process.env.NEXT_PUBLIC_EMAIL,
+    password: process.env.NEXT_PUBLIC_PASSWORD,
   });
   const [signInWithEmailAndPassword, userCred, loading, userError] =
     useSignInWithEmailAndPassword(auth);
@@ -23,7 +23,7 @@ const Login: React.FC = () => {
       setError("");
     }
     try {
-      await signInWithEmailAndPassword(loginForm.email, loginForm.password);
+      await signInWithEmailAndPassword(loginForm.email!, loginForm.password!);
     } catch (error: any) {
       setError(error);
       console.log("signInWithEmailAndPassword Error", error);
@@ -61,6 +61,7 @@ const Login: React.FC = () => {
             name="email"
             placeholder="Email"
             type="email"
+            value={loginForm.email!}
             className="input input-bordered bg-base-300 focus:outline-none"
             onChange={onChange}
           />
@@ -71,10 +72,12 @@ const Login: React.FC = () => {
             name="password"
             placeholder="Password"
             type="password"
+            value={loginForm.password!}
             className="input input-bordered bg-base-300 focus:outline-none"
             onChange={onChange}
           />
         </div>
+        <div>Notice: Please log in with default manager account.</div>
         <div className="flex justify-end">
           {loading ? (
             <span className="loading loading-spinner"></span>
