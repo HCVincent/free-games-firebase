@@ -43,7 +43,7 @@ const RelatedGames: React.FC<RelatedGamesProps> = ({ gameTag, gameId }) => {
           <>
             {gameStateValue.gamesInTag.map((game) => (
               <div
-                className="card card-compact w-96 bg-base-100 shadow-xl my-5 cursor-pointer hover:scale-105 transition-all"
+                className="card card-compact w-96 bg-base-100 shadow-xl my-5 cursor-pointer hover:scale-105 transition-all hover:shadow-2xl"
                 key={game.id}
                 onClick={() => onSelectGame(game)}
               >

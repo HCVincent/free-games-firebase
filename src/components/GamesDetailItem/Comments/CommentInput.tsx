@@ -8,7 +8,7 @@ import { useRecoilState } from "recoil";
 type CommentInputProps = {
   commentText: string;
   setCommentText: (value: string) => void;
-  user: User;
+  user: User | null | undefined;
   createLoading: boolean;
   onCreateComment: (commentText: string) => void;
 };

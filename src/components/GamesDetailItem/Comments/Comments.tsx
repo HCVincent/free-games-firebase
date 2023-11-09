@@ -19,7 +19,7 @@ import {
 import { Game, gameState } from "@/atoms/gamesAtom";
 import { useSetRecoilState } from "recoil";
 
-type CommentsProps = { user: User; game: Game };
+type CommentsProps = { user: User | null | undefined; game: Game };
 
 const Comments: React.FC<CommentsProps> = ({ user, game }) => {
   const [commentText, setCommentText] = useState("");
@@ -28,6 +28,7 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
   const [loadingDeleteId, setLoadingDeleteId] = useState("");
   const setGameState = useSetRecoilState(gameState);
   const onCreateComment = async () => {
+    if (!user) return;
     setCreateLoading(true);
     try {
       const batch = writeBatch(firestore);
@@ -170,16 +171,18 @@ const Comments: React.FC<CommentsProps> = ({ user, game }) => {
           <>
             {comments.map((comment) => (
               <div className="flex" key={comment.id}>
-                <CommentItem
-                  gameId={game.id!}
-                  gameTitle={game.title!}
-                  key={comment.id}
-                  comment={comment}
-                  onDeleteComment={onDeleteComment}
-                  loadingDelete={loadingDeleteId === comment.id}
-                  user={user}
-                  loadingDeleteId={loadingDeleteId}
-                ></CommentItem>
+                {user && (
+                  <CommentItem
+                    gameId={game.id!}
+                    gameTitle={game.title!}
+                    key={comment.id}
+                    comment={comment}
+                    onDeleteComment={onDeleteComment}
+                    loadingDelete={loadingDeleteId === comment.id}
+                    user={user}
+                    loadingDeleteId={loadingDeleteId}
+                  ></CommentItem>
+                )}
               </div>
             ))}
           </>

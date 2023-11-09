@@ -67,7 +67,7 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
           </svg>
         )}
 
-        <span className="flex text-4xl  text-white align-bottom mb-1">
+        <span className="flex text-4xl  align-bottom mb-1">
           {game.voteStatus ? game.voteStatus : 0}
         </span>
         {loadingDownVote ? (
@@ -97,7 +97,7 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
         )}
       </div>
       <div
-        className="flex  text-white justify-end items-end transition-all hover:scale-110 mr-2 cursor-pointer"
+        className="flex   justify-end items-end transition-all hover:scale-110 mr-2 cursor-pointer"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -135,7 +135,7 @@ const ThumbsLike: React.FC<ThumbsLikeProps> = ({
             }}
             className="w-12 h-12 hover:scale-105"
           >
-            <BsDownload className="w-12 h-12 text-white"></BsDownload>
+            <BsDownload className="w-12 h-12 "></BsDownload>
           </div>
         </div>
       )}

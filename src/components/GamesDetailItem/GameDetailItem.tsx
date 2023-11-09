@@ -18,7 +18,7 @@ const GameDetailItem: React.FC<GameDetailItemProps> = ({ game }) => {
   const [user] = useAuthState(auth);
 
   return (
-    <div className="flex flex-col  p-10">
+    <div className="flex flex-col  p-10 space-y-4">
       <div className="min-h-[400px]">
         <GameCover
           coverImage={game.coverImage}
@@ -57,7 +57,7 @@ const GameDetailItem: React.FC<GameDetailItemProps> = ({ game }) => {
       )}
 
       <span className="mt-10 line">{game.body}</span>
-      {user && <Comments game={game} user={user} />}
+      <Comments game={game} user={user} />
     </div>
   );
 };

@@ -53,9 +53,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full items-start justify-start">
+    <div className="flex flex-col w-full items-start justify-start space-y-2">
       <form className="w-full" onSubmit={onSubmit}>
         <div className="form-control w-full mt-4">
+          <label htmlFor="email">Email:</label>
           <input
             required
             name="email"
@@ -67,6 +68,7 @@ const Login: React.FC = () => {
           />
         </div>
         <div className="form-control w-full mt-4">
+          <label htmlFor="password">Password:</label>
           <input
             required
             name="password"
@@ -77,7 +79,9 @@ const Login: React.FC = () => {
             onChange={onChange}
           />
         </div>
-        <div>Notice: Please log in with default manager account.</div>
+        <div className="font-bold text-xl">
+          Notice: Please log in with default manager account.
+        </div>
         <div className="flex justify-end">
           {loading ? (
             <span className="loading loading-spinner"></span>

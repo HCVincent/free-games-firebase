@@ -42,9 +42,10 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col w-full items-start justify-start">
+    <div className="flex flex-col w-full items-start justify-start space-y-2">
       <form className="w-full" onSubmit={onSubmit}>
         <div className="form-control w-full mt-4">
+          <label htmlFor="email">Email:</label>
           <input
             name="email"
             placeholder="Email"
@@ -54,6 +55,7 @@ const SignUp = () => {
           />
         </div>
         <div className="form-control w-full mt-4">
+          <label htmlFor="password">Password:</label>
           <input
             name="password"
             placeholder="Password"
@@ -63,6 +65,7 @@ const SignUp = () => {
           />
         </div>
         <div className="form-control w-full mt-4">
+          <label htmlFor="confirmPassword">Confirm Password:</label>
           <input
             name="confirmPassword"
             placeholder="Confirm Password"
