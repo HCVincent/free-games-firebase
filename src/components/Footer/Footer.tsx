@@ -5,7 +5,7 @@ type FooterProps = {};
 
 const Footer: React.FC<FooterProps> = () => {
   return (
-    <footer className="footer p-10 bg-neutral  mt-10 text-white">
+    <footer className="footer p-10 bg-neutral   text-white">
       <p className="text-lg max-w-[20rem]">
         {`FreeVRGame is a website you can download kinds of type of VR games for
         free. We will keep on updating contents.`}

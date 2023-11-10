@@ -29,7 +29,7 @@ const AdminModal: React.FC<AdminModalProps> = ({
   };
 
   const onSubmit = async () => {
-    await readGames("games", searchInput);
+    await readGames("games", searchInput, 10);
     setSearchInput("");
   };
 
@@ -107,7 +107,7 @@ const AdminModal: React.FC<AdminModalProps> = ({
           />
           <button
             type="submit"
-            className="btn btn-primary text-white absolute right-2 bottom-1  font-medium rounded-lg text-sm"
+            className="btn  text-white absolute right-2 bottom-1  font-medium rounded-lg text-sm"
             onClick={(e) => {
               e.preventDefault();
               onSubmit();

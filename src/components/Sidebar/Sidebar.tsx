@@ -7,7 +7,7 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ setSelectedTab }) => {
   return (
     <div className="flex flex-col w-full h-full bg-base-200 justify-between">
-      <ul className="menu bg-base-200 rounded-box w-full text-2xl">
+      <ul className="menu bg-base-200 rounded-box w-full text-2xl overflow-hidden">
         <li onClick={() => setSelectedTab("games")}>
           <a>
             Games

@@ -121,8 +121,8 @@ const Update: React.FC<GameItemProps> = ({ game }) => {
   };
 
   return (
-    <div className="flex flex-col w-full items-start justify-start">
-      <div className="form-control w-full mt-4 text-white">
+    <div className="flex flex-col w-full items-start justify-start space-y-4">
+      <div className="form-control w-full mt-4 text-white space-y-2">
         <input
           required
           name="title"
