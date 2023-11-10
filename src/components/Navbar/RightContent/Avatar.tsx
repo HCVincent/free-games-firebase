@@ -8,6 +8,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import AvatarModal from "@/Modal/Admin/AvatarModal";
 import { auth } from "@/firebase/clientApp";
+import { useSignOut } from "react-firebase-hooks/auth";
+import { deleteCookie } from "cookies-next";
 
 type AvatarProps = {
   user: User;
@@ -15,9 +17,13 @@ type AvatarProps = {
 
 const Avatar: React.FC<AvatarProps> = ({ user }) => {
   const [isAdmin, setIsAdmin] = useState(false);
-
+  const [signOut, loading, error] = useSignOut(auth);
   const router = useRouter();
   const [userPhoto, setUserPhoto] = useState("");
+  const logout = async () => {
+    deleteCookie("isAdmin");
+    await signOut();
+  };
   useEffect(() => {
     if (user.photoURL) {
       setUserPhoto(user.photoURL);
@@ -73,8 +79,14 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
           >
             <div className="w-full flex justify-center">Collections</div>
           </li>
-          <li className="w-full">
-            <SignOut />
+          <li className="w-full" onClick={logout}>
+            <div className="w-full flex justify-center">
+              {loading ? (
+                <span className="loading loading-spinner"></span>
+              ) : (
+                "Sign out"
+              )}
+            </div>
           </li>
         </ul>
       </div>
