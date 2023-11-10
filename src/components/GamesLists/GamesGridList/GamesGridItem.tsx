@@ -32,8 +32,9 @@ const GamesGridItem: React.FC<GamesGridItemProps> = ({
             selectedGame: game,
           }));
         }}
+        className="w-full"
       >
-        <div className="card  bg-base-100 shadow-xl h-[34rem]  hover:scale-105 transition-all ">
+        <div className="card w-full bg-base-100 shadow-xl h-[34rem]  hover:scale-105 transition-all ">
           <figure className="h-52 w-full items-start">
             {imageLoading && (
               <div className="flex w-full h-full items-center justify-center">

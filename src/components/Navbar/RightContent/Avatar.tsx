@@ -15,18 +15,19 @@ type AvatarProps = {
 
 const Avatar: React.FC<AvatarProps> = ({ user }) => {
   const [isAdmin, setIsAdmin] = useState(false);
-  auth.currentUser?.getIdTokenResult().then((idTokenResult) => {
-    // Confirm the user is an Admin.
-    if (!!idTokenResult.claims.admin) {
-      setIsAdmin(true);
-    }
-  });
+
   const router = useRouter();
   const [userPhoto, setUserPhoto] = useState("");
   useEffect(() => {
     if (user.photoURL) {
       setUserPhoto(user.photoURL);
     }
+    auth.currentUser?.getIdTokenResult().then((idTokenResult) => {
+      // Confirm the user is an Admin.
+      if (!!idTokenResult.claims.admin) {
+        setIsAdmin(true);
+      }
+    });
   }, [user]);
   return (
     <>
